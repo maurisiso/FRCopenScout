@@ -184,3 +184,56 @@ def approvals(request):
         claim.user_teams = claim.user.memberships.select_related("team")
     stats = Team.objects.values("status").annotate(n=Count("id"))
     return render(request, "teams/approvals.html", {"pending": pending, "recent": recent, "stats": stats})
+
+
+@team_view(min_role=Role.ADMIN)
+def contributions(request, team, membership):
+    """Admins: how much each scout has contributed (entries, pit entries, notes, events)."""
+    from django.db.models import Count, Max, Q
+
+    from frcdata.models import Event
+    from scouting.models import MatchNote, ScoutEntry, ScoutingForm
+
+    entries = ScoutEntry.objects.filter(team=team)
+    notes = MatchNote.objects.filter(team=team)
+    seasons = sorted(set(entries.values_list("event__year", flat=True)), reverse=True)
+    season = request.GET.get("season")
+    event_key = request.GET.get("event")
+    if season and season.isdigit():
+        entries = entries.filter(event__year=int(season))
+        notes = notes.filter(event__year=int(season))
+    if event_key:
+        entries = entries.filter(event__key=event_key)
+        notes = notes.filter(event__key=event_key)
+
+    stats = {r["scout"]: r for r in entries.values("scout").annotate(
+        match=Count("id", filter=Q(form__kind=ScoutingForm.Kind.MATCH)),
+        pit=Count("id", filter=Q(form__kind=ScoutingForm.Kind.PIT)),
+        events=Count("event", distinct=True),
+        last=Max("created_at"),
+    )}
+    note_counts = dict(notes.values_list("author").annotate(n=Count("id")))
+    members = {m.user_id: m for m in team.memberships.select_related("user")}
+    user_ids = set(members) | {k for k in stats if k} | {k for k in note_counts if k}
+    from django.contrib.auth import get_user_model
+
+    users = {u.id: u for u in get_user_model().objects.filter(id__in=user_ids)}
+    rows = []
+    for uid in user_ids:
+        s = stats.get(uid, {})
+        total = s.get("match", 0) + s.get("pit", 0)
+        rows.append({
+            "user": users.get(uid), "membership": members.get(uid),
+            "match": s.get("match", 0), "pit": s.get("pit", 0), "notes": note_counts.get(uid, 0),
+            "events": s.get("events", 0), "last": s.get("last"), "total": total,
+        })
+    rows.sort(key=lambda r: (-(r["total"] + r["notes"]), str(r["user"])))
+    top = max([r["total"] + r["notes"] for r in rows], default=0)
+    totals = {k: sum(r[k] for r in rows) for k in ("match", "pit", "notes")}
+    event_ids = ScoutEntry.objects.filter(team=team).values_list("event_id", flat=True).distinct()
+    return render(request, "teams/contributions.html", {
+        "team": team, "membership": membership, "rows": rows, "top": top, "totals": totals,
+        "seasons": seasons, "season": season or "", "event_key": event_key or "",
+        "events": Event.objects.filter(id__in=event_ids).order_by("-start_date"),
+        "unassigned": stats.get(None, {}).get("match", 0) + stats.get(None, {}).get("pit", 0),
+    })

@@ -1,8 +1,8 @@
 {% extends "events/_event_base.html" %}{% load i18n scout_tags %}
 {% block event_content %}
 <div class="page-head">
-  <div><h2 style="font-size:1.4rem;margin:0">{{ frc_number }} {{ et.team.nickname }}{% if is_us %} <span class="badge admin">{% trans "us" %}</span>{% endif %}</h2>
-    <div class="sub">{% if et %}{% trans "Rank" %} {{ et.rank|default:"—" }} · {{ et.record }} · {{ et.team.city }}{% if et.team.country %}, {{ et.team.country }}{% endif %}{% else %}{% trans "Not on this event's team list" %}{% endif %}</div></div>
+  <div class="team-title">{% team_avatar et.team frc_number 44 %}<div><h2 style="font-size:1.4rem;margin:0">{{ frc_number }} {{ et.team.nickname }}{% if is_us %} <span class="badge admin">{% trans "us" %}</span>{% endif %}</h2>
+    <div class="sub">{% if et %}{% trans "Rank" %} {{ et.rank|default:"—" }} · {{ et.record }} · {{ et.team.city }}{% if et.team.country %}, {{ et.team.country }}{% endif %}{% else %}{% trans "Not on this event's team list" %}{% endif %}</div></div></div>
   <div class="row">
     <a class="btn btn-sm btn-ghost" href="{% url 'scouted_team_detail' team.number frc_number %}">{% trans "All events" %}</a>
     <a class="btn btn-sm btn-ghost" href="https://www.statbotics.io/team/{{ frc_number }}" target="_blank" rel="noopener">Statbotics ↗</a>
@@ -51,7 +51,7 @@
     {% endif %}
     {% for p in pit %}
     <div class="card"><h3>{% trans "Pit scouting" %} <small class="muted">— {{ p.scout.name }}</small></h3>
-      <table><tbody>{% for f in p.form.fields.all %}<tr><td>{{ f.label }}</td><td class="wrap">{{ p.data|get_item:f.key|default_if_none:"—" }}</td></tr>{% endfor %}</tbody></table></div>
+      <table><tbody>{% for f in p.form.fields.all %}{% with v=p.data|get_item:f.key %}<tr><td>{{ f.label }}</td><td class="wrap">{% if v is True %}✓{% elif v is False %}✗{% elif v is None or v == "" %}—{% elif f.field_type == "multi" %}{{ v|join:", " }}{% else %}{{ v }}{% endif %}</td></tr>{% endwith %}{% endfor %}</tbody></table></div>
     {% endfor %}
   </div>
   <div class="stack">

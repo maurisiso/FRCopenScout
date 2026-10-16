@@ -43,6 +43,11 @@
   window.addEventListener("offline", updateNet);
   updateNet();
 
+  // Close the team switcher when clicking elsewhere
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll("details.team-menu[open]").forEach((d) => { if (!d.contains(e.target)) d.removeAttribute("open"); });
+  });
+
   // Mobile nav toggle
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-toggle-nav]");

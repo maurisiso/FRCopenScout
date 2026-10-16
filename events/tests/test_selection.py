@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 
-from .alliance_selection import AllianceSelection, SelectionError, default_alliance_count, predict
+from events.alliance_selection import AllianceSelection, SelectionError, default_alliance_count, predict
 
 
 class AllianceSelectionTests(SimpleTestCase):

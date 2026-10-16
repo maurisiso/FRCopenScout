@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 
@@ -26,6 +27,17 @@ class Team(models.Model):
 
     def __str__(self):
         return f"{self.number} {self.nickname}".strip()
+
+    @cached_property
+    def frc(self):
+        """The public FRC team record (nickname, avatar...) from TBA, if we have it."""
+        from frcdata.models import FRCTeam
+
+        return FRCTeam.objects.filter(number=self.number).first()
+
+    @property
+    def display_nickname(self):
+        return self.nickname or (self.frc.nickname if self.frc else "")
 
     @property
     def tba_key(self):

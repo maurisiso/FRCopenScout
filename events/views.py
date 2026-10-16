@@ -12,7 +12,8 @@ from django.views.decorators.http import require_POST
 
 from frcdata.clients import APIError
 from frcdata.models import Event, EventTeam, FRCTeam, Match, TeamSeason
-from frcdata.sync import refresh_if_stale, sync_event, sync_team_events, sync_team_season
+from frcdata.sync import ensure_avatars_background, refresh_if_stale, sync_event, sync_team_events, sync_team_season
+from frcdata.sync import season_stats as season_stats_for
 from scouting.forms import MatchNoteForm
 from scouting.models import MatchNote, ScoutEntry, ScoutingForm
 from scouting.stats import entry_points, event_field_averages, team_summaries
@@ -45,7 +46,10 @@ def team_home(request, team, membership):
         t.entry_count = entry_counts.get(t.event_id, 0)
     seasons = sorted({settings.DEFAULT_SEASON, season, *TrackedEvent.objects.filter(team=team)
                       .values_list("event__year", flat=True)}, reverse=True)
-    season_stats = _season_stats(team.number, season)
+    season_stats = season_stats_for(team.number, season)
+    frc = FRCTeam.objects.filter(number=team.number).first()
+    if not frc or not frc.avatar_checked_at:
+        ensure_avatars_background([team.number], season)
     return render(request, "events/team_home.html", {
         "team": team, "membership": membership, "tracked": tracked, "season": season, "seasons": seasons,
         "forms": team.scouting_forms.filter(is_active=True),
@@ -53,17 +57,6 @@ def team_home(request, team, membership):
         "tba_configured": bool(settings.TBA_API_KEY),
         "season_stats": season_stats,
     })
-
-
-def _season_stats(number, season):
-    """Statbotics season stats; refreshed at most every 6 hours. Never raises."""
-    obj = TeamSeason.objects.filter(team__number=number, year=season).first()
-    if obj and timezone.now() - obj.synced_at < timedelta(hours=6):
-        return obj
-    try:
-        return sync_team_season(number, season) or obj
-    except APIError:
-        return obj
 
 
 @require_POST
@@ -81,6 +74,7 @@ def sync_team(request, team, membership):
         sync_team_season(team.number, season)
     except APIError:
         pass
+    ensure_avatars_background([team.number], season)
     messages.success(request, _("Found %(n)d events for %(season)s on The Blue Alliance.") % {"n": len(events), "season": season})
     return redirect(f"/t/{team.number}/?season={season}")
 
@@ -161,7 +155,11 @@ def event_sync(request, team, membership, event_key):
 @team_view()
 def event_overview(request, team, membership, event_key):
     event = _event_for(team, event_key)
-    sync_errors = refresh_if_stale(event)
+    refreshing = refresh_if_stale(event)
+    unchecked = list(EventTeam.objects.filter(event=event, team__avatar_checked_at__isnull=True)
+                     .values_list("team__number", flat=True))
+    if unchecked and not refreshing:
+        ensure_avatars_background(unchecked, event.year)
     ours = EventTeam.objects.filter(event=event, team__number=team.number).first()
     our_matches = [m for m in event.matches.all() if team.number in m.all_teams]
     upcoming = [m for m in our_matches if not m.is_played][:4]
@@ -169,10 +167,11 @@ def event_overview(request, team, membership, event_key):
     rankings = EventTeam.objects.filter(event=event).select_related("team").exclude(rank=None).order_by("rank")[:10]
     return render(request, "events/overview.html", _ctx(
         team, membership, event, "overview",
-        ours=ours, upcoming=upcoming, recent=recent, rankings=rankings, sync_errors=sync_errors,
+        ours=ours, upcoming=upcoming, recent=recent, rankings=rankings, refreshing=refreshing,
         entry_count=ScoutEntry.objects.filter(team=team, event=event).count(),
         note_count=MatchNote.objects.filter(team=team, event=event).count(),
-        forms=team.scouting_forms.filter(is_active=True),
+        match_forms=team.scouting_forms.filter(is_active=True, kind=ScoutingForm.Kind.MATCH),
+        has_schedule=event.has_schedule,
         quals_done=event.qualifications_complete,
         team_count=event.event_teams.count(),
     ))
@@ -516,12 +515,13 @@ def prediction_delete(request, team, membership, event_key, prediction_id):
 def scouted_teams(request, team, membership):
     rows = (ScoutEntry.objects.filter(team=team).values("scouted_team")
             .annotate(n=Count("id"), events=Count("event", distinct=True), last=Max("created_at")).order_by("scouted_team"))
-    names = dict(FRCTeam.objects.filter(number__in=[r["scouted_team"] for r in rows]).values_list("number", "nickname"))
+    frcs = {t.number: t for t in FRCTeam.objects.filter(number__in=[r["scouted_team"] for r in rows])}
     note_counts = dict(MatchNote.objects.filter(team=team).exclude(about_team=None).values_list("about_team").annotate(n=Count("id")))
     q = request.GET.get("q", "").strip()
     out = []
     for r in rows:
-        r["name"] = names.get(r["scouted_team"], "")
+        r["frc"] = frcs.get(r["scouted_team"])
+        r["name"] = r["frc"].nickname if r["frc"] else ""
         r["notes"] = note_counts.get(r["scouted_team"], 0)
         if q and q not in str(r["scouted_team"]) and q.lower() not in r["name"].lower():
             continue
@@ -548,3 +548,26 @@ def scouted_team_detail(request, team, membership, frc_number):
     return render(request, "events/scouted_team_detail.html", {
         "team": team, "membership": membership, "frc": frc, "frc_number": frc_number, "blocks": blocks, "notes": notes,
     })
+
+
+# --- Pit scouting -----------------------------------------------------------
+
+@team_view()
+def pit_list(request, team, membership, event_key):
+    """Checklist of every robot at the event: who has been pit-scouted and who hasn't."""
+    event = _event_for(team, event_key)
+    form = ScoutingForm.default_pit_form(team, event.year)
+    done = {}
+    for e in ScoutEntry.objects.filter(team=team, event=event, form__kind=ScoutingForm.Kind.PIT).select_related("scout"):
+        done.setdefault(e.scouted_team, e)
+    teams = list(EventTeam.objects.filter(event=event).select_related("team").order_by("team__number"))
+    rows = [{"et": et, "entry": done.get(et.team.number)} for et in teams]
+    show = request.GET.get("show", "all")
+    if show == "todo":
+        rows = [r for r in rows if not r["entry"]]
+    total = len(teams)
+    count = sum(1 for et in teams if et.team.number in done)
+    return render(request, "events/pit_list.html", _ctx(
+        team, membership, event, "pit", rows=rows, form=form, total=total, count=count,
+        pct=round(count / total * 100) if total else 0, show=show,
+    ))

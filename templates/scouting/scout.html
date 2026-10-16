@@ -4,7 +4,7 @@
 <div class="scout-shell" id="scout-root" data-sync-url="{% url 'scouting_sync_api' %}" data-csrf="{{ csrf_token }}">
   <div class="scout-top">
     <div class="row">
-      <a href="{% url 'event_overview' team.number event.key %}" class="muted">←</a>
+      <a href="{% if sf.kind == 'pit' %}{% url 'pit_list' team.number event.key %}{% else %}{% url 'event_overview' team.number event.key %}{% endif %}" class="muted">←</a>
       <strong>{{ sf.name }}</strong><span class="muted">· {{ event.display_name }}</span>
     </div>
     <div class="sync-bar" style="margin-top:6px">

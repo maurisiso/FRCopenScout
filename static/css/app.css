@@ -293,3 +293,44 @@ td.wrap { white-space: normal; }
 .divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--line); }
 .google-btn { background: #fff; color: #1f1f1f; border: 1px solid #dadce0; }
 .google-btn:hover { background: #f7f8f8; }
+
+/* ---------- Avatars ---------- */
+.avatar { display: inline-block; vertical-align: middle; border-radius: 6px; flex: none; image-rendering: pixelated; }
+.avatar-fallback { display: inline-flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-family: var(--mono); line-height: 1; }
+.team-title { display: flex; align-items: center; gap: 12px; }
+.team-title .avatar { border-radius: 10px; box-shadow: var(--shadow); }
+
+/* ---------- Team switcher (top bar) ---------- */
+.team-menu { position: relative; }
+.team-menu > summary { list-style: none; cursor: pointer; color: #fff; padding: 5px 10px; border-radius: 6px; background: rgba(255,255,255,.08); display: flex; align-items: center; gap: 6px; font-size: .92rem; user-select: none; }
+.team-menu > summary::-webkit-details-marker { display: none; }
+.team-menu > summary:hover { background: rgba(255,255,255,.14); }
+.team-menu-list { position: absolute; right: 0; top: calc(100% + 6px); min-width: 260px; max-height: 70vh; overflow-y: auto; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25); padding: 6px; z-index: 40; }
+.team-menu-list a { display: flex; gap: 10px; align-items: center; padding: 8px; border-radius: 8px; color: var(--ink) !important; background: none !important; }
+.team-menu-list a:hover, .team-menu-list a.active { background: var(--surface-2) !important; text-decoration: none; }
+.team-menu-list small { color: var(--muted); }
+.team-menu-list .team-menu-foot { border-top: 1px solid var(--line); border-radius: 0 0 8px 8px; margin-top: 4px; color: var(--brand) !important; font-weight: 600; justify-content: center; }
+@media (max-width: 760px) { .team-menu-list { position: static; box-shadow: none; margin-top: 6px; } }
+
+/* ---------- Event status ---------- */
+.status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 1px 9px; border-radius: 99px; font-size: .76rem; font-weight: 700; border: 1px solid; }
+.status-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.status-badge.ended { color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); border-color: color-mix(in srgb, var(--red) 30%, transparent); }
+.status-badge.live { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, transparent); border-color: color-mix(in srgb, var(--ok) 30%, transparent); }
+.status-badge.live::before { animation: pulse 1.6s ease-in-out infinite; }
+.status-badge.upcoming { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+@keyframes pulse { 50% { opacity: .35; } }
+.event-row.ended { border-left: 4px solid color-mix(in srgb, var(--red) 55%, transparent); }
+.event-row.live { border-left: 4px solid var(--ok); }
+.event-row.upcoming { border-left: 4px solid color-mix(in srgb, var(--warn) 70%, transparent); }
+.btn[aria-disabled="true"], .btn:disabled { opacity: .45; pointer-events: none; cursor: not-allowed; }
+
+/* ---------- Pit checklist ---------- */
+.pit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.pit-card { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: inherit; }
+.pit-card:hover { border-color: var(--brand); text-decoration: none; }
+.pit-card.done { background: color-mix(in srgb, var(--ok) 9%, var(--surface)); border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+.pit-card .pit-meta { flex: 1; min-width: 0; }
+.pit-card .pit-meta small { display: block; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress { height: 10px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--ok); }

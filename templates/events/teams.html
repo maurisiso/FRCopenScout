@@ -13,7 +13,7 @@
     <tbody>{% for r in rows %}
       <tr class="{% if r.et.team.number == team.number %}us{% endif %}">
         <td data-sort="{{ r.et.rank|default:'999' }}">{{ r.et.rank|default:"—" }}</td>
-        <td data-sort="{{ r.et.team.number }}"><a href="{% url 'event_team_detail' team.number event.key r.et.team.number %}"><strong>{{ r.et.team.number }}</strong></a> <small class="muted">{{ r.et.team.nickname|truncatechars:22 }}</small></td>
+        <td data-sort="{{ r.et.team.number }}">{% team_avatar r.et.team None 20 %} <a href="{% url 'event_team_detail' team.number event.key r.et.team.number %}"><strong>{{ r.et.team.number }}</strong></a> <small class="muted">{{ r.et.team.nickname|truncatechars:22 }}</small></td>
         <td>{{ r.et.record }}</td>
         <td class="num"><strong>{{ r.et.epa_total|num }}</strong></td>
         <td class="num">{{ r.et.epa_auto|num }}</td><td class="num">{{ r.et.epa_teleop|num }}</td><td class="num">{{ r.et.epa_endgame|num }}</td>

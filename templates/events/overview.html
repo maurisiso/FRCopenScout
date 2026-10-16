@@ -1,6 +1,7 @@
 {% extends "events/_event_base.html" %}{% load i18n scout_tags %}
 {% block event_content %}
-{% if sync_errors %}<div class="callout">{% trans "Some data couldn't be refreshed:" %} {{ sync_errors|join:"; " }}</div>{% endif %}
+{% if refreshing %}<div class="callout info">{% trans "Updating data from TBA and Statbotics in the background. Reload the page in a few seconds to see the latest." %}</div>
+{% elif event.sync_error %}<div class="callout">{% trans "Some data couldn't be refreshed:" %} {{ event.sync_error }}</div>{% endif %}
 {% if not ours %}<div class="callout info">{% blocktrans with n=team.number %}Team {{ n }} isn't on this event's team list. You can still scout it.{% endblocktrans %}</div>{% endif %}
 <div class="card" style="margin-bottom:16px"><div class="stats">
   <div class="stat"><span class="v">{{ ours.rank|default:"—" }}</span><span class="l">{% trans "Our rank" %}{% if team_count %} / {{ team_count }}{% endif %}</span></div>
@@ -15,12 +16,17 @@
     {% if membership.can_scout %}
     <div class="card">
       <div class="card-head"><h2>{% trans "Start scouting" %}</h2></div>
-      {% for f in forms %}
-        <a class="btn {% if not forloop.first %}btn-ghost{% endif %}" href="{% url 'scout_page' team.number event.key f.id %}" style="margin:0 6px 6px 0">📋 {{ f.name }}</a>
-      {% empty %}
-        <p class="muted">{% trans "Create a scouting form first." %} <a href="{% url 'form_list' team.number %}">{% trans "Scouting forms" %}</a></p>
-      {% endfor %}
-      <p class="muted" style="font-size:.82rem;margin:8px 0 0">{% trans "Tip: open the scouting page once while you have signal; after that it works offline." %}</p>
+      <div class="row">
+        {% for f in match_forms %}
+          {% if has_schedule %}<a class="btn" href="{% url 'scout_page' team.number event.key f.id %}">🎯 {{ f.name }}</a>
+          {% else %}<span class="btn" aria-disabled="true" title="{% trans 'The match schedule is not published yet' %}">🎯 {{ f.name }}</span>{% endif %}
+        {% empty %}
+          <span class="muted">{% trans "No match form yet." %} <a href="{% url 'form_list' team.number %}">{% trans "Create one" %}</a></span>
+        {% endfor %}
+        <a class="btn btn-ghost" href="{% url 'pit_list' team.number event.key %}">🔧 {% trans "Pit scouting" %}</a>
+      </div>
+      {% if not has_schedule %}<p class="muted" style="font-size:.82rem;margin:8px 0 0">{% trans "Match scouting opens when the match schedule is published. Pit scouting is always available." %}</p>
+      {% else %}<p class="muted" style="font-size:.82rem;margin:8px 0 0">{% trans "Tip: open the scouting page once while you have signal; after that it works offline." %}</p>{% endif %}
     </div>
     {% endif %}
     <div class="card">

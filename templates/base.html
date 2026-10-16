@@ -1,4 +1,4 @@
-{% load static i18n %}<!doctype html>
+{% load static i18n scout_tags %}<!doctype html>
 {% get_current_language as LANG %}
 <html lang="{{ LANG }}">
 <head>
@@ -25,9 +25,25 @@
     <button class="nav-toggle" data-toggle-nav aria-label="{% trans 'Menu' %}">☰</button>
     <nav class="nav">
       {% if user.is_authenticated %}
-        {% for m in nav_memberships %}
-          {% if m.team.is_approved %}<a href="{% url 'team_home' m.team.number %}" class="{% if current_team.pk == m.team.pk %}active{% endif %}">{% trans "Team" %} {{ m.team.number }}</a>{% endif %}
-        {% endfor %}
+        {% if nav_memberships %}
+        <details class="team-menu">
+          <summary>
+            {% if current_team %}{% team_avatar current_team.frc current_team.number 22 %} {% trans "Team" %} {{ current_team.number }}{% else %}{% trans "My teams" %}{% endif %} ▾
+          </summary>
+          <div class="team-menu-list">
+            {% for m in nav_memberships %}
+              <a href="{% url 'team_home' m.team.number %}" class="{% if current_team.pk == m.team.pk %}active{% endif %}">
+                {% team_avatar m.team.frc m.team.number 26 %}
+                <span><strong>{{ m.team.number }}</strong> <small>{{ m.team.display_nickname|truncatechars:22 }}</small><br>
+                <small class="role">{{ m.get_role_display }}{% if not m.team.is_approved %} · {{ m.team.get_status_display }}{% endif %}</small></span>
+              </a>
+            {% endfor %}
+            <a href="{% url 'dashboard' %}?all=1" class="team-menu-foot">{% trans "Join or register a team" %}</a>
+          </div>
+        </details>
+        {% else %}
+        <a href="{% url 'dashboard' %}?all=1">{% trans "My teams" %}</a>
+        {% endif %}
         {% if user.is_staff %}<a href="{% url 'staff_approvals' %}">{% trans "Approvals" %}</a>{% endif %}
         <a href="{% url 'profile' %}">{{ user.name }}</a>
         <form method="post" action="{% url 'account_logout' %}" class="inline">{% csrf_token %}<button class="linklike" style="color:#cfd7e6;padding:6px 10px">{% trans "Sign out" %}</button></form>

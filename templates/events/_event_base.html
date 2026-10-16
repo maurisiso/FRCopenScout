@@ -3,7 +3,7 @@
 {% block content %}
 <div class="event-head">
   <div>
-    <div class="muted" style="font-size:.85rem"><a href="{% url 'team_home' team.number %}?season={{ event.year }}">← {% trans "Team" %} {{ team.number }}</a> · <span class="mono">{{ event.key }}</span>{% if event.is_demo %} <span class="badge warn">demo</span>{% endif %}</div>
+    <div class="muted" style="font-size:.85rem"><a href="{% url 'team_home' team.number %}?season={{ event.year }}">← {% trans "Team" %} {{ team.number }}</a> · <span class="mono">{{ event.key }}</span> {% include "events/_status.html" with ev=event %}{% if event.is_demo %} <span class="badge warn">demo</span>{% endif %}</div>
     <h1>{{ event.name }}</h1>
     <div class="muted" style="font-size:.85rem">{{ event.start_date|date:"M j" }}–{{ event.end_date|date:"M j, Y" }}{% if event.last_synced_at %} · {% blocktrans with t=event.last_synced_at|timesince %}updated {{ t }} ago{% endblocktrans %}{% endif %}</div>
   </div>
@@ -20,6 +20,7 @@
   <a href="{% url 'event_matches' team.number event.key %}" class="{% if tab == 'matches' %}active{% endif %}">{% trans "Matches" %}</a>
   <a href="{% url 'event_teams' team.number event.key %}" class="{% if tab == 'teams' %}active{% endif %}">{% trans "Teams" %}</a>
   <a href="{% url 'event_our_team' team.number event.key %}" class="{% if tab == 'us' %}active{% endif %}">{% trans "Our robot" %}</a>
+  <a href="{% url 'pit_list' team.number event.key %}" class="{% if tab == 'pit' %}active{% endif %}">{% trans "Pit scouting" %}</a>
   <a href="{% url 'event_notes' team.number event.key %}" class="{% if tab == 'notes' %}active{% endif %}">{% trans "Notes" %}</a>
   <a href="{% url 'event_alliances' team.number event.key %}" class="{% if tab == 'alliances' %}active{% endif %}">{% trans "Alliance selection" %}</a>
   <a href="{% url 'event_entries' team.number event.key %}" class="{% if tab == 'entries' %}active{% endif %}">{% trans "Scouting data" %}</a>

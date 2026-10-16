@@ -37,6 +37,20 @@ class ScoutingForm(models.Model):
     def __str__(self):
         return f"{self.name} ({self.season})"
 
+    @classmethod
+    def default_pit_form(cls, team, season):
+        """The team's pit scouting form for a season; created from the pit template if missing."""
+        from .templates_starter import STARTER_PIT_FIELDS
+
+        form = (cls.objects.filter(team=team, kind=cls.Kind.PIT, season=season, is_active=True).first()
+                or cls.objects.filter(team=team, kind=cls.Kind.PIT, is_active=True).order_by("-season").first())
+        if form:
+            return form
+        form = cls.objects.create(team=team, name=f"Pit scouting {season}", kind=cls.Kind.PIT, season=season)
+        for i, spec in enumerate(STARTER_PIT_FIELDS):
+            FormField.objects.create(form=form, order=i, **spec)
+        return form
+
     def as_schema(self):
         """JSON description of the form, used by the offline scouting page."""
         return {

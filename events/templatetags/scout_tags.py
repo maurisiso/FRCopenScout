@@ -61,3 +61,23 @@ def youtube_url(video):
     if isinstance(video, dict) and video.get("type") == "youtube" and video.get("key"):
         return f"https://www.youtube.com/watch?v={video['key']}"
     return ""
+
+
+_AVATAR_COLORS = ["#1f5fd6", "#d7263d", "#138a52", "#b46b00", "#6a3fd1", "#0f8b8d", "#c2410c", "#4b5563"]
+
+
+@register.simple_tag
+def team_avatar(frc_team=None, number=None, size=28):
+    """TBA avatar as an inline image, or a coloured badge with the team number if there is none."""
+    number = number or getattr(frc_team, "number", None) or "?"
+    avatar = getattr(frc_team, "avatar", "") if frc_team else ""
+    if avatar:
+        return format_html(
+            '<img class="avatar" src="data:image/png;base64,{}" width="{}" height="{}" alt="">', avatar, size, size
+        )
+    color = _AVATAR_COLORS[int(number) % len(_AVATAR_COLORS)] if str(number).isdigit() else "#4b5563"
+    label = str(number)[-2:]
+    return format_html(
+        '<span class="avatar avatar-fallback" style="width:{}px;height:{}px;background:{};font-size:{}px">{}</span>',
+        size, size, color, max(9, int(size) // 2 - 2), label,
+    )

@@ -140,6 +140,9 @@ def scout_page(request, team, membership, event_key, form_id):
     """
     event = get_object_or_404(Event, key=event_key)
     sf = get_object_or_404(ScoutingForm, pk=form_id, team=team)
+    if sf.kind == ScoutingForm.Kind.MATCH and not event.matches.exists():
+        messages.info(request, _("The match schedule isn't published yet. Pit scouting is available in the meantime."))
+        return redirect("pit_list", team_number=team.number, event_key=event.key)
     matches = [
         {"key": m.key, "label": m.label, "red": m.red_teams, "blue": m.blue_teams}
         for m in event.matches.all()

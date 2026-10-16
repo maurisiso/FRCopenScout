@@ -5,6 +5,7 @@ Secrets and machine-specific values come from a `.env` file in the project
 root (see `.env.example`). Never commit your real `.env`.
 """
 import os
+import sys
 from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
@@ -87,6 +88,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        # WAL lets pages read while a background sync is writing; wait instead of failing on locks.
+        "OPTIONS": {"timeout": 20, "init_command": "PRAGMA journal_mode=WAL;", "transaction_mode": "IMMEDIATE"},
     }
 }
 if os.getenv("POSTGRES_DB"):
@@ -147,7 +150,7 @@ EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.Em
 LANGUAGE_CODE = "en"
 LANGUAGES = [("en", _("English")), ("es", _("Spanish"))]
 LOCALE_PATHS = [BASE_DIR / "locale"]
-TIME_ZONE = "UTC"
+TIME_ZONE = os.getenv("TIME_ZONE", "America/Mexico_City")
 USE_I18N = True
 USE_TZ = True
 
@@ -163,6 +166,8 @@ STATBOTICS_BASE_URL = "https://api.statbotics.io/v3"
 # How long cached API data is considered fresh before a page triggers a re-sync.
 DATA_REFRESH_MINUTES = int(os.getenv("DATA_REFRESH_MINUTES", "10"))
 DEFAULT_SEASON = int(os.getenv("DEFAULT_SEASON", "2026"))
+# Slow API syncs run in a background thread so pages load instantly (tests turn this off).
+SYNC_IN_BACKGROUND = env_bool("SYNC_IN_BACKGROUND", True) and "test" not in sys.argv
 
 # --- AI assistant -----------------------------------------------------------
 # "stub" = built-in rule-based answers (no model needed).

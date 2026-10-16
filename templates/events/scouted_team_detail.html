@@ -2,8 +2,8 @@
 {% block title %}{{ frc_number }} · {% trans "Team database" %}{% endblock %}
 {% block content %}
 {% include "teams/_team_nav.html" with team_tab="scouted" %}
-<div class="page-head"><div><h2 style="font-size:1.4rem;margin:0">{{ frc_number }} {{ frc.nickname }}</h2>
-  <div class="sub">{{ frc.city }}{% if frc.country %}, {{ frc.country }}{% endif %}{% if frc.rookie_year %} · {% trans "rookie year" %} {{ frc.rookie_year }}{% endif %}</div></div>
+<div class="page-head"><div class="team-title">{% team_avatar frc frc_number 44 %}<div><h2 style="font-size:1.4rem;margin:0">{{ frc_number }} {{ frc.nickname }}</h2>
+  <div class="sub">{{ frc.city }}{% if frc.country %}, {{ frc.country }}{% endif %}{% if frc.rookie_year %} · {% trans "rookie year" %} {{ frc.rookie_year }}{% endif %}</div></div></div>
   <a class="btn btn-sm btn-ghost" href="https://www.thebluealliance.com/team/{{ frc_number }}" target="_blank" rel="noopener">TBA ↗</a></div>
 {% for b in blocks %}
 <div class="card" style="margin-bottom:14px">
@@ -14,6 +14,12 @@
     <div class="stat"><span class="v">{{ b.summary.points|num }}</span><span class="l">{% trans "Scouted pts" %}</span></div>
     <div class="stat"><span class="v">{{ b.count }}</span><span class="l">{% trans "Match entries" %}</span></div>
   </div>
+  {% for p in b.pit %}
+  <details style="margin-top:10px" {% if forloop.first %}open{% endif %}>
+    <summary><strong>🔧 {% trans "Pit scouting" %}</strong> <small class="muted">— {{ p.scout.name }} · {{ p.created_at|date:"SHORT_DATE_FORMAT" }}</small></summary>
+    <div class="table-wrap"><table><tbody>{% for f in p.form.fields.all %}{% with v=p.data|get_item:f.key %}{% if v is not None and v != "" %}<tr><td>{{ f.label }}</td><td class="wrap">{% if v is True %}✓{% elif v is False %}✗{% elif f.field_type == "multi" %}{{ v|join:", " }}{% else %}{{ v }}{% endif %}</td></tr>{% endif %}{% endwith %}{% endfor %}</tbody></table></div>
+  </details>
+  {% endfor %}
   {% if b.summary %}<p style="margin-top:10px;font-size:.88rem">{% for k, s in b.summary.fields.items %}{% if s.display %}<span class="badge" style="margin:2px">{{ s.label }}: {{ s.display }}</span>{% endif %}{% endfor %}</p>{% endif %}
 </div>
 {% empty %}<div class="card empty">{% trans "No scouting entries for this team yet." %}</div>{% endfor %}

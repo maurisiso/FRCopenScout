@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% load i18n scout_tags %}
+{% block title %}{% trans "Scout activity" %} · {{ team.number }}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="contrib" %}
+<div class="card" style="margin-bottom:16px">
+  <div class="card-head"><h2>{% trans "Scout activity" %}</h2>
+    <form method="get" class="row">
+      <select name="season" onchange="this.form.submit()" style="width:auto"><option value="">{% trans "All seasons" %}</option>{% for s in seasons %}<option value="{{ s }}" {% if s|stringformat:"s" == season %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+      <select name="event" onchange="this.form.submit()" style="width:auto"><option value="">{% trans "All events" %}</option>{% for e in events %}<option value="{{ e.key }}" {% if e.key == event_key %}selected{% endif %}>{{ e.display_name }}</option>{% endfor %}</select>
+    </form>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="v">{{ totals.match }}</span><span class="l">{% trans "Match entries" %}</span></div>
+    <div class="stat"><span class="v">{{ totals.pit }}</span><span class="l">{% trans "Pit entries" %}</span></div>
+    <div class="stat"><span class="v">{{ totals.notes }}</span><span class="l">{% trans "Notes" %}</span></div>
+    <div class="stat"><span class="v">{{ rows|length }}</span><span class="l">{% trans "People" %}</span></div>
+  </div>
+</div>
+<div class="card">
+  {% if rows %}
+  <div class="table-wrap"><table class="sortable">
+    <thead><tr><th>{% trans "Name" %}</th><th>{% trans "Role" %}</th><th class="num">{% trans "Match entries" %}</th><th class="num">{% trans "Pit entries" %}</th><th class="num">{% trans "Notes" %}</th><th class="num">{% trans "Events" %}</th><th>{% trans "Last activity" %}</th><th style="min-width:140px">{% trans "Share" %}</th></tr></thead>
+    <tbody>{% for r in rows %}
+      <tr>
+        <td>{{ r.user.name|default:"—" }}<br><small class="muted">{{ r.user.email }}</small></td>
+        <td>{% if r.membership %}<span class="badge {% if r.membership.is_admin %}admin{% endif %}">{{ r.membership.get_role_display }}</span>{% else %}<span class="badge">{% trans "former member" %}</span>{% endif %}</td>
+        <td class="num"><strong>{{ r.match }}</strong></td><td class="num">{{ r.pit }}</td><td class="num">{{ r.notes }}</td><td class="num">{{ r.events }}</td>
+        <td data-sort="{{ r.last|date:'U'|default:'0' }}">{% if r.last %}{{ r.last|timesince }}{% else %}—{% endif %}</td>
+        <td data-sort="{{ r.total|add:r.notes }}"><div class="bar"><span style="width:{{ r.total|add:r.notes|bar_width:top }}%"></span></div></td>
+      </tr>{% endfor %}
+    </tbody>
+  </table></div>
+  {% if unassigned %}<p class="muted" style="font-size:.85rem">{% blocktrans %}{{ unassigned }} entries belong to accounts that were deleted.{% endblocktrans %}</p>{% endif %}
+  {% else %}<div class="empty">{% trans "No scouting activity yet." %}</div>{% endif %}
+</div>
+{% endblock %}

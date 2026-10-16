@@ -16,6 +16,8 @@ class FRCTeam(models.Model):
     state_prov = models.CharField(max_length=120, blank=True)
     country = models.CharField(max_length=120, blank=True)
     rookie_year = models.PositiveIntegerField(null=True, blank=True)
+    avatar = models.TextField(blank=True, help_text="Base64 PNG avatar from TBA (40x40)")
+    avatar_checked_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ["number"]
@@ -76,6 +78,24 @@ class Event(models.Model):
     @property
     def is_championship_division(self):
         return self.event_type == 3  # TBA: CMP_DIVISION
+
+    @property
+    def status(self):
+        """'upcoming', 'live' or 'ended', based on the event dates."""
+        from django.utils import timezone
+
+        today = timezone.localdate()
+        if self.start_date and today < self.start_date:
+            return "upcoming"
+        if self.end_date and today > self.end_date:
+            return "ended"
+        if self.start_date:
+            return "live"
+        return "upcoming"
+
+    @property
+    def has_schedule(self):
+        return self.matches.exists()
 
     @property
     def qualifications_complete(self):

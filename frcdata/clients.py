@@ -70,6 +70,9 @@ class TBAClient:
     def team(self, number):
         return self.get(f"/team/frc{number}")
 
+    def team_media(self, number, year):
+        return self.get(f"/team/frc{number}/media/{year}") or []
+
     def team_events(self, number, year):
         return self.get(f"/team/frc{number}/events/{year}") or []
 
@@ -117,7 +120,7 @@ class StatboticsClient:
         try:
             return func(*args, **kwargs)
         except UserWarning as exc:
-            log.info("Statbotics returned no data: %s", exc)
+            log.debug("Statbotics returned no data: %s", exc)
             return None
         except requests.RequestException as exc:
             raise APIError(f"Statbotics request failed: {exc}") from exc

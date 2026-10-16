@@ -8,10 +8,12 @@ import logging
 from datetime import timedelta
 
 from django.conf import settings
+from django.core.cache import cache
 from django.db import transaction
 from django.utils import timezone
 
 from . import parsing
+from .background import run_in_background
 from .clients import APIError, StatboticsClient, TBAClient
 from .models import Event, EventAlliance, EventTeam, FRCTeam, Match, TeamSeason
 
@@ -45,12 +47,83 @@ def sync_team_season(team_number, year, statbotics=None):
     statbotics = statbotics or StatboticsClient()
     data = statbotics.team_year(team_number, year)
     if not data:
+        # Remember "no data" for a few hours so we don't ask Statbotics again on every page load.
+        cache.set(f"sb:no_team_year:{team_number}:{year}", True, 60 * 60 * 6)
         return None
     frc_team = get_or_create_frc_team(team_number)
     season, _ = TeamSeason.objects.update_or_create(
         team=frc_team, year=year, defaults={**parsing.parse_statbotics_team_year(data), "raw": data}
     )
     return season
+
+
+def _refresh_seasons(team_number, years):
+    for year in years:
+        try:
+            sync_team_season(team_number, year)
+        except APIError as exc:
+            log.info("season stats %s %s: %s", team_number, year, exc)
+            cache.set(f"sb:no_team_year:{team_number}:{year}", True, 60 * 10)  # API down: retry in 10 min
+
+
+def season_stats(team_number, season):
+    """
+    Season stats for the dashboard. Never calls the API while the page waits:
+    it returns what we have (the requested season, or the latest earlier one,
+    e.g. 2025 before the 2026 season starts) and refreshes in the background.
+    """
+    current = TeamSeason.objects.filter(team__number=team_number, year=season).first()
+    fresh = current and timezone.now() - current.synced_at < timedelta(hours=6)
+    if not fresh:
+        years = [y for y in (season, season - 1) if not cache.get(f"sb:no_team_year:{team_number}:{y}")]
+        if years:
+            run_in_background(f"season:{team_number}:{season}", _refresh_seasons, team_number, years)
+    if current:
+        return current
+    return TeamSeason.objects.filter(team__number=team_number, year__lt=season).order_by("-year").first()
+
+
+# --- Team avatars (TBA media) ------------------------------------------------
+
+def fetch_avatar(team_number, year, tba=None):
+    """Download a team's 40x40 avatar from TBA (teams upload one per season). Stores '' if none."""
+    tba = tba or TBAClient()
+    frc_team = get_or_create_frc_team(team_number)
+    avatar = ""
+    for y in (year, year - 1, year - 2):
+        for media in tba.team_media(team_number, y) or []:
+            if media.get("type") == "avatar":
+                avatar = (media.get("details") or {}).get("base64Image") or ""
+                if avatar:
+                    break
+        if avatar:
+            break
+    frc_team.avatar = avatar
+    frc_team.avatar_checked_at = timezone.now()
+    frc_team.save(update_fields=["avatar", "avatar_checked_at"])
+    return avatar
+
+
+def ensure_avatars(team_numbers, year):
+    """Fetch avatars we have never checked (or checked more than 2 weeks ago)."""
+    if not settings.TBA_API_KEY:
+        return
+    cutoff = timezone.now() - timedelta(days=14)
+    known = {t.number: t for t in FRCTeam.objects.filter(number__in=team_numbers)}
+    tba = TBAClient()
+    for n in team_numbers:
+        t = known.get(n)
+        if t and t.avatar_checked_at and t.avatar_checked_at > cutoff:
+            continue
+        try:
+            fetch_avatar(n, year, tba=tba)
+        except APIError as exc:
+            log.info("avatar %s: %s", n, exc)
+
+
+def ensure_avatars_background(team_numbers, year):
+    if settings.TBA_API_KEY and team_numbers:
+        run_in_background(f"avatars:{year}:{min(team_numbers)}:{len(team_numbers)}", ensure_avatars, list(team_numbers), year)
 
 
 def is_stale(event):
@@ -133,11 +206,15 @@ def sync_event(event_key, tba=None, statbotics=None):
 
 
 def refresh_if_stale(event):
-    """Called by pages: re-sync quietly if data is old. Never raises."""
+    """Called by pages: if data is old, re-sync in the background. Never blocks, never raises."""
     if not is_stale(event) or not settings.TBA_API_KEY:
-        return []
+        return False
+    return run_in_background(f"event:{event.key}", _sync_quietly, event.key)
+
+
+def _sync_quietly(event_key):
     try:
-        _, errors = sync_event(event.key)
-        return errors
+        event, _ = sync_event(event_key)
+        ensure_avatars(list(event.event_teams.values_list("team__number", flat=True)), event.year)
     except APIError as exc:
-        return [str(exc)]
+        Event.objects.filter(key=event_key).update(sync_error=str(exc))

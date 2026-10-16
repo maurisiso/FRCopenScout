@@ -1,0 +1,28 @@
+{% extends "events/_event_base.html" %}{% load i18n scout_tags %}
+{% block event_content %}
+<div class="card" style="margin-bottom:16px">
+  <div class="card-head">
+    <h2>{% trans "Pit scouting" %}</h2>
+    <div class="row">
+      {% if membership.is_admin %}<a class="btn btn-sm btn-ghost" href="{% url 'form_edit' team.number form.id %}">{% trans "Edit pit form" %}</a>{% endif %}
+      {% if membership.can_scout %}<a class="btn btn-sm" href="{% url 'scout_page' team.number event.key form.id %}">📋 {% trans "Open pit form" %}</a>{% endif %}
+    </div>
+  </div>
+  <div class="row" style="margin-bottom:6px"><strong>{{ count }} / {{ total }}</strong> <span class="muted">{% trans "robots pit-scouted" %}</span><span class="spacer"></span>
+    <a href="?show=all" class="btn btn-sm {% if show != 'all' %}btn-ghost{% endif %}">{% trans "All" %}</a>
+    <a href="?show=todo" class="btn btn-sm {% if show != 'todo' %}btn-ghost{% endif %}">{% trans "Missing" %}</a></div>
+  <div class="progress"><span style="width:{{ pct }}%"></span></div>
+  <p class="muted" style="font-size:.85rem;margin:8px 0 0">{% trans "Pit data is saved to your team database, so you can see it again at future events." %}</p>
+</div>
+{% if rows %}
+<div class="pit-grid">
+  {% for r in rows %}
+  <a class="pit-card {% if r.entry %}done{% endif %}" href="{% if r.entry or not membership.can_scout %}{% url 'event_team_detail' team.number event.key r.et.team.number %}{% else %}{% url 'scout_page' team.number event.key form.id %}?team={{ r.et.team.number }}{% endif %}">
+    {% team_avatar r.et.team None 32 %}
+    <span class="pit-meta"><strong>{{ r.et.team.number }}</strong> <small>{{ r.et.team.nickname|default:"—" }}</small>
+      <small>{% if r.entry %}✓ {{ r.entry.scout.name|default:"" }}{% else %}{% trans "Not scouted yet" %}{% endif %}</small></span>
+  </a>
+  {% endfor %}
+</div>
+{% else %}<div class="card empty">{% if show == "todo" %}{% trans "Every robot has been pit-scouted. 🎉" %}{% else %}{% trans "The team list for this event isn't published yet. You can still open the pit form and type a team number." %}{% endif %}</div>{% endif %}
+{% endblock %}

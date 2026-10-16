@@ -1,0 +1,1 @@
+{% load i18n %}<span class="status-badge {{ ev.status }}">{% if ev.status == "ended" %}{% trans "Ended" %}{% elif ev.status == "live" %}{% trans "In progress" %}{% else %}{% trans "Upcoming" %}{% endif %}</span>

@@ -109,7 +109,7 @@ msgstr ""
 "Después de registrarte puedes unirte a tu equipo con un código de "
 "invitación, o registrar a tu equipo si eres mentor o coach."
 
-#: templates/events/overview.html
+#: templates/events/overview.html templates/events/pit_list.html
 msgid "All"
 msgstr "Todos"
 
@@ -121,7 +121,7 @@ msgstr "Todas las categorías"
 msgid "All entries uploaded"
 msgstr "Todos los registros se subieron"
 
-#: templates/events/team_detail.html
+#: templates/events/team_detail.html templates/teams/contributions.html
 msgid "All events"
 msgstr "Todos los eventos"
 
@@ -312,10 +312,6 @@ msgstr ""
 "Crea un formulario de scouting de partidos para ver tus propios promedios "
 "junto al EPA."
 
-#: templates/events/overview.html
-msgid "Create a scouting form first."
-msgstr "Primero crea un formulario de scouting."
-
 #: templates/account/login.html templates/home.html
 msgid "Create an account"
 msgstr "Crea una cuenta"
@@ -441,7 +437,7 @@ msgid "Event removed from your dashboard. Scouting data is kept."
 msgstr "Evento quitado de tu panel. Los datos de scouting se conservan."
 
 #: templates/events/scouted_teams.html templates/events/team_home.html
-#: templates/teams/_team_nav.html
+#: templates/teams/_team_nav.html templates/teams/contributions.html
 msgid "Events"
 msgstr "Eventos"
 
@@ -608,7 +604,7 @@ msgstr "Unirme"
 msgid "Join a team"
 msgstr "Unirse a un equipo"
 
-#: templates/accounts/profile.html
+#: templates/accounts/profile.html templates/base.html
 msgid "Join or register a team"
 msgstr "Unirse o registrar un equipo"
 
@@ -682,6 +678,7 @@ msgid "Match"
 msgstr "Partido"
 
 #: templates/events/scouted_team_detail.html
+#: templates/teams/contributions.html
 msgid "Match entries"
 msgstr "Registros de partidos"
 
@@ -747,11 +744,12 @@ msgstr "Mi perfil"
 msgid "My station"
 msgstr "Mi estación"
 
-#: templates/accounts/profile.html templates/teams/dashboard.html
+#: templates/accounts/profile.html templates/base.html
+#: templates/teams/dashboard.html
 msgid "My teams"
 msgstr "Mis equipos"
 
-#: templates/teams/members.html
+#: templates/teams/contributions.html templates/teams/members.html
 msgid "Name"
 msgstr "Nombre"
 
@@ -863,6 +861,7 @@ msgstr "Nota para el usuario (opcional)"
 #: templates/events/_event_base.html templates/events/overview.html
 #: templates/events/scouted_team_detail.html
 #: templates/events/scouted_teams.html templates/events/team_detail.html
+#: templates/teams/contributions.html
 msgid "Notes"
 msgstr "Notas"
 
@@ -1005,6 +1004,8 @@ msgstr "Picks"
 msgid "Pit"
 msgstr "Pits"
 
+#: templates/events/_event_base.html templates/events/overview.html
+#: templates/events/pit_list.html templates/events/scouted_team_detail.html
 #: templates/events/team_detail.html
 msgid "Pit scouting"
 msgstr "Scouting de pits"
@@ -1189,7 +1190,8 @@ msgstr "Revocar"
 msgid "Robot issue (disabled, broken, tipped)"
 msgstr "Problema del robot (deshabilitado, roto, volcado)"
 
-#: teams/forms.py templates/accounts/profile.html templates/teams/members.html
+#: teams/forms.py templates/accounts/profile.html
+#: templates/teams/contributions.html templates/teams/members.html
 msgid "Role"
 msgstr "Rol"
 
@@ -1272,8 +1274,8 @@ msgstr "Registros de scouting"
 msgid "Scouting entries for this match"
 msgstr "Registros de scouting de este partido"
 
-#: templates/events/overview.html templates/events/team_home.html
-#: templates/scouting/form_list.html templates/teams/_team_nav.html
+#: templates/events/team_home.html templates/scouting/form_list.html
+#: templates/teams/_team_nav.html
 msgid "Scouting forms"
 msgstr "Formularios de scouting"
 
@@ -1910,10 +1912,6 @@ msgstr "Desglose de EPA (Statbotics)"
 msgid "Game-specific points per match"
 msgstr "Puntos por partido según el juego"
 
-#: templates/events/team_home.html
-msgid "No Statbotics data for this season yet."
-msgstr "Aún no hay datos de Statbotics para esta temporada."
-
 #: templates/events/match_detail.html
 msgid "Official score breakdown (TBA)"
 msgstr "Desglose oficial del marcador (TBA)"
@@ -1941,3 +1939,143 @@ msgstr "Video"
 #: templates/events/team_home.html
 msgid "World"
 msgstr "Mundial"
+
+#: templates/teams/contributions.html
+msgid "%(unassigned)s entries belong to accounts that were deleted."
+msgstr "%(unassigned)s registros pertenecen a cuentas eliminadas."
+
+#: templates/teams/contributions.html
+msgid "All seasons"
+msgstr "Todas las temporadas"
+
+#: templates/events/overview.html
+msgid "Create one"
+msgstr "Crear uno"
+
+#: templates/events/pit_list.html
+msgid "Edit pit form"
+msgstr "Editar formulario de pits"
+
+#: templates/events/_status.html
+msgid "Ended"
+msgstr "Terminado"
+
+#: templates/events/pit_list.html
+msgid "Every robot has been pit-scouted. 🎉"
+msgstr "Todos los robots ya fueron scouteados en pits. 🎉"
+
+#: templates/events/_status.html
+msgid "In progress"
+msgstr "En curso"
+
+#: templates/teams/contributions.html
+msgid "Last activity"
+msgstr "Última actividad"
+
+#: templates/events/overview.html
+msgid ""
+"Match scouting opens when the match schedule is published. Pit scouting is "
+"always available."
+msgstr ""
+"El scouting de partidos se abre cuando se publica el calendario. El scouting"
+" de pits siempre está disponible."
+
+#: templates/events/pit_list.html
+msgid "Missing"
+msgstr "Faltantes"
+
+#: templates/events/team_home.html
+msgid ""
+"No Statbotics data for this season yet. It's checked in the background; "
+"reload in a few seconds."
+msgstr ""
+"Aún no hay datos de Statbotics para esta temporada. Se revisa en segundo "
+"plano; recarga en unos segundos."
+
+#: templates/events/overview.html
+msgid "No match form yet."
+msgstr "Aún no hay formulario de partidos."
+
+#: templates/teams/contributions.html
+msgid "No scouting activity yet."
+msgstr "Aún no hay actividad de scouting."
+
+#: templates/events/pit_list.html
+msgid "Not scouted yet"
+msgstr "Sin scoutear"
+
+#: templates/events/pit_list.html
+msgid "Open pit form"
+msgstr "Abrir formulario de pits"
+
+#: templates/teams/contributions.html
+msgid "People"
+msgstr "Personas"
+
+#: templates/events/pit_list.html
+msgid ""
+"Pit data is saved to your team database, so you can see it again at future "
+"events."
+msgstr ""
+"Los datos de pits se guardan en tu base de datos de equipos, así podrás "
+"verlos de nuevo en eventos futuros."
+
+#: templates/teams/contributions.html
+msgid "Pit entries"
+msgstr "Registros de pits"
+
+#: templates/teams/_team_nav.html templates/teams/contributions.html
+msgid "Scout activity"
+msgstr "Actividad de scouts"
+
+#: templates/events/team_home.html
+msgid "Season %(y)s"
+msgstr "Temporada %(y)s"
+
+#: templates/teams/contributions.html
+msgid "Share"
+msgstr "Proporción"
+
+#: templates/events/overview.html
+msgid "The match schedule is not published yet"
+msgstr "El calendario de partidos aún no se publica"
+
+#: scouting/views.py
+msgid ""
+"The match schedule isn't published yet. Pit scouting is available in the "
+"meantime."
+msgstr ""
+"El calendario de partidos aún no se publica. Mientras tanto puedes hacer "
+"scouting de pits."
+
+#: templates/events/pit_list.html
+msgid ""
+"The team list for this event isn't published yet. You can still open the pit"
+" form and type a team number."
+msgstr ""
+"La lista de equipos de este evento aún no se publica. Aun así puedes abrir "
+"el formulario de pits y escribir un número de equipo."
+
+#: templates/events/_status.html
+msgid "Upcoming"
+msgstr "Próximo"
+
+#: templates/events/overview.html
+msgid ""
+"Updating data from TBA and Statbotics in the background. Reload the page in "
+"a few seconds to see the latest."
+msgstr ""
+"Actualizando datos de TBA y Statbotics en segundo plano. Recarga la página "
+"en unos segundos para ver lo más reciente."
+
+#: templates/teams/contributions.html
+msgid "former member"
+msgstr "exmiembro"
+
+#: templates/events/team_home.html
+msgid "no %(season)s data yet"
+msgstr "aún sin datos de %(season)s"
+
+#: templates/events/pit_list.html
+msgid "robots pit-scouted"
+msgstr "robots scouteados en pits"
