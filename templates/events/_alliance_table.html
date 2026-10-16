@@ -1,0 +1,13 @@
+{% load i18n scout_tags %}
+<div class="table-wrap"><table>
+  <thead><tr><th>{% trans "Team" %}</th><th class="num">{% trans "Rank" %}</th><th class="num">EPA</th><th class="num">{% trans "Auto" %}</th><th class="num">{% trans "Tele" %}</th><th class="num">{% trans "End" %}</th><th class="num" title="{% trans 'Points estimated from your scouting' %}">{% trans "Scouted" %}</th></tr></thead>
+  <tbody>{% for r in rows %}
+    <tr class="{% if r.number == team.number %}us{% endif %}">
+      <td><a href="{% url 'event_team_detail' team.number event.key r.number %}">{{ r.number }}</a> <small class="muted">{{ r.et.team.nickname|truncatechars:14 }}</small></td>
+      <td class="num">{{ r.et.rank|default:"—" }}</td>
+      <td class="num"><strong>{{ r.et.epa_total|num }}</strong></td>
+      <td class="num">{{ r.et.epa_auto|num }}</td><td class="num">{{ r.et.epa_teleop|num }}</td><td class="num">{{ r.et.epa_endgame|num }}</td>
+      <td class="num">{% if r.n %}{{ r.points|num }} <small class="muted">({{ r.n }})</small>{% else %}—{% endif %}</td>
+    </tr>{% endfor %}
+  </tbody>
+</table></div>

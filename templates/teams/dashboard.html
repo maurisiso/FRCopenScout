@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "My teams" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% trans "My teams" %}</h1><div class="sub">{% trans "Pick a team, join one with an invite code, or register yours." %}</div></div></div>
+{% if claims %}
+<div class="callout info">{% for c in claims %}{% blocktrans with n=c.team.number %}Your request to manage team {{ n }} is waiting for verification by our staff.{% endblocktrans %}<br>{% endfor %}</div>
+{% endif %}
+<div class="grid grid-3">
+  {% for m in memberships %}
+  <a class="card" href="{% url 'team_home' m.team.number %}" style="color:inherit;text-decoration:none">
+    <div class="card-head"><h2>{{ m.team.number }}</h2><span class="badge {% if m.is_admin %}admin{% endif %}">{{ m.get_role_display }}</span></div>
+    <div>{{ m.team.nickname|default:"—" }}</div>
+    {% if not m.team.is_approved %}<div style="margin-top:8px"><span class="badge warn">{{ m.team.get_status_display }}</span></div>{% endif %}
+  </a>
+  {% endfor %}
+  <div class="card">
+    <h2>{% trans "Join a team" %}</h2>
+    <p class="muted">{% trans "Ask a team admin for an invite code." %}</p>
+    <form method="get" action="{% url 'join' %}" class="row">
+      <input type="text" name="code" placeholder="ABCD1234" style="flex:1;text-transform:uppercase" required>
+      <button class="btn">{% trans "Join" %}</button>
+    </form>
+  </div>
+  <div class="card">
+    <h2>{% trans "Register your team" %}</h2>
+    <p class="muted">{% trans "For mentors and coaches. We verify every request before the team goes live." %}</p>
+    <a class="btn btn-ghost" href="{% url 'team_register' %}">{% trans "Register a team" %}</a>
+  </div>
+</div>
+{% endblock %}

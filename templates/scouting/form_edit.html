@@ -1,0 +1,45 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{{ sf.name }}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="forms" %}
+<div class="grid" style="grid-template-columns:minmax(0,3fr) minmax(280px,2fr)">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><h2>{{ sf.name }} <small class="muted">· {{ sf.get_kind_display }}</small></h2><span class="badge">{% blocktrans count n=entry_count %}{{ n }} entry{% plural %}{{ n }} entries{% endblocktrans %}</span></div>
+      {% if entry_count %}<div class="callout info" style="font-size:.88rem">{% trans "This form already has entries. Renaming a key keeps old answers; deleting a field hides its answers from stats but keeps them in the raw data." %}</div>{% endif %}
+      <ul class="field-list">
+        {% for f in fields %}
+        <li>
+          <span class="badge">{{ f.get_phase_display }}</span>
+          <div class="fl-main"><strong>{{ f.label }}</strong>{% if f.required %} *{% endif %}<br>
+            <small class="muted"><code>{{ f.key }}</code> · {{ f.get_field_type_display }}{% if f.options %} · {{ f.options|join:", " }}{% endif %}{% if f.points is not None %} · {{ f.points }} {% trans "pts" %}{% endif %}</small></div>
+          <div class="fl-actions">
+            <form method="post" action="{% url 'field_action' team.number sf.id f.id %}" class="inline">{% csrf_token %}
+              <button class="btn btn-sm btn-ghost" name="action" value="up" title="{% trans 'Move up' %}">↑</button>
+              <button class="btn btn-sm btn-ghost" name="action" value="down" title="{% trans 'Move down' %}">↓</button>
+            </form>
+            <a class="btn btn-sm btn-ghost" href="{% url 'field_edit' team.number sf.id f.id %}">{% trans "Edit" %}</a>
+            <form method="post" action="{% url 'field_action' team.number sf.id f.id %}" class="inline" onsubmit="return confirm('{% trans "Delete this field?" %}')">{% csrf_token %}
+              <button class="btn btn-sm btn-ghost" name="action" value="delete" title="{% trans 'Delete' %}">✕</button></form>
+          </div>
+        </li>
+        {% empty %}<li class="muted">{% trans "No fields yet. Add one on the right." %}</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="card">
+      <h3>{% trans "Form settings" %}</h3>
+      <form method="post">{% csrf_token %}
+        <div class="form-grid">{% for field in settings_form %}<div class="form-row">{% if field.field.widget.input_type == "checkbox" %}<label class="row" style="font-weight:400">{{ field }} {{ field.label }}</label>{% else %}{{ field.label_tag }}{{ field }}{% endif %}</div>{% endfor %}</div>
+        <button class="btn btn-sm btn-ghost" name="save_settings" value="1">{% trans "Save settings" %}</button>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <h3>{% trans "Add a field" %}</h3>
+    <form method="post">{% csrf_token %}
+      {% include "scouting/_field_form.html" with form=field_form %}
+      <button class="btn">{% trans "Add field" %}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

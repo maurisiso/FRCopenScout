@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "New form" %}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="forms" %}
+<div class="card narrow">
+  <h2>{% trans "New scouting form" %}</h2>
+  <form method="post">{% csrf_token %}
+    {% for field in form %}<div class="form-row">{% if field.field.widget.input_type == "checkbox" %}<label class="row" style="font-weight:400">{{ field }} {{ field.label }}</label>{% else %}{{ field.label_tag }}{{ field }}{% endif %}{{ field.errors }}</div>{% endfor %}
+    <p class="muted" style="font-size:.85rem">{% trans "The generic template adds common fields (auto, teleop, endgame, defense, driver skill) that you can rename or delete." %}</p>
+    <button class="btn">{% trans "Create" %}</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Register your team" %}{% endblock %}
+{% block content %}
+<div class="card narrow" style="margin:0 auto">
+  <h1>{% trans "Register your team" %}</h1>
+  <p class="muted">{% blocktrans trimmed %}Only mentors, coaches or teacher sponsors can register a team. Our staff will check your details
+  (for example on your team's website or FIRST's team listing) before activating it. Students: ask your mentor for an invite code instead.{% endblocktrans %}</p>
+  <form method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-grid">
+      <div class="form-row">{{ form.team_number.label_tag }}{{ form.team_number }}{{ form.team_number.errors }}</div>
+      <div class="form-row">{{ form.nickname.label_tag }}{{ form.nickname }}{{ form.nickname.errors }}</div>
+      <div class="form-row">{{ form.full_name.label_tag }}{{ form.full_name }}{{ form.full_name.errors }}</div>
+      <div class="form-row">{{ form.position.label_tag }}{{ form.position }}{{ form.position.errors }}</div>
+    </div>
+    <div class="form-row">{{ form.evidence.label_tag }}{{ form.evidence }}<span class="help">{{ form.evidence.help_text }}</span>{{ form.evidence.errors }}</div>
+    <button class="btn">{% trans "Send request" %}</button>
+  </form>
+</div>
+{% endblock %}

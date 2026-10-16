@@ -1,0 +1,1896 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: frc-open-scout\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: scouting/models.py
+msgid "%(label)s is out of range"
+msgstr "%(label)s está fuera de rango"
+
+#: scouting/models.py
+msgid "%(label)s is required"
+msgstr "%(label)s es obligatorio"
+
+#: scouting/models.py
+msgid "%(label)s must be a number"
+msgstr "%(label)s debe ser un número"
+
+#: scouting/models.py
+msgid "%(label)s: invalid option"
+msgstr "%(label)s: opción no válida"
+
+#: templates/events/team_home.html templates/scouting/form_edit.html
+msgid "%(n)s entry"
+msgid_plural "%(n)s entries"
+msgstr[0] "%(n)s registro"
+msgstr[1] "%(n)s registros"
+
+#: templates/scouting/form_list.html
+msgid "%(n)s field"
+msgid_plural "%(n)s fields"
+msgstr[0] "%(n)s campo"
+msgstr[1] "%(n)s campos"
+
+#: teams/views.py
+msgid "%(user)s was removed from the team."
+msgstr "%(user)s fue eliminado del equipo."
+
+#: templates/events/notes.html
+msgid "(general / no match)"
+msgstr "(general / sin partido)"
+
+#: teams/views.py
+msgid "A team needs at least one admin."
+msgstr "Un equipo necesita al menos un administrador."
+
+#: templates/home.html
+msgid "AI strategy tips"
+msgstr "Consejos de estrategia con IA"
+
+#: scouting/forms.py templates/events/match_detail.html
+#: templates/events/notes.html
+msgid "About team #"
+msgstr "Sobre el equipo #"
+
+#: templates/accounts/profile.html
+msgid "Active"
+msgstr "Activo"
+
+#: templates/teams/members.html
+msgid "Active invites"
+msgstr "Invitaciones activas"
+
+#: templates/events/team_detail.html templates/events/team_home.html
+msgid "Add"
+msgstr "Agregar"
+
+#: templates/scouting/form_edit.html
+msgid "Add a field"
+msgstr "Agregar un campo"
+
+#: templates/events/notes.html
+msgid "Add a note"
+msgstr "Agregar una nota"
+
+#: templates/scouting/form_edit.html
+msgid "Add field"
+msgstr "Agregar campo"
+
+#: templates/events/match_detail.html
+msgid "Add note"
+msgstr "Agregar nota"
+
+#: events/views.py
+msgid "Added %(name)s."
+msgstr "Se agregó %(name)s."
+
+#: teams/models.py
+msgid "Admin"
+msgstr "Administrador"
+
+#: templates/teams/members.html
+msgid ""
+"Admin: manage members, forms and events. Scout: record scouting data and "
+"notes. Viewer: read-only."
+msgstr ""
+"Administrador: gestiona miembros, formularios y eventos. Scout: registra "
+"datos de scouting y notas. Observador: solo lectura."
+
+#: templates/account/signup.html
+msgid ""
+"After signing up you can join your team with an invite code, or register "
+"your team if you are a mentor or coach."
+msgstr ""
+"Después de registrarte puedes unirte a tu equipo con un código de "
+"invitación, o registrar a tu equipo si eres mentor o coach."
+
+#: templates/events/overview.html
+msgid "All"
+msgstr "Todos"
+
+#: templates/events/notes.html
+msgid "All categories"
+msgstr "Todas las categorías"
+
+#: scouting/views.py
+msgid "All entries uploaded"
+msgstr "Todos los registros se subieron"
+
+#: templates/events/team_detail.html
+msgid "All events"
+msgstr "Todos los eventos"
+
+#: templates/scouting/entries.html
+msgid "All forms"
+msgstr "Todos los formularios"
+
+#: templates/events/matches.html
+msgid "All matches"
+msgstr "Todos los partidos"
+
+#: templates/events/overview.html
+msgid "All teams"
+msgstr "Todos los equipos"
+
+#: templates/events/_alliance_sim.html templates/events/alliances.html
+msgid "Alliance"
+msgstr "Alianza"
+
+#: templates/events/_alliance_sim.html
+msgid "Alliance %(a)s is picking (round %(r)s)"
+msgstr "La alianza %(a)s está eligiendo (ronda %(r)s)"
+
+#: templates/events/_event_base.html templates/events/overview.html
+msgid "Alliance selection"
+msgstr "Selección de alianzas"
+
+#: templates/home.html
+msgid "Alliance selection predictor"
+msgstr "Predictor de selección de alianzas"
+
+#: templates/events/alliances.html
+msgid "Alliances"
+msgstr "Alianzas"
+
+#: templates/account/signup.html
+msgid "Already have an account?"
+msgstr "¿Ya tienes una cuenta?"
+
+#: scouting/views.py
+msgid "Another field already uses this key."
+msgstr "Otro campo ya usa esta clave."
+
+#: templates/scouting/scout.html
+msgid "Any (choose robot)"
+msgstr "Cualquiera (elegir robot)"
+
+#: templates/events/_alliance_sim.html
+msgid "Apply order"
+msgstr "Aplicar orden"
+
+#: templates/base.html
+msgid "Approvals"
+msgstr "Aprobaciones"
+
+#: templates/teams/approvals.html
+msgid "Approve"
+msgstr "Aprobar"
+
+#: teams/models.py
+msgid "Approved"
+msgstr "Aprobado"
+
+#: teams/views.py
+msgid "Approved %(user)s as admin of %(n)s."
+msgstr "Se aprobó a %(user)s como administrador de %(n)s."
+
+#: templates/ai/_ask_panel.html
+msgid "Ask"
+msgstr "Preguntar"
+
+#: templates/teams/dashboard.html
+msgid "Ask a team admin for an invite code."
+msgstr "Pide un código de invitación a un administrador de tu equipo."
+
+#: templates/home.html
+msgid ""
+"Ask how to play your next match or where your robot can improve. Answers are"
+" grounded in the numbers."
+msgstr ""
+"Pregunta cómo jugar tu próximo partido o en qué puede mejorar tu robot. Las "
+"respuestas se basan en los números."
+
+#: templates/ai/_ask_panel.html
+msgid "Ask the assistant"
+msgstr "Pregunta al asistente"
+
+#: templates/events/_alliance_table.html templates/events/team_detail.html
+#: templates/events/teams.html
+msgid "Auto"
+msgstr "Auto"
+
+#: templates/events/_alliance_sim.html
+msgid "Auto-complete"
+msgstr "Completar automáticamente"
+
+#: templates/events/_alliance_sim.html
+msgid "Auto-pick next"
+msgstr "Elegir siguiente automáticamente"
+
+#: templates/events/alliances.html
+msgid "Automatic prediction"
+msgstr "Predicción automática"
+
+#: scouting/models.py scouting/views.py
+msgid "Autonomous"
+msgstr "Autónomo"
+
+#: templates/403.html
+msgid "Back to my teams"
+msgstr "Volver a mis equipos"
+
+#: templates/events/_alliance_sim.html
+msgid "Back to official order"
+msgstr "Volver al orden oficial"
+
+#: templates/events/_alliance_sim.html templates/events/alliances.html
+msgid "Backup pool:"
+msgstr "Robots de reserva:"
+
+#: templates/events/team_detail.html
+msgid "Bar: half-width = event average."
+msgstr "Barra: la mitad del ancho = promedio del evento."
+
+#: templates/events/match_detail.html templates/scouting/scout.html
+msgid "Blue"
+msgstr "Azul"
+
+#: scouting/forms.py
+msgid "Category"
+msgstr "Categoría"
+
+#: templates/accounts/profile.html
+msgid "Change password"
+msgstr "Cambiar contraseña"
+
+#: scouting/forms.py
+msgid "Choice fields need at least two options."
+msgstr "Los campos de opción necesitan al menos dos opciones."
+
+#: scouting/views.py
+msgid "Choose a match"
+msgstr "Elige un partido"
+
+#: scouting/views.py
+msgid "Choose a team"
+msgstr "Elige un equipo"
+
+#: templates/events/_alliance_sim.html
+msgid "Click = declines invite"
+msgstr "Clic = rechaza la invitación"
+
+#: templates/events/_alliance_sim.html
+msgid "Click = pick"
+msgstr "Clic = elegir"
+
+#: templates/events/teams.html
+msgid "Click a column to sort."
+msgstr "Haz clic en una columna para ordenar."
+
+#: teams/models.py
+msgid "Coach"
+msgstr "Coach"
+
+#: templates/teams/members.html
+msgid "Code"
+msgstr "Código"
+
+#: templates/account/_google.html
+msgid "Continue with Google"
+msgstr "Continuar con Google"
+
+#: templates/teams/members.html
+msgid "Copy link"
+msgstr "Copiar enlace"
+
+#: scouting/models.py
+msgid "Counter (+/- buttons)"
+msgstr "Contador (botones +/-)"
+
+#: templates/scouting/form_create.html
+msgid "Create"
+msgstr "Crear"
+
+#: templates/events/teams.html
+msgid "Create a match scouting form to see your own averages next to EPA."
+msgstr ""
+"Crea un formulario de scouting de partidos para ver tus propios promedios "
+"junto al EPA."
+
+#: templates/events/overview.html
+msgid "Create a scouting form first."
+msgstr "Primero crea un formulario de scouting."
+
+#: templates/account/login.html templates/home.html
+msgid "Create an account"
+msgstr "Crea una cuenta"
+
+#: templates/teams/members.html
+msgid "Create invite code"
+msgstr "Crear código de invitación"
+
+#: templates/account/signup.html
+msgid "Create your account"
+msgstr "Crea tu cuenta"
+
+#: templates/scouting/form_list.html
+msgid "Create your first form"
+msgstr "Crea tu primer formulario"
+
+#: templates/scouting/entries.html
+msgid "Data"
+msgstr "Datos"
+
+#: events/views.py
+msgid "Data refreshed from The Blue Alliance and Statbotics."
+msgstr "Datos actualizados desde The Blue Alliance y Statbotics."
+
+#: templates/base.html
+msgid "Data:"
+msgstr "Datos:"
+
+#: templates/events/_alliance_sim.html templates/events/alliances.html
+msgid "Declined:"
+msgstr "Rechazaron:"
+
+#: templates/events/_note.html templates/events/alliances.html
+#: templates/scouting/form_edit.html
+msgid "Delete"
+msgstr "Eliminar"
+
+#: templates/scouting/entries.html
+msgid "Delete this entry?"
+msgstr "¿Eliminar este registro?"
+
+#: templates/scouting/form_edit.html
+msgid "Delete this field?"
+msgstr "¿Eliminar este campo?"
+
+#: templates/home.html
+msgid ""
+"Design the fields for this year's game: counters, yes/no, choices, ratings, "
+"notes. No code, no spreadsheets."
+msgstr ""
+"Diseña los campos para el juego de este año: contadores, sí/no, opciones, "
+"calificaciones, notas. Sin código ni hojas de cálculo."
+
+#: templates/scouting/form_list.html
+msgid ""
+"Design what your scouts record for this season's game. Match forms are "
+"filled once per robot per match; pit forms once per robot per event."
+msgstr ""
+"Diseña lo que tus scouts registran para el juego de esta temporada. Los "
+"formularios de partido se llenan una vez por robot por partido; los de pits,"
+" una vez por robot por evento."
+
+#: scouting/views.py
+msgid "Discard"
+msgstr "Descartar"
+
+#: scouting/views.py
+msgid "Discard this entry?"
+msgstr "¿Descartar este registro?"
+
+#: scouting/models.py
+msgid "Driving"
+msgstr "Manejo"
+
+#: templates/scouting/form_edit.html templates/scouting/form_list.html
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/scouting/field_edit.html
+msgid "Edit field"
+msgstr "Editar campo"
+
+#: templates/account/login.html templates/account/signup.html
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: templates/events/_alliance_table.html
+msgid "End"
+msgstr "Final"
+
+#: scouting/models.py scouting/views.py templates/events/team_detail.html
+#: templates/events/teams.html
+msgid "Endgame"
+msgstr "Endgame"
+
+#: config/settings.py
+msgid "English"
+msgstr "Inglés"
+
+#: templates/events/scouted_teams.html templates/events/team_detail.html
+#: templates/events/teams.html
+msgid "Entries"
+msgstr "Registros"
+
+#: scouting/views.py
+msgid "Entry deleted."
+msgstr "Registro eliminado."
+
+#: templates/events/team_detail.html
+msgid "Event avg"
+msgstr "Prom. evento"
+
+#: templates/events/team_home.html
+msgid "Event keys are on each event's TBA page URL."
+msgstr "La clave del evento aparece en la URL de su página en TBA."
+
+#: events/views.py
+msgid "Event keys look like 2026mxmo (year + event code)."
+msgstr "Las claves de evento se ven así: 2026mxmo (año + código del evento)."
+
+#: events/views.py
+msgid "Event removed from your dashboard. Scouting data is kept."
+msgstr "Evento quitado de tu panel. Los datos de scouting se conservan."
+
+#: templates/events/scouted_teams.html templates/events/team_home.html
+#: templates/teams/_team_nav.html
+msgid "Events"
+msgstr "Eventos"
+
+#: templates/events/team_home.html
+msgid "Events in %(season)s"
+msgstr "Eventos en %(season)s"
+
+#: templates/events/scouted_teams.html
+msgid "Every team you've scouted"
+msgstr "Todos los equipos que has scouteado"
+
+#: templates/teams/approvals.html
+msgid "Existing admins:"
+msgstr "Administradores actuales:"
+
+#: templates/teams/members.html
+msgid "Expires"
+msgstr "Expira"
+
+#: templates/home.html
+msgid ""
+"FRC Open Scout combines live data from The Blue Alliance and Statbotics with"
+" your own scouts' observations, so a team of three can make the same match "
+"plans and pick lists as a team of thirty. Free, in English and Spanish."
+msgstr ""
+"FRC Open Scout combina datos en vivo de The Blue Alliance y Statbotics con "
+"las observaciones de tus propios scouts, para que un equipo de tres pueda "
+"hacer los mismos planes de partido y listas de selección que un equipo de "
+"treinta. Gratis, en inglés y español."
+
+#: teams/forms.py
+msgid "FRC team number"
+msgstr "Número de equipo FRC"
+
+#: templates/events/team_detail.html
+msgid "Field"
+msgstr "Campo"
+
+#: scouting/views.py
+msgid "Field added."
+msgstr "Campo agregado."
+
+#: scouting/views.py
+msgid "Field deleted. Existing answers are kept in the raw data."
+msgstr ""
+"Campo eliminado. Las respuestas existentes se conservan en los datos crudos."
+
+#: scouting/views.py
+msgid "Field updated."
+msgstr "Campo actualizado."
+
+#: templates/scouting/entries.html
+msgid "Filter"
+msgstr "Filtrar"
+
+#: templates/events/match_detail.html
+msgid "Final"
+msgstr "Final"
+
+#: scouting/models.py
+msgid "For choice fields"
+msgstr "Para campos de opción"
+
+#: templates/teams/dashboard.html
+msgid ""
+"For mentors and coaches. We verify every request before the team goes live."
+msgstr ""
+"Para mentores y coaches. Verificamos cada solicitud antes de activar al "
+"equipo."
+
+#: templates/account/login.html
+msgid "Forgot password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: templates/scouting/entries.html
+msgid "Form"
+msgstr "Formulario"
+
+#: scouting/views.py
+msgid "Form created. Now customize its fields."
+msgstr "Formulario creado. Ahora personaliza sus campos."
+
+#: scouting/views.py
+msgid "Form saved."
+msgstr "Formulario guardado."
+
+#: templates/scouting/form_edit.html
+msgid "Form settings"
+msgstr "Configuración del formulario"
+
+#: events/views.py
+msgid "Found %(n)d events for %(season)s on The Blue Alliance."
+msgstr "Se encontraron %(n)d eventos de %(season)s en The Blue Alliance."
+
+#: templates/home.html
+msgid "Free scouting for every FRC team"
+msgstr "Scouting gratuito para todos los equipos FRC"
+
+#: scouting/models.py scouting/views.py
+msgid "General"
+msgstr "General"
+
+#: templates/offline.html
+msgid "Go back"
+msgstr "Regresar"
+
+#: templates/home.html
+msgid "Go to my dashboard"
+msgstr "Ir a mi panel"
+
+#: templates/ai/answer.html
+msgid "Helpful?"
+msgstr "¿Te sirvió?"
+
+#: teams/forms.py
+msgid "How can we verify you?"
+msgstr "¿Cómo podemos verificarte?"
+
+#: teams/models.py
+msgid ""
+"How can we verify you? e.g. team website listing, school email, FIRST "
+"dashboard role."
+msgstr ""
+"¿Cómo podemos verificarte? p. ej., aparición en el sitio web del equipo, "
+"correo escolar, rol en el dashboard de FIRST."
+
+#: templates/home.html
+msgid "How it works"
+msgstr "Cómo funciona"
+
+#: templates/events/alliances.html
+msgid "How the prediction works"
+msgstr "Cómo funciona la predicción"
+
+#: templates/events/alliances.html
+msgid "In this prediction %(n)s is not picked."
+msgstr "En esta predicción %(n)s no es elegido."
+
+#: teams/forms.py
+msgid "Invite code"
+msgstr "Código de invitación"
+
+#: teams/views.py
+msgid "Invite created: %(code)s"
+msgstr "Invitación creada: %(code)s"
+
+#: templates/teams/members.html
+msgid "Invite people"
+msgstr "Invitar personas"
+
+#: teams/views.py
+msgid "Invite revoked."
+msgstr "Invitación revocada."
+
+#: templates/scouting/scout.html
+msgid "JavaScript is required for the scouting form."
+msgstr "El formulario de scouting necesita JavaScript."
+
+#: templates/teams/dashboard.html
+msgid "Join"
+msgstr "Unirme"
+
+#: templates/teams/dashboard.html
+msgid "Join a team"
+msgstr "Unirse a un equipo"
+
+#: templates/accounts/profile.html
+msgid "Join or register a team"
+msgstr "Unirse o registrar un equipo"
+
+#: templates/teams/join.html
+msgid "Join team"
+msgstr "Unirse al equipo"
+
+#: templates/teams/join.html
+msgid "Join team %(n)s"
+msgstr "Unirse al equipo %(n)s"
+
+#: templates/accounts/profile.html
+msgid "Joined"
+msgstr "Se unió"
+
+#: templates/base.html
+msgid "Language"
+msgstr "Idioma"
+
+#: templates/events/scouted_teams.html
+msgid "Last scouted"
+msgstr "Último scouting"
+
+#: templates/accounts/profile.html
+msgid "Leave"
+msgstr "Salir"
+
+#: templates/ai/_ask_panel.html
+msgid "Leave empty for general tips."
+msgstr "Déjalo vacío para recibir consejos generales."
+
+#: templates/accounts/profile.html
+msgid "Leave this team?"
+msgstr "¿Salir de este equipo?"
+
+#: templates/home.html
+msgid "Live event data"
+msgstr "Datos del evento en vivo"
+
+#: templates/events/team_home.html
+msgid "Load events"
+msgstr "Cargar eventos"
+
+#: templates/events/team_home.html
+msgid "Load my %(season)s events from TBA"
+msgstr "Cargar mis eventos de %(season)s desde TBA"
+
+#: templates/events/team_home.html
+msgid ""
+"Load your registered events from The Blue Alliance, or add an event by its "
+"key."
+msgstr ""
+"Carga tus eventos registrados desde The Blue Alliance, o agrega un evento "
+"por su clave."
+
+#: templates/home.html
+msgid ""
+"Log what happened: robot disabled, radio problems, fouls, strategy. Learn "
+"from every match."
+msgstr ""
+"Anota lo que pasó: robot deshabilitado, problemas de radio, faltas, "
+"estrategia. Aprende de cada partido."
+
+#: templates/events/team_home.html
+msgid "Manage forms"
+msgstr "Administrar formularios"
+
+#: scouting/forms.py templates/events/notes.html
+#: templates/scouting/entries.html templates/scouting/scout.html
+msgid "Match"
+msgstr "Partido"
+
+#: templates/events/scouted_team_detail.html
+msgid "Match entries"
+msgstr "Registros de partidos"
+
+#: templates/events/match_detail.html templates/events/notes.html
+#: templates/home.html
+msgid "Match notes"
+msgstr "Notas de partidos"
+
+#: scouting/models.py
+msgid "Match scouting (one robot, one match)"
+msgstr "Scouting de partido (un robot, un partido)"
+
+#: templates/events/_event_base.html templates/events/team_detail.html
+msgid "Matches"
+msgstr "Partidos"
+
+#: teams/forms.py
+msgid "Maximum uses"
+msgstr "Usos máximos"
+
+#: templates/events/team_home.html templates/teams/_team_nav.html
+#: templates/teams/members.html
+msgid "Members"
+msgstr "Miembros"
+
+#: teams/models.py
+msgid "Mentor"
+msgstr "Mentor"
+
+#: templates/home.html
+msgid ""
+"Mentors and coaches register the team (we verify them). Students join with "
+"an invite code."
+msgstr ""
+"Los mentores y coaches registran al equipo (los verificamos). Los "
+"estudiantes se unen con un código de invitación."
+
+#: templates/base.html
+msgid "Menu"
+msgstr "Menú"
+
+#: templates/scouting/form_edit.html
+msgid "Move down"
+msgstr "Bajar"
+
+#: templates/scouting/form_edit.html
+msgid "Move up"
+msgstr "Subir"
+
+#: scouting/models.py
+msgid "Multiple choice"
+msgstr "Opción múltiple"
+
+#: events/views.py
+msgid "My prediction"
+msgstr "Mi predicción"
+
+#: templates/accounts/profile.html
+msgid "My profile"
+msgstr "Mi perfil"
+
+#: templates/scouting/scout.html
+msgid "My station"
+msgstr "Mi estación"
+
+#: templates/accounts/profile.html templates/teams/dashboard.html
+msgid "My teams"
+msgstr "Mis equipos"
+
+#: templates/teams/members.html
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/scouting/form_create.html templates/scouting/form_list.html
+msgid "New form"
+msgstr "Nuevo formulario"
+
+#: templates/account/login.html
+msgid "New here?"
+msgstr "¿Eres nuevo?"
+
+#: templates/scouting/form_create.html
+msgid "New scouting form"
+msgstr "Nuevo formulario de scouting"
+
+#: scouting/views.py
+msgid "No"
+msgstr "No"
+
+#: templates/scouting/entries.html
+msgid "No entries yet."
+msgstr "Aún no hay registros."
+
+#: templates/events/team_home.html
+msgid "No events yet for this season."
+msgstr "Aún no hay eventos para esta temporada."
+
+#: templates/scouting/form_edit.html
+msgid "No fields yet. Add one on the right."
+msgstr "Aún no hay campos. Agrega uno a la derecha."
+
+#: templates/scouting/form_list.html
+msgid "No forms yet."
+msgstr "Aún no hay formularios."
+
+#: templates/events/team_home.html
+msgid "No forms yet. Scouts need a form before they can record data."
+msgstr ""
+"Aún no hay formularios. Los scouts necesitan uno antes de registrar datos."
+
+#: templates/events/team_detail.html
+msgid "No matches yet."
+msgstr "Aún no hay partidos."
+
+#: templates/events/team_detail.html
+msgid "No notes about this team."
+msgstr "No hay notas sobre este equipo."
+
+#: templates/events/match_detail.html
+msgid "No notes yet."
+msgstr "Aún no hay notas."
+
+#: templates/events/notes.html
+msgid ""
+"No notes yet. Write down anything worth remembering: robot disabled, radio "
+"problems, fouls, great strategies."
+msgstr ""
+"Aún no hay notas. Anota todo lo que valga la pena recordar: robot "
+"deshabilitado, problemas de radio, faltas, buenas estrategias."
+
+#: templates/events/alliances.html
+msgid ""
+"No official rankings yet, so teams are ordered by EPA. Treat this as a rough"
+" preview."
+msgstr ""
+"Aún no hay ranking oficial, así que los equipos se ordenan por EPA. Tómalo "
+"como una vista previa aproximada."
+
+#: templates/teams/approvals.html
+msgid "No pending requests. 🎉"
+msgstr "No hay solicitudes pendientes. 🎉"
+
+#: templates/events/scouted_team_detail.html
+msgid "No scouting entries for this team yet."
+msgstr "Aún no hay registros de scouting para este equipo."
+
+#: templates/events/team_detail.html
+msgid "No scouting entries yet for this team."
+msgstr "Aún no hay registros de scouting para este equipo."
+
+#: templates/events/overview.html
+msgid "No upcoming matches scheduled."
+msgstr "No hay próximos partidos programados."
+
+#: templates/403.html
+msgid "Not allowed"
+msgstr "No permitido"
+
+#: templates/events/team_detail.html
+msgid "Not on this event's team list"
+msgstr "No está en la lista de equipos de este evento"
+
+#: scouting/forms.py
+msgid "Note"
+msgstr "Nota"
+
+#: events/views.py
+msgid "Note added."
+msgstr "Nota agregada."
+
+#: events/views.py
+msgid "Note deleted."
+msgstr "Nota eliminada."
+
+#: templates/teams/approvals.html
+msgid "Note to the user (optional)"
+msgstr "Nota para el usuario (opcional)"
+
+#: templates/events/_event_base.html templates/events/overview.html
+#: templates/events/scouted_team_detail.html
+#: templates/events/scouted_teams.html templates/events/team_detail.html
+msgid "Notes"
+msgstr "Notas"
+
+#: templates/events/alliances.html
+msgid "Nothing saved yet."
+msgstr "Aún no hay nada guardado."
+
+#: templates/events/scouted_teams.html
+msgid "Nothing scouted yet. Entries from every event you attend collect here."
+msgstr ""
+"Aún no has scouteado nada. Aquí se juntan los registros de todos los eventos"
+" a los que asistas."
+
+#: scouting/models.py
+msgid "Number"
+msgstr "Número"
+
+#: templates/events/alliances.html
+msgid "Official alliances (TBA)"
+msgstr "Alianzas oficiales (TBA)"
+
+#: templates/base.html templates/offline.html
+msgid "Offline"
+msgstr "Sin conexión"
+
+#: scouting/views.py
+msgid "Offline — saved on this device"
+msgstr "Sin conexión — guardado en este dispositivo"
+
+#: templates/events/matches.html
+msgid "Only %(n)s"
+msgstr "Solo %(n)s"
+
+#: scouting/views.py
+msgid "Only admins or the original scout can delete an entry."
+msgstr ""
+"Solo los administradores o el scout original pueden eliminar un registro."
+
+#: templates/teams/register.html
+msgid ""
+"Only mentors, coaches or teacher sponsors can register a team. Our staff "
+"will check your details (for example on your team's website or FIRST's team "
+"listing) before activating it. Students: ask your mentor for an invite code "
+"instead."
+msgstr ""
+"Solo mentores, coaches o maestros patrocinadores pueden registrar un equipo."
+" Nuestro staff revisará tus datos (por ejemplo en el sitio web del equipo o "
+"en el listado de equipos de FIRST) antes de activarlo. Estudiantes: pidan a "
+"su mentor un código de invitación."
+
+#: templates/events/alliances.html
+msgid "Open"
+msgstr "Abrir"
+
+#: templates/events/overview.html
+msgid "Open predictor"
+msgstr "Abrir predictor"
+
+#: templates/scouting/_field_form.html
+msgid "Optional — generated from the label."
+msgstr "Opcional — se genera a partir de la etiqueta."
+
+#: scouting/models.py
+msgid "Optional: game points per unit, used to estimate scouted points."
+msgstr ""
+"Opcional: puntos de juego por unidad, se usan para estimar los puntos "
+"scouteados."
+
+#: scouting/forms.py
+msgid "Options (one per line)"
+msgstr "Opciones (una por línea)"
+
+#: templates/events/_alliance_sim.html
+msgid ""
+"Orange border = a lower captain (picking them promotes the alliances below)."
+" Teams that decline can't be picked later but can still become captains."
+msgstr ""
+"Borde naranja = un capitán de menor posición (elegirlo hace subir a las "
+"alianzas de abajo). Los equipos que rechazan no pueden ser elegidos después,"
+" pero aún pueden convertirse en capitanes."
+
+#: scouting/models.py teams/models.py
+msgid "Other"
+msgstr "Otro"
+
+#: templates/events/overview.html
+msgid "Our next matches"
+msgstr "Nuestros próximos partidos"
+
+#: templates/events/overview.html
+msgid "Our rank"
+msgstr "Nuestro lugar"
+
+#: templates/events/_event_base.html
+msgid "Our robot"
+msgstr "Nuestro robot"
+
+#: templates/teams/pending.html
+msgid ""
+"Our staff verify that every team admin is a real mentor or coach. You'll get"
+" access as soon as it's approved, usually within a day."
+msgstr ""
+"Nuestro staff verifica que cada administrador sea un mentor o coach real. "
+"Tendrás acceso en cuanto se apruebe, normalmente en menos de un día."
+
+#: templates/events/_event_base.html
+msgid "Overview"
+msgstr "Resumen"
+
+#: templates/account/login.html templates/account/signup.html
+msgid "Password"
+msgstr "Contraseña"
+
+#: scouting/models.py
+msgid "Penalties / fouls"
+msgstr "Penalizaciones / faltas"
+
+#: teams/models.py
+msgid "Pending"
+msgstr "Pendiente"
+
+#: teams/models.py
+msgid "Pending approval"
+msgstr "Pendiente de aprobación"
+
+#: templates/teams/dashboard.html
+msgid "Pick a team, join one with an invite code, or register yours."
+msgstr ""
+"Elige un equipo, únete a uno con un código de invitación o registra el tuyo."
+
+#: templates/home.html
+msgid "Pick your events"
+msgstr "Elige tus eventos"
+
+#: templates/events/alliances.html
+msgid "Picks"
+msgstr "Picks"
+
+#: scouting/views.py
+msgid "Pit"
+msgstr "Pits"
+
+#: templates/events/team_detail.html
+msgid "Pit scouting"
+msgstr "Scouting de pits"
+
+#: scouting/models.py
+msgid "Pit scouting (one robot, once per event)"
+msgstr "Scouting de pits (un robot, una vez por evento)"
+
+#: templates/events/_alliance_table.html
+msgid "Points estimated from your scouting"
+msgstr "Puntos estimados a partir de tu scouting"
+
+#: scouting/models.py scouting/views.py
+msgid "Pre-match"
+msgstr "Antes del partido"
+
+#: templates/events/_alliance_sim.html
+msgid ""
+"Predict the final rankings yourself: list team numbers in order (rank 1 "
+"first). Changing this restarts the selection."
+msgstr ""
+"Predice tú mismo el ranking final: escribe los números de equipo en orden "
+"(el lugar 1 primero). Cambiar esto reinicia la selección."
+
+#: templates/events/_alliance_sim.html
+msgid "Prediction name"
+msgstr "Nombre de la predicción"
+
+#: templates/accounts/profile.html
+msgid "Profile"
+msgstr "Perfil"
+
+#: accounts/views.py
+msgid "Profile saved."
+msgstr "Perfil guardado."
+
+#: teams/views.py
+msgid "Promote another admin before leaving."
+msgstr "Nombra a otro administrador antes de salir."
+
+#: templates/home.html
+msgid "Pts"
+msgstr "Pts"
+
+#: templates/events/overview.html
+msgid ""
+"Qualifications are complete. See the predicted alliances and run your own "
+"scenarios."
+msgstr ""
+"Las clasificatorias terminaron. Mira las alianzas previstas y prueba tus "
+"propios escenarios."
+
+#: templates/events/overview.html
+msgid ""
+"Qualifications are still running. The predictor uses current rankings until "
+"they're final."
+msgstr ""
+"Las clasificatorias siguen en curso. El predictor usa el ranking actual "
+"hasta que sea final."
+
+#: templates/events/alliances.html
+msgid ""
+"Qualifications are still running: this uses the current rankings and will "
+"change."
+msgstr ""
+"Las clasificatorias siguen en curso: esto usa el ranking actual y va a "
+"cambiar."
+
+#: scouting/models.py
+msgid "Radio / connection"
+msgstr "Radio / conexión"
+
+#: templates/events/_alliance_sim.html templates/events/_alliance_table.html
+#: templates/events/scouted_team_detail.html templates/events/team_detail.html
+#: templates/events/teams.html
+msgid "Rank"
+msgstr "Lugar"
+
+#: templates/events/overview.html
+msgid "Rankings"
+msgstr "Ranking"
+
+#: templates/events/overview.html
+msgid "Rankings appear once qualification matches start."
+msgstr "El ranking aparece cuando empiezan los partidos clasificatorios."
+
+#: scouting/models.py
+msgid "Rating (1-5)"
+msgstr "Calificación (1-5)"
+
+#: templates/events/overview.html
+msgid "Recent results"
+msgstr "Resultados recientes"
+
+#: templates/teams/approvals.html
+msgid "Recently reviewed"
+msgstr "Revisadas recientemente"
+
+#: templates/events/overview.html templates/events/teams.html
+msgid "Record"
+msgstr "Récord"
+
+#: templates/events/overview.html
+msgid "Record (W-L-T)"
+msgstr "Récord (G-P-E)"
+
+#: templates/home.html
+msgid ""
+"Record matches, review stats, predict alliances and ask the assistant for "
+"tips."
+msgstr ""
+"Registra partidos, revisa estadísticas, predice alianzas y pide consejos al "
+"asistente."
+
+#: templates/scouting/entries.html
+msgid "Recorded offline"
+msgstr "Registrado sin conexión"
+
+#: templates/events/match_detail.html templates/scouting/scout.html
+msgid "Red"
+msgstr "Rojo"
+
+#: templates/events/_event_base.html
+msgid "Refresh data"
+msgstr "Actualizar datos"
+
+#: templates/teams/dashboard.html
+msgid "Register a team"
+msgstr "Registrar un equipo"
+
+#: templates/home.html
+msgid "Register or join your team"
+msgstr "Registra o únete a tu equipo"
+
+#: templates/teams/dashboard.html templates/teams/register.html
+msgid "Register your team"
+msgstr "Registra a tu equipo"
+
+#: templates/teams/approvals.html
+msgid "Reject"
+msgstr "Rechazar"
+
+#: teams/models.py
+msgid "Rejected"
+msgstr "Rechazado"
+
+#: templates/account/login.html
+msgid "Remember me"
+msgstr "Recordarme"
+
+#: templates/teams/members.html
+msgid "Remove"
+msgstr "Quitar"
+
+#: templates/teams/members.html
+msgid "Remove this member from the team?"
+msgstr "¿Quitar a este miembro del equipo?"
+
+#: templates/account/signup.html
+msgid "Repeat password"
+msgstr "Repite la contraseña"
+
+#: teams/views.py
+msgid "Request rejected."
+msgstr "Solicitud rechazada."
+
+#: teams/views.py
+msgid "Request sent! Our staff will verify you and approve the team soon."
+msgstr ""
+"¡Solicitud enviada! Nuestro staff te verificará y aprobará al equipo pronto."
+
+#: templates/events/_alliance_sim.html
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: templates/teams/members.html
+msgid "Revoke"
+msgstr "Revocar"
+
+#: scouting/models.py
+msgid "Robot issue (disabled, broken, tipped)"
+msgstr "Problema del robot (deshabilitado, roto, volcado)"
+
+#: teams/forms.py templates/accounts/profile.html templates/teams/members.html
+msgid "Role"
+msgstr "Rol"
+
+#: teams/views.py
+msgid "Role updated."
+msgstr "Rol actualizado."
+
+#: templates/accounts/profile.html templates/events/_alliance_sim.html
+#: templates/scouting/field_edit.html
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/scouting/scout.html
+msgid "Save entry"
+msgstr "Guardar registro"
+
+#: templates/events/notes.html
+msgid "Save note"
+msgstr "Guardar nota"
+
+#: templates/scouting/form_edit.html
+msgid "Save settings"
+msgstr "Guardar configuración"
+
+#: scouting/views.py templates/scouting/entries.html
+msgid "Saved"
+msgstr "Guardado"
+
+#: templates/events/alliances.html
+msgid "Saved predictions"
+msgstr "Predicciones guardadas"
+
+#: events/views.py
+msgid "Saved."
+msgstr "Guardado."
+
+#: templates/home.html
+msgid ""
+"Schedules, rankings and EPA from The Blue Alliance and Statbotics, merged "
+"with your team's data for every event you attend."
+msgstr ""
+"Calendarios, ranking y EPA de The Blue Alliance y Statbotics, combinados con"
+" los datos de tu equipo para cada evento al que asistas."
+
+#: teams/models.py templates/scouting/entries.html
+#: templates/scouting/scout.html
+msgid "Scout"
+msgstr "Scout"
+
+#: templates/home.html
+msgid "Scout and plan"
+msgstr "Scoutea y planea"
+
+#: templates/events/match_detail.html
+msgid "Scout this match"
+msgstr "Scoutear este partido"
+
+#: templates/events/_alliance_table.html
+msgid "Scouted"
+msgstr "Scouteado"
+
+#: templates/events/team_detail.html
+msgid "Scouted points by match"
+msgstr "Puntos scouteados por partido"
+
+#: templates/events/scouted_team_detail.html templates/events/team_detail.html
+#: templates/events/teams.html
+msgid "Scouted pts"
+msgstr "Pts scouteados"
+
+#: templates/events/_event_base.html templates/scouting/entries.html
+msgid "Scouting data"
+msgstr "Datos de scouting"
+
+#: templates/events/overview.html
+msgid "Scouting entries"
+msgstr "Registros de scouting"
+
+#: templates/events/match_detail.html
+msgid "Scouting entries for this match"
+msgstr "Registros de scouting de este partido"
+
+#: templates/events/overview.html templates/events/team_home.html
+#: templates/scouting/form_list.html templates/teams/_team_nav.html
+msgid "Scouting forms"
+msgstr "Formularios de scouting"
+
+#: templates/events/team_detail.html
+msgid "Scouting summary"
+msgstr "Resumen de scouting"
+
+#: templates/home.html
+msgid "Scouting that works even when your team is small."
+msgstr "Scouting que funciona aunque tu equipo sea pequeño."
+
+#: templates/events/scouted_teams.html
+msgid "Search number or name"
+msgstr "Buscar número o nombre"
+
+#: templates/home.html
+msgid ""
+"See where you are likely to land, then run your own what-if picks with the "
+"real serpentine and captain-promotion rules."
+msgstr ""
+"Mira dónde podrías quedar y luego prueba tus propias selecciones hipotéticas"
+" con las reglas reales de serpentina y ascenso de capitanes."
+
+#: templates/events/_alliance_sim.html
+msgid "Selection complete."
+msgstr "Selección completa."
+
+#: templates/teams/pending.html
+msgid "Send a new request"
+msgstr "Enviar una nueva solicitud"
+
+#: templates/teams/register.html
+msgid "Send request"
+msgstr "Enviar solicitud"
+
+#: scouting/models.py
+msgid "Short id used in exports, e.g. auto_coral_l4"
+msgstr "Identificador corto usado en exportaciones, p. ej. auto_coral_l4"
+
+#: templates/account/login.html templates/account/signup.html
+#: templates/base.html templates/home.html
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#: scouting/views.py
+msgid "Sign in again to upload"
+msgstr "Inicia sesión de nuevo para subir"
+
+#: templates/base.html
+msgid "Sign out"
+msgstr "Cerrar sesión"
+
+#: templates/account/signup.html templates/base.html
+msgid "Sign up"
+msgstr "Registrarse"
+
+#: templates/home.html
+msgid "Sign up free"
+msgstr "Regístrate gratis"
+
+#: scouting/models.py
+msgid "Single choice"
+msgstr "Opción única"
+
+#: templates/events/overview.html
+msgid "Some data couldn't be refreshed:"
+msgstr "Algunos datos no se pudieron actualizar:"
+
+#: templates/ai/answer.html
+msgid "Source:"
+msgstr "Fuente:"
+
+#: config/settings.py
+msgid "Spanish"
+msgstr "Español"
+
+#: scouting/forms.py
+msgid "Start from the generic template"
+msgstr "Empezar con la plantilla genérica"
+
+#: templates/events/overview.html
+msgid "Start scouting"
+msgstr "Empezar a scoutear"
+
+#: templates/accounts/profile.html
+msgid "Status"
+msgstr "Estado"
+
+#: scouting/models.py
+msgid "Strategy"
+msgstr "Estrategia"
+
+#: templates/scouting/scout.html
+msgid "Sync"
+msgstr "Sincronizar"
+
+#: events/views.py
+msgid "Synced with some problems: %(e)s"
+msgstr "Sincronizado con algunos problemas: %(e)s"
+
+#: templates/events/team_home.html
+msgid "TBA_API_KEY is not set in .env, so events can't be loaded yet."
+msgstr ""
+"TBA_API_KEY no está configurada en .env, así que aún no se pueden cargar "
+"eventos."
+
+#: teams/models.py
+msgid "Teacher / sponsor"
+msgstr "Maestro / patrocinador"
+
+#: templates/accounts/profile.html templates/base.html
+#: templates/events/_alliance_table.html templates/events/_event_base.html
+#: templates/events/overview.html templates/events/scouted_teams.html
+#: templates/events/team_home.html templates/events/teams.html
+#: templates/scouting/entries.html templates/teams/_team_nav.html
+#: templates/teams/approvals.html
+msgid "Team"
+msgstr "Equipo"
+
+#: templates/events/notes.html templates/scouting/entries.html
+msgid "Team #"
+msgstr "Equipo #"
+
+#: templates/teams/pending.html
+msgid "Team %(n)s is waiting for approval"
+msgstr "El equipo %(n)s está esperando aprobación"
+
+#: templates/events/overview.html
+msgid "Team %(n)s isn't on this event's team list. You can still scout it."
+msgstr ""
+"El equipo %(n)s no está en la lista de equipos de este evento. Aun así "
+"puedes scoutearlo."
+
+#: templates/teams/approvals.html
+msgid "Team admin approvals"
+msgstr "Aprobación de administradores de equipo"
+
+#: templates/accounts/profile.html
+msgid "Team admin requests"
+msgstr "Solicitudes de administrador de equipo"
+
+#: templates/teams/approvals.html
+msgid "Team approvals"
+msgstr "Aprobaciones de equipos"
+
+#: templates/events/scouted_team_detail.html
+#: templates/events/scouted_teams.html templates/teams/_team_nav.html
+msgid "Team database"
+msgstr "Base de datos de equipos"
+
+#: teams/forms.py
+msgid "Team nickname"
+msgstr "Apodo del equipo"
+
+#: templates/scouting/scout.html
+msgid "Team number"
+msgstr "Número de equipo"
+
+#: templates/events/_event_base.html templates/events/teams.html
+msgid "Teams"
+msgstr "Equipos"
+
+#: templates/events/_alliance_table.html
+msgid "Tele"
+msgstr "Tele"
+
+#: scouting/models.py scouting/views.py templates/events/team_detail.html
+#: templates/events/teams.html
+msgid "Teleop"
+msgstr "Teleop"
+
+#: scouting/models.py
+msgid "Text"
+msgstr "Texto"
+
+#: templates/ai/feedback_thanks.html
+msgid "Thanks for the feedback!"
+msgstr "¡Gracias por tu opinión!"
+
+#: teams/views.py
+msgid "That invite code is invalid or has expired."
+msgstr "Ese código de invitación no es válido o ya expiró."
+
+#: templates/scouting/form_create.html
+msgid ""
+"The generic template adds common fields (auto, teleop, endgame, defense, "
+"driver skill) that you can rename or delete."
+msgstr ""
+"La plantilla genérica agrega campos comunes (auto, teleop, endgame, defensa,"
+" habilidad del driver) que puedes renombrar o eliminar."
+
+#: templates/events/matches.html
+msgid "The match schedule hasn't been published yet."
+msgstr "El calendario de partidos aún no se publica."
+
+#: templates/events/alliances.html
+msgid ""
+"The top %(num)s ranked teams start as captains. In serpentine order "
+"(1→%(num)s, then %(num)s→1) each captain picks the highest-scoring available"
+" team. Score = Statbotics EPA, blended 60/40 with your scouted points when "
+"you have at least 3 entries for a team. If a captain is picked, alliances "
+"below move up and the next-ranked team becomes the last captain. Everyone "
+"accepts."
+msgstr ""
+"Los %(num)s mejores equipos del ranking empiezan como capitanes. En orden de"
+" serpentina (1→%(num)s, luego %(num)s→1) cada capitán elige al equipo "
+"disponible con mayor puntaje. Puntaje = EPA de Statbotics, combinado 60/40 "
+"con tus puntos scouteados cuando tienes al menos 3 registros de un equipo. "
+"Si eligen a un capitán, las alianzas de abajo suben y el siguiente equipo "
+"del ranking se vuelve el último capitán. Todos aceptan."
+
+#: templates/home.html
+msgid "Their teleop is strong — defend 4414 and win the endgame."
+msgstr "Su teleop es fuerte — defiende al 4414 y gana el endgame."
+
+#: templates/scouting/form_edit.html
+msgid ""
+"This form already has entries. Renaming a key keeps old answers; deleting a "
+"field hides its answers from stats but keeps them in the raw data."
+msgstr ""
+"Este formulario ya tiene registros. Renombrar una clave conserva las "
+"respuestas anteriores; eliminar un campo oculta sus respuestas de las "
+"estadísticas pero las conserva en los datos crudos."
+
+#: events/views.py
+msgid "This is a demo event; it isn't synced from TBA."
+msgstr "Este es un evento de demostración; no se sincroniza con TBA."
+
+#: templates/offline.html
+msgid ""
+"This page hasn't been saved on this device yet. Pages you opened while "
+"online (including scouting forms) still work offline, and saved scouting "
+"entries will upload automatically when you reconnect."
+msgstr ""
+"Esta página aún no se ha guardado en este dispositivo. Las páginas que "
+"abriste con conexión (incluidos los formularios de scouting) funcionan sin "
+"conexión, y los registros guardados se subirán automáticamente al "
+"reconectarte."
+
+#: templates/events/team_detail.html
+msgid "This team"
+msgstr "Este equipo"
+
+#: templates/teams/pending.html
+msgid ""
+"This team's registration was not approved. Check your profile for the "
+"reviewer's note, or send a new request with more details."
+msgstr ""
+"El registro de este equipo no fue aprobado. Revisa la nota del revisor en tu"
+" perfil o envía una nueva solicitud con más detalles."
+
+#: templates/events/overview.html
+msgid ""
+"Tip: open the scouting page once while you have signal; after that it works "
+"offline."
+msgstr ""
+"Consejo: abre la página de scouting una vez mientras tengas señal; después "
+"funciona sin conexión."
+
+#: templates/events/_alliance_sim.html
+msgid "Undo"
+msgstr "Deshacer"
+
+#: templates/events/alliances.html
+msgid "Update"
+msgstr "Actualizar"
+
+#: scouting/views.py
+msgid "Uploading…"
+msgstr "Subiendo…"
+
+#: templates/events/_alliance_sim.html
+msgid "Use my own ranking order"
+msgstr "Usar mi propio orden de ranking"
+
+#: templates/events/alliances.html
+msgid ""
+"Use the simulator below to explore other outcomes, and check 'Our robot' for"
+" ways to improve your numbers."
+msgstr ""
+"Usa el simulador de abajo para explorar otros resultados y revisa 'Nuestro "
+"robot' para ver cómo mejorar tus números."
+
+#: templates/teams/members.html
+msgid "Uses"
+msgstr "Usos"
+
+#: teams/forms.py
+msgid "Valid for (days)"
+msgstr "Válido por (días)"
+
+#: templates/home.html
+msgid ""
+"Venue Wi-Fi down? Scouts keep recording on their phones; entries upload "
+"automatically when the connection returns."
+msgstr ""
+"¿Se cayó el Wi-Fi del evento? Los scouts siguen registrando en sus "
+"teléfonos; los registros se suben solos cuando vuelve la conexión."
+
+#: templates/teams/approvals.html
+msgid ""
+"Verify that each person is really a mentor or coach of the team before "
+"approving."
+msgstr ""
+"Verifica que cada persona sea realmente mentor o coach del equipo antes de "
+"aprobar."
+
+#: templates/teams/pending.html
+msgid "View my requests"
+msgstr "Ver mis solicitudes"
+
+#: teams/models.py
+msgid "Viewer"
+msgstr "Observador"
+
+#: events/views.py
+msgid "Viewers can't add notes."
+msgstr "Los observadores no pueden agregar notas."
+
+#: events/views.py
+msgid "Viewers can't save predictions."
+msgstr "Los observadores no pueden guardar predicciones."
+
+#: templates/teams/pending.html
+msgid "Waiting for approval"
+msgstr "Esperando aprobación"
+
+#: templates/events/match_detail.html
+msgid "We are"
+msgstr "Somos"
+
+#: templates/home.html
+msgid "We load the events your team is registered for from The Blue Alliance."
+msgstr ""
+"Cargamos desde The Blue Alliance los eventos en los que está registrado tu "
+"equipo."
+
+#: templates/events/alliances.html
+msgid "We need this event's team list before we can predict alliances."
+msgstr ""
+"Necesitamos la lista de equipos de este evento para poder predecir alianzas."
+
+#: teams/views.py
+msgid "Welcome to team %(n)s!"
+msgstr "¡Bienvenido al equipo %(n)s!"
+
+#: scouting/models.py
+msgid "What went well"
+msgstr "Lo que salió bien"
+
+#: templates/events/alliances.html
+msgid "Where we land"
+msgstr "Dónde quedamos"
+
+#: templates/home.html
+msgid "Win"
+msgstr "Gana"
+
+#: templates/home.html
+msgid "With Google or email."
+msgstr "Con Google o correo electrónico."
+
+#: templates/home.html
+msgid "Works offline"
+msgstr "Funciona sin conexión"
+
+#: scouting/views.py
+msgid "Yes"
+msgstr "Sí"
+
+#: scouting/models.py
+msgid "Yes / No"
+msgstr "Sí / No"
+
+#: teams/views.py
+msgid "You already have a pending request for this team."
+msgstr "Ya tienes una solicitud pendiente para este equipo."
+
+#: teams/views.py
+msgid "You are already a member of this team."
+msgstr "Ya eres miembro de este equipo."
+
+#: templates/accounts/profile.html
+msgid "You are not on any team yet."
+msgstr "Aún no estás en ningún equipo."
+
+#: teams/views.py templates/teams/members.html
+msgid "You can invite members once your team is approved."
+msgstr "Podrás invitar miembros cuando tu equipo sea aprobado."
+
+#: teams/views.py
+msgid "You can't remove the last admin."
+msgstr "No puedes quitar al último administrador."
+
+#: templates/403.html
+msgid "You don't have access to this page"
+msgstr "No tienes acceso a esta página"
+
+#: teams/views.py
+msgid "You left team %(n)s."
+msgstr "Saliste del equipo %(n)s."
+
+#: templates/403.html
+msgid ""
+"You may need a different role on this team, or an invite from one of its "
+"admins."
+msgstr ""
+"Puede que necesites otro rol en este equipo, o una invitación de uno de sus "
+"administradores."
+
+#: templates/teams/join.html
+msgid "You will join as <strong>%(role)s</strong>."
+msgstr "Te unirás como <strong>%(role)s</strong>."
+
+#: templates/offline.html
+msgid "You're offline"
+msgstr "Estás sin conexión"
+
+#: teams/forms.py
+msgid "Your full name"
+msgstr "Tu nombre completo"
+
+#: templates/events/_alliance_sim.html
+msgid "Your own prediction"
+msgstr "Tu propia predicción"
+
+#: templates/home.html
+msgid "Your own scouting forms"
+msgstr "Tus propios formularios de scouting"
+
+#: templates/teams/dashboard.html
+msgid ""
+"Your request to manage team %(n)s is waiting for verification by our staff."
+msgstr ""
+"Tu solicitud para administrar el equipo %(n)s está esperando la verificación"
+" de nuestro staff."
+
+#: teams/forms.py
+msgid "Your role on the team"
+msgstr "Tu rol en el equipo"
+
+#: scouting/models.py
+msgid "active"
+msgstr "activo"
+
+#: templates/events/team_home.html
+msgid "added manually"
+msgstr "agregado manualmente"
+
+#: templates/events/alliances.html
+msgid "as captain"
+msgstr "como capitán"
+
+#: scouting/models.py
+msgid "data type"
+msgstr "tipo de dato"
+
+#: accounts/models.py
+msgid "display name"
+msgstr "nombre visible"
+
+#: templates/events/team_detail.html
+msgid "e.g. What should we practise? Is this a good pick for us?"
+msgstr ""
+"p. ej. ¿Qué deberíamos practicar? ¿Es una buena elección para nosotros?"
+
+#: templates/events/match_detail.html
+msgid "e.g. Who should play defense? How do we beat blue's endgame?"
+msgstr "p. ej. ¿Quién debería defender? ¿Cómo le ganamos el endgame al azul?"
+
+#: accounts/models.py
+msgid "email address"
+msgstr "correo electrónico"
+
+#: templates/events/alliances.html
+msgid "first pick"
+msgstr "primera elección"
+
+#: templates/base.html
+msgid "free scouting for every team"
+msgstr "scouting gratuito para todos los equipos"
+
+#: scouting/models.py
+msgid "help text"
+msgstr "texto de ayuda"
+
+#: templates/scouting/form_list.html
+msgid "inactive"
+msgstr "inactivo"
+
+#: scouting/models.py
+msgid "key"
+msgstr "clave"
+
+#: scouting/models.py
+msgid "label"
+msgstr "etiqueta"
+
+#: templates/events/team_detail.html
+msgid "max"
+msgstr "máx"
+
+#: scouting/models.py
+msgid "maximum"
+msgstr "máximo"
+
+#: scouting/models.py
+msgid "minimum"
+msgstr "mínimo"
+
+#: scouting/models.py
+msgid "name"
+msgstr "nombre"
+
+#: templates/teams/approvals.html
+msgid "none"
+msgstr "ninguno"
+
+#: scouting/models.py
+msgid "options"
+msgstr "opciones"
+
+#: templates/account/_google.html
+msgid "or"
+msgstr "o"
+
+#: templates/events/team_home.html
+msgid "or add any event"
+msgstr "o agrega cualquier evento"
+
+#: templates/scouting/scout.html
+msgid "pending"
+msgstr "pendientes"
+
+#: scouting/models.py
+msgid "phase"
+msgstr "fase"
+
+#: scouting/models.py
+msgid "points each"
+msgstr "puntos c/u"
+
+#: templates/home.html
+msgid "prediction"
+msgstr "predicción"
+
+#: accounts/models.py
+msgid "preferred language"
+msgstr "idioma preferido"
+
+#: templates/scouting/form_edit.html
+msgid "pts"
+msgstr "pts"
+
+#: templates/events/match_detail.html
+msgid "red wins"
+msgstr "gana rojo"
+
+#: scouting/models.py scouting/views.py
+msgid "required"
+msgstr "obligatorio"
+
+#: templates/events/scouted_team_detail.html
+msgid "rookie year"
+msgstr "año de novato"
+
+#: templates/events/_alliance_sim.html
+msgid "score"
+msgstr "puntaje"
+
+#: scouting/models.py
+msgid "season"
+msgstr "temporada"
+
+#: templates/events/alliances.html
+msgid "second pick"
+msgstr "segunda elección"
+
+#: templates/teams/approvals.html
+msgid "signed up"
+msgstr "se registró"
+
+#: templates/events/alliances.html
+msgid "third pick"
+msgstr "tercera elección"
+
+#: scouting/models.py
+msgid "type"
+msgstr "tipo"
+
+#: templates/events/team_detail.html
+msgid "us"
+msgstr "nosotros"
+
+#: templates/teams/members.html
+msgid "you"
+msgstr "tú"
+
+#: templates/events/matches.html
+msgid "✓ = entries your scouts recorded"
+msgstr "✓ = registros de tus scouts"
+
+#: teams/views.py
+msgid ""
+"Team %(n)s is already on the platform. Your request was sent to our staff, "
+"but the fastest way in is to ask one of your team's admins for an invite "
+"code."
+msgstr ""
+"El equipo %(n)s ya está en la plataforma. Tu solicitud se envió a nuestro "
+"staff, pero la forma más rápida de entrar es pedir un código de invitación a"
+" uno de los administradores de tu equipo."
+
+#: templates/events/_event_base.html
+msgid "updated %(t)s ago"
+msgstr "actualizado hace %(t)s"
+
+#~ msgid "ago"
+#~ msgstr ""
+
+#~ msgid "updated"
+#~ msgstr ""

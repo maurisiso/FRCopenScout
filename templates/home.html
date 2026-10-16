@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Free scouting for every FRC team" %}{% endblock %}
+{% block container_class %}narrow{% endblock %}
+{% block hero %}
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>{% trans "Scouting that works even when your team is small." %}</h1>
+      <p class="lead">{% blocktrans trimmed %}
+        FRC Open Scout combines live data from The Blue Alliance and Statbotics with your own scouts' observations,
+        so a team of three can make the same match plans and pick lists as a team of thirty. Free, in English and Spanish.
+      {% endblocktrans %}</p>
+      <div class="cta">
+        {% if user.is_authenticated %}
+          <a class="btn btn-lg" href="{% url 'dashboard' %}?all=1">{% trans "Go to my dashboard" %}</a>
+        {% else %}
+          <a class="btn btn-lg" href="{% url 'account_signup' %}">{% trans "Sign up free" %}</a>
+          <a class="btn btn-lg btn-ghost" href="{% url 'account_login' %}">{% trans "Sign in" %}</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-card" aria-hidden="true">
+      <div class="muted" style="color:#9fb0cf;margin-bottom:6px">Q42 · {% trans "prediction" %}</div>
+      <div class="hm"><span>EPA</span><span class="r">🔴 254 · 1678 · 118</span><span class="b">🔵 971 · 2056 · 4414</span></div>
+      <div class="hm"><span>{% trans "Pts" %}</span><span class="r">142.6</span><span class="b">131.9</span></div>
+      <div class="hm"><span>{% trans "Win" %}</span><span class="r">68%</span><span class="b">32%</span></div>
+      <div style="margin-top:10px;color:#c8d2e6">💡 {% trans "Their teleop is strong — defend 4414 and win the endgame." %}</div>
+    </div>
+  </div>
+</section>
+<section class="features">
+  <div class="card feature">
+    <h3><span class="ic">📋</span>{% trans "Your own scouting forms" %}</h3>
+    <p class="muted">{% trans "Design the fields for this year's game: counters, yes/no, choices, ratings, notes. No code, no spreadsheets." %}</p>
+  </div>
+  <div class="card feature">
+    <h3><span class="ic">📶</span>{% trans "Works offline" %}</h3>
+    <p class="muted">{% trans "Venue Wi-Fi down? Scouts keep recording on their phones; entries upload automatically when the connection returns." %}</p>
+  </div>
+  <div class="card feature">
+    <h3><span class="ic">📊</span>{% trans "Live event data" %}</h3>
+    <p class="muted">{% trans "Schedules, rankings and EPA from The Blue Alliance and Statbotics, merged with your team's data for every event you attend." %}</p>
+  </div>
+  <div class="card feature">
+    <h3><span class="ic">🤝</span>{% trans "Alliance selection predictor" %}</h3>
+    <p class="muted">{% trans "See where you are likely to land, then run your own what-if picks with the real serpentine and captain-promotion rules." %}</p>
+  </div>
+  <div class="card feature">
+    <h3><span class="ic">📝</span>{% trans "Match notes" %}</h3>
+    <p class="muted">{% trans "Log what happened: robot disabled, radio problems, fouls, strategy. Learn from every match." %}</p>
+  </div>
+  <div class="card feature">
+    <h3><span class="ic">✨</span>{% trans "AI strategy tips" %}</h3>
+    <p class="muted">{% trans "Ask how to play your next match or where your robot can improve. Answers are grounded in the numbers." %}</p>
+  </div>
+</section>
+<section class="steps">
+  <h2>{% trans "How it works" %}</h2>
+  <ol>
+    <li><strong>{% trans "Create an account" %}</strong><br><span class="muted">{% trans "With Google or email." %}</span></li>
+    <li><strong>{% trans "Register or join your team" %}</strong><br><span class="muted">{% trans "Mentors and coaches register the team (we verify them). Students join with an invite code." %}</span></li>
+    <li><strong>{% trans "Pick your events" %}</strong><br><span class="muted">{% trans "We load the events your team is registered for from The Blue Alliance." %}</span></li>
+    <li><strong>{% trans "Scout and plan" %}</strong><br><span class="muted">{% trans "Record matches, review stats, predict alliances and ask the assistant for tips." %}</span></li>
+  </ol>
+</section>
+{% endblock %}
+{% block content %}{% endblock %}

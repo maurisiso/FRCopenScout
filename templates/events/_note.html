@@ -1,0 +1,13 @@
+{% load i18n %}
+<div class="note">
+  <div class="meta">
+    <span class="badge {% if n.category == 'robot' or n.category == 'comms' %}red{% elif n.category == 'good' %}ok{% elif n.category == 'penalty' %}warn{% endif %}">{{ n.get_category_display }}</span>
+    {% if n.match_key %}<a href="{% url 'match_detail' team.number event.key n.match_key %}" class="mono">{{ n.match.label|default:n.match_key }}</a>{% endif %}
+    {% if n.about_team %}<a href="{% url 'event_team_detail' team.number event.key n.about_team %}">#{{ n.about_team }}</a>{% endif %}
+    <span>{{ n.author.name }} · {{ n.created_at|timesince }}</span>
+    {% if membership.is_admin or n.author_id == user.id %}
+    <form method="post" action="{% url 'note_delete' team.number event.key n.id %}" class="inline" style="margin-left:auto">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="linklike" title="{% trans 'Delete' %}">✕</button></form>
+    {% endif %}
+  </div>
+  <div class="text">{{ n.text }}</div>
+</div>

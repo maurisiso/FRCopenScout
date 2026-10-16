@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Not allowed" %}{% endblock %}
+{% block content %}
+<div class="card narrow" style="margin:40px auto;text-align:center">
+  <h1>{% trans "You don't have access to this page" %}</h1>
+  <p class="muted">{% trans "You may need a different role on this team, or an invite from one of its admins." %}</p>
+  <a class="btn" href="{% url 'dashboard' %}?all=1">{% trans "Back to my teams" %}</a>
+</div>
+{% endblock %}

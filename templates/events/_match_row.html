@@ -1,0 +1,19 @@
+{% load scout_tags %}
+<a class="match-row" href="{% url 'match_detail' team.number event.key m.key %}">
+  <span class="label">{{ m.label }}</span>
+  <span class="sides">
+    <span>{% for t in m.red_teams %}{% team_chip t "red" team.number %} {% endfor %}</span>
+    <span>{% for t in m.blue_teams %}{% team_chip t "blue" team.number %} {% endfor %}</span>
+  </span>
+  <span class="score">
+    {% if m.is_played %}
+      <span class="{% if m.winning_alliance == 'red' %}w{% endif %}" style="color:var(--red)">{{ m.red_score }}</span><br>
+      <span class="{% if m.winning_alliance == 'blue' %}w{% endif %}" style="color:var(--blue)">{{ m.blue_score }}</span>
+    {% elif m.pred_red_win_prob is not None %}
+      <small class="muted">{{ m.pred_red_win_prob|pct }}<br>{{ m.scheduled_time|date:"D H:i" }}</small>
+    {% else %}
+      <small class="muted">{{ m.scheduled_time|date:"D H:i" }}</small>
+    {% endif %}
+    {% if m.scouted %}<br><span class="badge ok">{{ m.scouted }}✓</span>{% endif %}
+  </span>
+</a>

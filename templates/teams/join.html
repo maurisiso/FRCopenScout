@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Join team" %}{% endblock %}
+{% block content %}
+<div class="card narrow" style="margin:40px auto;text-align:center">
+  <h1>{% blocktrans with n=invite.team.number %}Join team {{ n }}{% endblocktrans %}</h1>
+  <p>{{ invite.team.nickname }}</p>
+  <p class="muted">{% blocktrans with role=invite.get_role_display %}You will join as <strong>{{ role }}</strong>.{% endblocktrans %}</p>
+  <form method="post">{% csrf_token %}<button class="btn btn-lg">{% trans "Join team" %}</button></form>
+</div>
+{% endblock %}

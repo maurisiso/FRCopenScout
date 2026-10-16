@@ -1,0 +1,57 @@
+{% load static i18n %}<!doctype html>
+{% get_current_language as LANG %}
+<html lang="{{ LANG }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% block head_title %}{% endblock %}{% endblock %} · FRC Open Scout</title>
+  <link rel="icon" href="{% static 'img/icon.svg' %}" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#0e1726">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body data-auth="{% if user.is_authenticated %}1{% else %}0{% endif %}">
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="{% if user.is_authenticated %}{% url 'dashboard' %}?all=1{% else %}{% url 'home' %}{% endif %}">
+      <img src="{% static 'img/icon.svg' %}" alt=""> FRC Open Scout
+    </a>
+    <span class="offline-pill">{% trans "Offline" %}</span>
+    <button class="nav-toggle" data-toggle-nav aria-label="{% trans 'Menu' %}">☰</button>
+    <nav class="nav">
+      {% if user.is_authenticated %}
+        {% for m in nav_memberships %}
+          {% if m.team.is_approved %}<a href="{% url 'team_home' m.team.number %}" class="{% if current_team.pk == m.team.pk %}active{% endif %}">{% trans "Team" %} {{ m.team.number }}</a>{% endif %}
+        {% endfor %}
+        {% if user.is_staff %}<a href="{% url 'staff_approvals' %}">{% trans "Approvals" %}</a>{% endif %}
+        <a href="{% url 'profile' %}">{{ user.name }}</a>
+        <form method="post" action="{% url 'account_logout' %}" class="inline">{% csrf_token %}<button class="linklike" style="color:#cfd7e6;padding:6px 10px">{% trans "Sign out" %}</button></form>
+      {% else %}
+        <a href="{% url 'account_login' %}">{% trans "Sign in" %}</a>
+        <a href="{% url 'account_signup' %}" class="btn btn-sm">{% trans "Sign up" %}</a>
+      {% endif %}
+      <form action="{% url 'set_language' %}" method="post" class="lang-form inline">{% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+        <select name="language" onchange="this.form.submit()" aria-label="{% trans 'Language' %}">
+          {% get_available_languages as LANGUAGES %}
+          {% for code, name in LANGUAGES %}<option value="{{ code }}" {% if code == LANG %}selected{% endif %}>{{ code|upper }}</option>{% endfor %}
+        </select>
+      </form>
+    </nav>
+  </div>
+</header>
+{% block hero %}{% endblock %}
+<main class="container {% block container_class %}{% endblock %}">
+  {% if messages %}<ul class="messages">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer"><div class="container">
+  <span>FRC Open Scout — {% trans "free scouting for every team" %}</span>
+  <span>{% trans "Data:" %} <a href="https://www.thebluealliance.com" rel="noopener">The Blue Alliance</a> · <a href="https://www.statbotics.io" rel="noopener">Statbotics</a></span>
+</div></footer>
+<script src="{% static 'js/app.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

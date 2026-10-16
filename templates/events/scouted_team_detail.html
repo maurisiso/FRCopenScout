@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load i18n scout_tags %}
+{% block title %}{{ frc_number }} · {% trans "Team database" %}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="scouted" %}
+<div class="page-head"><div><h2 style="font-size:1.4rem;margin:0">{{ frc_number }} {{ frc.nickname }}</h2>
+  <div class="sub">{{ frc.city }}{% if frc.country %}, {{ frc.country }}{% endif %}{% if frc.rookie_year %} · {% trans "rookie year" %} {{ frc.rookie_year }}{% endif %}</div></div>
+  <a class="btn btn-sm btn-ghost" href="https://www.thebluealliance.com/team/{{ frc_number }}" target="_blank" rel="noopener">TBA ↗</a></div>
+{% for b in blocks %}
+<div class="card" style="margin-bottom:14px">
+  <div class="card-head"><h3><a href="{% url 'event_team_detail' team.number b.event.key frc_number %}">{{ b.event.name }}</a></h3><small class="muted">{{ b.event.start_date|date:"M Y" }}</small></div>
+  <div class="stats">
+    <div class="stat"><span class="v">{{ b.et.rank|default:"—" }}</span><span class="l">{% trans "Rank" %}</span></div>
+    <div class="stat"><span class="v">{{ b.et.epa_total|num }}</span><span class="l">EPA</span></div>
+    <div class="stat"><span class="v">{{ b.summary.points|num }}</span><span class="l">{% trans "Scouted pts" %}</span></div>
+    <div class="stat"><span class="v">{{ b.count }}</span><span class="l">{% trans "Match entries" %}</span></div>
+  </div>
+  {% if b.summary %}<p style="margin-top:10px;font-size:.88rem">{% for k, s in b.summary.fields.items %}{% if s.display %}<span class="badge" style="margin:2px">{{ s.label }}: {{ s.display }}</span>{% endif %}{% endfor %}</p>{% endif %}
+</div>
+{% empty %}<div class="card empty">{% trans "No scouting entries for this team yet." %}</div>{% endfor %}
+{% if notes %}
+<div class="card"><h3>{% trans "Notes" %}</h3>
+  {% for n in notes %}<div class="note"><div class="meta"><span class="badge">{{ n.get_category_display }}</span><span>{{ n.event.display_name }} · {{ n.match_key }}</span><span>{{ n.author.name }}</span></div><div class="text">{{ n.text }}</div></div>{% endfor %}
+</div>{% endif %}
+{% endblock %}

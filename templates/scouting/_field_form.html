@@ -1,0 +1,14 @@
+{% load i18n %}
+{{ form.non_field_errors }}
+<div class="form-grid">
+  <div class="form-row">{{ form.label.label_tag }}{{ form.label }}{{ form.label.errors }}</div>
+  <div class="form-row">{{ form.key.label_tag }}{{ form.key }}<span class="help">{% trans "Optional — generated from the label." %}</span>{{ form.key.errors }}</div>
+  <div class="form-row">{{ form.field_type.label_tag }}{{ form.field_type }}{{ form.field_type.errors }}</div>
+  <div class="form-row">{{ form.phase.label_tag }}{{ form.phase }}</div>
+  <div class="form-row">{{ form.min_value.label_tag }}{{ form.min_value }}</div>
+  <div class="form-row">{{ form.max_value.label_tag }}{{ form.max_value }}</div>
+  <div class="form-row">{{ form.points.label_tag }}{{ form.points }}<span class="help">{{ form.points.help_text }}</span></div>
+  <div class="form-row">{{ form.help_text.label_tag }}{{ form.help_text }}</div>
+</div>
+<div class="form-row">{{ form.options_text.label_tag }}{{ form.options_text }}{{ form.options_text.errors }}</div>
+<div class="form-row"><label class="row" style="font-weight:400">{{ form.required }} {{ form.required.label }}</label></div>

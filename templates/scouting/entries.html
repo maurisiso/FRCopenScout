@@ -1,0 +1,24 @@
+{% extends "events/_event_base.html" %}{% load i18n %}
+{% block event_content %}
+<div class="card">
+  <div class="card-head"><h2>{% trans "Scouting data" %} ({{ entries|length }})</h2>
+    <a class="btn btn-sm btn-ghost" href="?format=csv&team={{ team_filter }}&form={{ form_filter }}">⬇ CSV</a></div>
+  <form method="get" class="row" style="margin-bottom:10px">
+    <input type="number" name="team" value="{{ team_filter }}" placeholder="{% trans 'Team #' %}" style="width:110px">
+    <select name="form" style="width:auto"><option value="">{% trans "All forms" %}</option>{% for f in forms %}<option value="{{ f.id }}" {% if f.id|stringformat:"s" == form_filter %}selected{% endif %}>{{ f.name }}</option>{% endfor %}</select>
+    <button class="btn btn-sm btn-ghost">{% trans "Filter" %}</button>
+  </form>
+  {% if entries %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>{% trans "Match" %}</th><th>{% trans "Team" %}</th><th>{% trans "Form" %}</th><th>{% trans "Scout" %}</th><th>{% trans "Saved" %}</th><th>{% trans "Data" %}</th><th></th></tr></thead>
+    <tbody>{% for e in entries %}
+      <tr><td>{% if e.match %}<a href="{% url 'match_detail' team.number event.key e.match_key %}">{{ e.match.label }}</a>{% else %}{{ e.match_key|default:"—" }}{% endif %}</td>
+        <td><a href="{% url 'event_team_detail' team.number event.key e.scouted_team %}">{{ e.scouted_team }}</a>{% if e.alliance %} <span class="badge {{ e.alliance }}">{{ e.alliance }}</span>{% endif %}</td>
+        <td>{{ e.form.name }}</td><td>{{ e.scout.name }}</td>
+        <td>{{ e.recorded_at|default:e.created_at|date:"D H:i" }}{% if e.synced_offline %} <span class="badge warn" title="{% trans 'Recorded offline' %}">offline</span>{% endif %}</td>
+        <td class="wrap" style="max-width:380px;font-size:.82rem">{% for k, v in e.data.items %}{% if v is not None and v != "" %}<span class="muted">{{ k }}</span>={{ v }} {% endif %}{% endfor %}</td>
+        <td>{% if membership.is_admin or e.scout_id == user.id %}<form method="post" action="{% url 'entry_delete' team.number event.key e.id %}" class="inline" onsubmit="return confirm('{% trans "Delete this entry?" %}')">{% csrf_token %}<button class="linklike">✕</button></form>{% endif %}</td></tr>
+    {% endfor %}</tbody></table></div>
+  {% else %}<div class="empty">{% trans "No entries yet." %}</div>{% endif %}
+</div>
+{% endblock %}

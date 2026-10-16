@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{{ field.label }}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="forms" %}
+<div class="card narrow">
+  <p><a href="{% url 'form_edit' team.number sf.id %}">← {{ sf.name }}</a></p>
+  <h2>{% trans "Edit field" %}</h2>
+  <form method="post">{% csrf_token %}
+    {% include "scouting/_field_form.html" %}
+    <button class="btn">{% trans "Save" %}</button>
+  </form>
+</div>
+{% endblock %}

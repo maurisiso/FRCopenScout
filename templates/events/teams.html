@@ -1,0 +1,27 @@
+{% extends "events/_event_base.html" %}{% load i18n scout_tags %}
+{% block event_content %}
+{% if not sf %}<div class="callout info">{% trans "Create a match scouting form to see your own averages next to EPA." %}</div>{% endif %}
+<div class="card">
+  <div class="card-head"><h2>{% trans "Teams" %} ({{ rows|length }})</h2><small class="muted">{% trans "Click a column to sort." %}</small></div>
+  <div class="table-wrap"><table class="sortable">
+    <thead><tr>
+      <th>{% trans "Rank" %}</th><th>{% trans "Team" %}</th><th>{% trans "Record" %}</th>
+      <th class="num">EPA</th><th class="num">{% trans "Auto" %}</th><th class="num">{% trans "Teleop" %}</th><th class="num">{% trans "Endgame" %}</th><th class="num">OPR</th>
+      <th class="num">{% trans "Entries" %}</th><th class="num">{% trans "Scouted pts" %}</th>
+      {% for f in show_fields %}<th class="num" title="{{ f.label }}">{{ f.label|truncatechars:16 }}</th>{% endfor %}
+    </tr></thead>
+    <tbody>{% for r in rows %}
+      <tr class="{% if r.et.team.number == team.number %}us{% endif %}">
+        <td data-sort="{{ r.et.rank|default:'999' }}">{{ r.et.rank|default:"—" }}</td>
+        <td data-sort="{{ r.et.team.number }}"><a href="{% url 'event_team_detail' team.number event.key r.et.team.number %}"><strong>{{ r.et.team.number }}</strong></a> <small class="muted">{{ r.et.team.nickname|truncatechars:22 }}</small></td>
+        <td>{{ r.et.record }}</td>
+        <td class="num"><strong>{{ r.et.epa_total|num }}</strong></td>
+        <td class="num">{{ r.et.epa_auto|num }}</td><td class="num">{{ r.et.epa_teleop|num }}</td><td class="num">{{ r.et.epa_endgame|num }}</td>
+        <td class="num">{{ r.et.opr|num }}</td>
+        <td class="num">{{ r.n }}</td><td class="num">{{ r.points|num }}</td>
+        {% for c in r.cells %}<td class="num">{{ c|default:"—" }}</td>{% endfor %}
+      </tr>{% endfor %}
+    </tbody>
+  </table></div>
+</div>
+{% endblock %}

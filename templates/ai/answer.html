@@ -1,0 +1,10 @@
+{% load i18n %}
+<div class="ai-answer">{{ answer }}</div>
+<div class="ai-meta">
+  <span>{% trans "Source:" %} {{ provider }}</span>
+  <span id="fb-{{ q.id }}">
+    {% trans "Helpful?" %}
+    <button class="btn btn-sm btn-ghost" hx-post="{% url 'ai_feedback' team.number q.id %}" hx-vals='{"helpful": "1"}' hx-target="#fb-{{ q.id }}">👍</button>
+    <button class="btn btn-sm btn-ghost" hx-post="{% url 'ai_feedback' team.number q.id %}" hx-vals='{"helpful": "0"}' hx-target="#fb-{{ q.id }}">👎</button>
+  </span>
+</div>

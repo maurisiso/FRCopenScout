@@ -1,0 +1,60 @@
+{% extends "events/_event_base.html" %}{% load i18n scout_tags %}
+{% block event_content %}
+<div class="page-head">
+  <div><h2 style="font-size:1.4rem;margin:0">{{ frc_number }} {{ et.team.nickname }}{% if is_us %} <span class="badge admin">{% trans "us" %}</span>{% endif %}</h2>
+    <div class="sub">{% if et %}{% trans "Rank" %} {{ et.rank|default:"—" }} · {{ et.record }} · {{ et.team.city }}{% if et.team.country %}, {{ et.team.country }}{% endif %}{% else %}{% trans "Not on this event's team list" %}{% endif %}</div></div>
+  <div class="row">
+    <a class="btn btn-sm btn-ghost" href="{% url 'scouted_team_detail' team.number frc_number %}">{% trans "All events" %}</a>
+    <a class="btn btn-sm btn-ghost" href="https://www.statbotics.io/team/{{ frc_number }}" target="_blank" rel="noopener">Statbotics ↗</a>
+  </div>
+</div>
+<div class="card" style="margin-bottom:16px"><div class="stats">
+  <div class="stat"><span class="v">{{ et.epa_total|num }}</span><span class="l">EPA</span></div>
+  <div class="stat"><span class="v">{{ et.epa_auto|num }}</span><span class="l">{% trans "Auto" %}</span></div>
+  <div class="stat"><span class="v">{{ et.epa_teleop|num }}</span><span class="l">{% trans "Teleop" %}</span></div>
+  <div class="stat"><span class="v">{{ et.epa_endgame|num }}</span><span class="l">{% trans "Endgame" %}</span></div>
+  <div class="stat"><span class="v">{{ summary.points|num }}</span><span class="l">{% trans "Scouted pts" %}</span></div>
+  <div class="stat"><span class="v">{{ summary.n|default:0 }}</span><span class="l">{% trans "Entries" %}</span></div>
+</div></div>
+
+<div class="grid grid-2">
+  <div class="stack">
+    <div class="card">
+      <h3>{% trans "Scouting summary" %}</h3>
+      {% if field_rows %}
+      <div class="table-wrap"><table>
+        <thead><tr><th>{% trans "Field" %}</th><th class="num">{% trans "This team" %}</th><th class="num">{% trans "Event avg" %}</th><th></th></tr></thead>
+        <tbody>{% for r in field_rows %}{% if r.s.display %}
+          <tr><td class="wrap">{{ r.field.label }} <small class="muted">{{ r.field.get_phase_display }}</small></td>
+            <td class="num"><strong>{{ r.s.display }}</strong>{% if r.s.max is not None %} <small class="muted">({% trans "max" %} {{ r.s.max|floatformat:"-1" }})</small>{% endif %}</td>
+            <td class="num">{{ r.event_avg|default_if_none:"" }}</td>
+            <td style="min-width:90px">{% if r.event_avg and r.s.avg is not None %}<div class="bar"><span style="width:{% widthratio r.s.avg r.event_avg 50 %}%"></span></div>{% endif %}</td></tr>
+        {% endif %}{% endfor %}</tbody>
+      </table></div>
+      <small class="muted">{% trans "Bar: half-width = event average." %}</small>
+      {% else %}<div class="empty">{% trans "No scouting entries yet for this team." %}</div>{% endif %}
+    </div>
+    {% if match_entries %}
+    <div class="card">
+      <h3>{% trans "Scouted points by match" %}</h3>
+      <div class="trend">{% for e in match_entries reversed %}<div class="col" title="{{ e.match_key }}: {{ e.points }}"><small>{{ e.points|floatformat:0 }}</small><span class="b" style="height:{{ e.points|bar_width:max_points }}%"></span><small class="muted">{{ e.match.label|default:"?" }}</small></div>{% endfor %}</div>
+    </div>
+    {% endif %}
+    {% for p in pit %}
+    <div class="card"><h3>{% trans "Pit scouting" %} <small class="muted">— {{ p.scout.name }}</small></h3>
+      <table><tbody>{% for f in p.form.fields.all %}<tr><td>{{ f.label }}</td><td class="wrap">{{ p.data|get_item:f.key|default_if_none:"—" }}</td></tr>{% endfor %}</tbody></table></div>
+    {% endfor %}
+  </div>
+  <div class="stack">
+    {% include "ai/_ask_panel.html" with ai_kind="team" ai_team=frc_number ai_id="t" ai_placeholder=_("e.g. What should we practise? Is this a good pick for us?") %}
+    <div class="card">
+      <h3>{% trans "Matches" %}</h3>
+      <div class="match-list">{% for m in matches %}{% include "events/_match_row.html" %}{% empty %}<p class="muted">{% trans "No matches yet." %}</p>{% endfor %}</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>{% trans "Notes" %}</h3><a href="{% url 'event_notes' team.number event.key %}?about={{ frc_number }}">{% trans "Add" %} →</a></div>
+      {% for n in notes %}{% include "events/_note.html" %}{% empty %}<p class="muted">{% trans "No notes about this team." %}</p>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

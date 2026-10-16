@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="card ai-panel">
+  <div class="card-head"><h3>✨ {% trans "Ask the assistant" %}</h3></div>
+  <form hx-post="{% url 'ai_ask' team.number event.key %}" hx-target="#ai-result-{{ ai_id }}" hx-indicator="#ai-spin-{{ ai_id }}">
+    {% csrf_token %}
+    <input type="hidden" name="kind" value="{{ ai_kind }}">
+    {% if ai_match %}<input type="hidden" name="match_key" value="{{ ai_match }}">{% endif %}
+    {% if ai_team %}<input type="hidden" name="team" value="{{ ai_team }}">{% endif %}
+    <textarea name="question" placeholder="{{ ai_placeholder }}"></textarea>
+    <div class="row" style="margin-top:8px">
+      <button class="btn btn-sm">{% trans "Ask" %}</button>
+      <span id="ai-spin-{{ ai_id }}" class="htmx-indicator"><span class="spinner"></span></span>
+      <small class="muted">{% trans "Leave empty for general tips." %}</small>
+    </div>
+  </form>
+  <div id="ai-result-{{ ai_id }}"></div>
+</div>

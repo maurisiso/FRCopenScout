@@ -1,0 +1,59 @@
+{% load i18n scout_tags %}
+<div class="card" id="sim">
+  <form hx-post="{% url 'alliance_sim' team.number event.key %}" hx-target="#sim" hx-swap="outerHTML">
+    {% csrf_token %}
+    <input type="hidden" name="actions" value="{{ sim.actions_json }}">
+    <input type="hidden" name="num" value="{{ sim.num }}">
+    <input type="hidden" name="rounds" value="{{ sim.rounds }}">
+    <input type="hidden" name="prediction_id" value="{{ sim.prediction_id|default:'' }}">
+    <div class="card-head"><h2>{% trans "Your own prediction" %}</h2>
+      <div class="row">
+        <button class="btn btn-sm btn-ghost" name="op" value="undo">↶ {% trans "Undo" %}</button>
+        <button class="btn btn-sm btn-ghost" name="op" value="reset">{% trans "Reset" %}</button>
+      </div>
+    </div>
+    {% if sim.error %}<div class="callout">{{ sim.error }}</div>{% endif %}
+    <div class="board" style="margin-bottom:12px">
+      {% for a in sim.board %}
+      <div class="al {% if a.current %}current{% endif %} {% if team.number in a.teams %}us{% endif %}">
+        <h4>{% trans "Alliance" %} {{ forloop.counter }}</h4>
+        {% for t in a.teams %}<div class="slot {% if forloop.first %}captain{% endif %}"><span>{{ t }}</span><small class="muted">#{{ sim.rank_of|get_item:t }}</small></div>{% endfor %}
+        {% for i in a.empty %}<div class="slot empty">—</div>{% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    {% if sim.sel.is_complete %}
+      <div class="callout info">{% trans "Selection complete." %} {% trans "Backup pool:" %} {{ sim.sel.backup_pool|join:", "|default:"—" }}</div>
+    {% else %}
+      <div class="row" style="margin-bottom:8px">
+        <strong>{% blocktrans with a=sim.sel.current_alliance|add:1 r=sim.sel.current_round %}Alliance {{ a }} is picking (round {{ r }}){% endblocktrans %}</strong>
+        <span class="spacer"></span>
+        <select name="mode" style="width:auto"><option value="pick">{% trans "Click = pick" %}</option><option value="decline">{% trans "Click = declines invite" %}</option></select>
+      </div>
+      <div class="pick-pool">
+        {% for t in sim.available %}
+          <button class="btn btn-sm btn-ghost {% if t in sim.lower_captains %}captain{% endif %}" name="team" value="{{ t }}" title="{% trans 'Rank' %} {{ sim.rank_of|get_item:t }} · {% trans 'score' %} {{ sim.scores|get_item:t|num }}">{{ t }}</button>
+        {% endfor %}
+      </div>
+      <small class="muted">{% trans "Orange border = a lower captain (picking them promotes the alliances below). Teams that decline can't be picked later but can still become captains." %}</small>
+      <div class="row" style="margin-top:10px">
+        <button class="btn btn-sm btn-ghost" name="op" value="auto">{% trans "Auto-pick next" %}</button>
+        <button class="btn btn-sm btn-ghost" name="op" value="auto_all">{% trans "Auto-complete" %}</button>
+      </div>
+    {% endif %}
+    {% if sim.sel.declined %}<p class="muted" style="font-size:.85rem;margin-top:8px">{% trans "Declined:" %} {{ sim.sel.declined|join:", " }}</p>{% endif %}
+    <details style="margin-top:12px">
+      <summary>{% trans "Use my own ranking order" %}</summary>
+      <p class="muted" style="font-size:.85rem">{% trans "Predict the final rankings yourself: list team numbers in order (rank 1 first). Changing this restarts the selection." %}</p>
+      <textarea name="rankings" rows="3">{{ sim.rankings_text }}</textarea>
+      <div class="row" style="margin-top:6px"><button class="btn btn-sm btn-ghost" name="op" value="reset">{% trans "Apply order" %}</button><button class="btn btn-sm btn-ghost" name="op" value="reset_rankings">{% trans "Back to official order" %}</button></div>
+    </details>
+    {% if membership.can_scout %}
+    <div class="row" style="margin-top:12px">
+      <input type="text" name="name" value="{{ sim.name }}" placeholder="{% trans 'Prediction name' %}" style="max-width:240px">
+      <button class="btn btn-sm" name="op" value="save">{% trans "Save" %}</button>
+      {% if sim.saved_msg %}<span class="badge ok">{{ sim.saved_msg }}</span>{% endif %}
+    </div>
+    {% endif %}
+  </form>
+</div>

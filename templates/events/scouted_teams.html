@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Team database" %} · {{ team.number }}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="scouted" %}
+<div class="card">
+  <div class="card-head"><h2>{% trans "Every team you've scouted" %}</h2>
+    <form method="get" class="row"><input type="text" name="q" value="{{ q }}" placeholder="{% trans 'Search number or name' %}"></form></div>
+  {% if rows %}
+  <div class="table-wrap"><table class="sortable">
+    <thead><tr><th>{% trans "Team" %}</th><th class="num">{% trans "Entries" %}</th><th class="num">{% trans "Events" %}</th><th class="num">{% trans "Notes" %}</th><th>{% trans "Last scouted" %}</th></tr></thead>
+    <tbody>{% for r in rows %}
+      <tr><td data-sort="{{ r.scouted_team }}"><a href="{% url 'scouted_team_detail' team.number r.scouted_team %}"><strong>{{ r.scouted_team }}</strong></a> <small class="muted">{{ r.name }}</small></td>
+        <td class="num">{{ r.n }}</td><td class="num">{{ r.events }}</td><td class="num">{{ r.notes }}</td><td>{{ r.last|date:"SHORT_DATE_FORMAT" }}</td></tr>
+    {% endfor %}</tbody></table></div>
+  {% else %}<div class="empty">{% trans "Nothing scouted yet. Entries from every event you attend collect here." %}</div>{% endif %}
+</div>
+{% endblock %}

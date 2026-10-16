@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Offline" %}{% endblock %}
+{% block content %}
+<div class="card narrow" style="margin:40px auto;text-align:center">
+  <h1>{% trans "You're offline" %}</h1>
+  <p class="muted">{% trans "This page hasn't been saved on this device yet. Pages you opened while online (including scouting forms) still work offline, and saved scouting entries will upload automatically when you reconnect." %}</p>
+  <button class="btn" onclick="history.back()">{% trans "Go back" %}</button>
+</div>
+{% endblock %}

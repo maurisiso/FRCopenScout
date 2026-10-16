@@ -1,0 +1,5 @@
+Django>=5.2,<5.3
+django-allauth[socialaccount]>=65.3,<66
+requests>=2.31
+python-dotenv>=1.0
+polib>=1.2  # compiles translations without needing GNU gettext on Windows

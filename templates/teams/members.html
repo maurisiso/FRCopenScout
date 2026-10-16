@@ -1,0 +1,53 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Members" %} · {{ team.number }}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="members" %}
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><h2>{% trans "Members" %} ({{ members|length }})</h2></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>{% trans "Name" %}</th><th>{% trans "Role" %}</th><th></th></tr></thead>
+      <tbody>
+      {% for m in members %}
+        <tr>
+          <td>{{ m.user.name }}<br><small class="muted">{{ m.user.email }}</small></td>
+          <td>
+            <form method="post" action="{% url 'team_change_role' team.number m.id %}" class="inline">{% csrf_token %}
+              <select name="role" onchange="this.form.submit()" style="width:auto">
+                {% for v, l in role_choices %}<option value="{{ v }}" {% if v == m.role %}selected{% endif %}>{{ l }}</option>{% endfor %}
+              </select>
+            </form>
+          </td>
+          <td>{% if m.user_id != user.id %}
+            <form method="post" action="{% url 'team_remove_member' team.number m.id %}" class="inline" onsubmit="return confirm('{% trans "Remove this member from the team?" %}')">{% csrf_token %}
+              <button class="btn btn-sm btn-ghost">{% trans "Remove" %}</button></form>{% else %}<small class="muted">{% trans "you" %}</small>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+    <p class="muted" style="margin-top:12px;font-size:.85rem">{% trans "Admin: manage members, forms and events. Scout: record scouting data and notes. Viewer: read-only." %}</p>
+  </div>
+  <div class="card">
+    <h2>{% trans "Invite people" %}</h2>
+    {% if not team.is_approved %}<div class="callout">{% trans "You can invite members once your team is approved." %}</div>{% endif %}
+    <form method="post">{% csrf_token %}
+      <div class="form-grid">
+        {% for field in invite_form %}<div class="form-row">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}
+      </div>
+      <button class="btn" {% if not team.is_approved %}disabled{% endif %}>{% trans "Create invite code" %}</button>
+    </form>
+    {% if invites %}
+    <h3 style="margin-top:20px">{% trans "Active invites" %}</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>{% trans "Code" %}</th><th>{% trans "Role" %}</th><th>{% trans "Uses" %}</th><th>{% trans "Expires" %}</th><th></th></tr></thead>
+      <tbody>{% for i in invites %}
+        <tr>
+          <td><code style="font-size:1.05rem">{{ i.code }}</code> <button class="btn btn-sm btn-ghost" data-copy="{{ join_base }}{{ i.code }}/" title="{% trans 'Copy link' %}">🔗</button></td>
+          <td>{{ i.get_role_display }}</td><td>{{ i.uses }}/{{ i.max_uses }}</td><td>{{ i.expires_at|date:"SHORT_DATE_FORMAT" }}</td>
+          <td><form method="post" action="{% url 'team_revoke_invite' team.number i.id %}" class="inline">{% csrf_token %}<button class="btn btn-sm btn-ghost">{% trans "Revoke" %}</button></form></td>
+        </tr>{% endfor %}
+      </tbody></table></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "events/_event_base.html" %}{% load i18n scout_tags %}
+{% block event_content %}
+<div class="page-head">
+  <div><h2 style="font-size:1.4rem;margin:0">{{ match.label }}{% if ours %} · <span class="badge {{ ours }}">{% trans "We are" %} {{ ours }}</span>{% endif %}</h2>
+    <div class="sub">{% if match.is_played %}{% trans "Final" %}: <strong style="color:var(--red)">{{ match.red_score }}</strong> – <strong style="color:var(--blue)">{{ match.blue_score }}</strong>{% else %}{{ match.scheduled_time|date:"D H:i" }}{% endif %}
+      {% if match.pred_red_win_prob is not None %} · Statbotics: {% trans "red wins" %} {{ match.pred_red_win_prob|pct }}{% endif %}</div></div>
+  {% if match_form and membership.can_scout %}<a class="btn btn-sm btn-ghost" href="{% url 'scout_page' team.number event.key match_form.id %}?match={{ match.key }}">📋 {% trans "Scout this match" %}</a>{% endif %}
+</div>
+<div class="grid grid-2" style="margin-bottom:16px">
+  <div class="alliance-box red">
+    <h3><span>{% trans "Red" %}</span><span class="mono">EPA {{ red_epa|num }}{% if match.pred_red_score %} · pred {{ match.pred_red_score|num:0 }}{% endif %}</span></h3>
+    {% include "events/_alliance_table.html" with rows=red color="red" %}
+  </div>
+  <div class="alliance-box blue">
+    <h3><span>{% trans "Blue" %}</span><span class="mono">EPA {{ blue_epa|num }}{% if match.pred_blue_score %} · pred {{ match.pred_blue_score|num:0 }}{% endif %}</span></h3>
+    {% include "events/_alliance_table.html" with rows=blue color="blue" %}
+  </div>
+</div>
+<div class="grid grid-2">
+  <div class="stack">
+    {% include "ai/_ask_panel.html" with ai_kind="match" ai_match=match.key ai_id="m" ai_placeholder=_("e.g. Who should play defense? How do we beat blue's endgame?") %}
+    {% if entries %}
+    <div class="card"><h3>{% trans "Scouting entries for this match" %}</h3>
+      <ul>{% for e in entries %}<li><a href="{% url 'event_team_detail' team.number event.key e.scouted_team %}">{{ e.scouted_team }}</a> — {{ e.scout.name }} <small class="muted">{{ e.form.name }}</small></li>{% endfor %}</ul></div>
+    {% endif %}
+  </div>
+  <div class="card">
+    <h3>{% trans "Match notes" %}</h3>
+    {% for n in notes %}{% include "events/_note.html" %}{% empty %}<p class="muted">{% trans "No notes yet." %}</p>{% endfor %}
+    {% if membership.can_scout %}
+    <hr>
+    <form method="post">{% csrf_token %}
+      <input type="hidden" name="match_key" value="{{ match.key }}">
+      <div class="form-grid">
+        <div class="form-row"><label>{% trans "About team #" %}</label>
+          <select name="about_team"><option value="">—</option>{% for t in match.all_teams %}<option value="{{ t }}" {% if note_form.about_team.value|stringformat:"s" == t|stringformat:"s" %}selected{% endif %}>{{ t }}</option>{% endfor %}</select></div>
+        <div class="form-row">{{ note_form.category.label_tag }}{{ note_form.category }}</div>
+      </div>
+      <div class="form-row">{{ note_form.text.label_tag }}{{ note_form.text }}{{ note_form.text.errors }}</div>
+      <button class="btn btn-sm">{% trans "Add note" %}</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "events/_event_base.html" %}{% load i18n scout_tags %}
+{% block event_content %}
+{% if not prediction %}
+  <div class="card empty">{% trans "We need this event's team list before we can predict alliances." %}</div>
+{% else %}
+{% if rank_source == "epa" %}<div class="callout">{% trans "No official rankings yet, so teams are ordered by EPA. Treat this as a rough preview." %}</div>
+{% elif not quals_done %}<div class="callout info">{% trans "Qualifications are still running: this uses the current rankings and will change." %}</div>{% endif %}
+
+<div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(260px,1fr);margin-bottom:16px">
+  <div class="card">
+    <div class="card-head"><h2>{% trans "Automatic prediction" %}</h2>
+      <form method="get" class="row" style="font-size:.85rem">
+        <label>{% trans "Alliances" %} <input type="number" name="alliances" min="2" max="8" value="{{ num }}" style="width:64px"></label>
+        <label>{% trans "Picks" %} <input type="number" name="rounds" min="1" max="3" value="{{ rounds }}" style="width:56px"></label>
+        <button class="btn btn-sm btn-ghost">{% trans "Update" %}</button>
+      </form>
+    </div>
+    <div class="board">
+      {% for a in prediction.alliances %}
+      <div class="al {% if team.number in a %}us{% endif %}">
+        <h4>{% trans "Alliance" %} {{ forloop.counter }}</h4>
+        {% for t in a %}<div class="slot {% if forloop.first %}captain{% endif %}"><a href="{% url 'event_team_detail' team.number event.key t %}">{{ t }}</a><small class="muted">{{ scores|get_item:t|num }}</small></div>{% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    <p class="muted" style="margin-top:10px;font-size:.85rem">{% trans "Backup pool:" %} {{ prediction.backup_pool|join:", "|default:"—" }}</p>
+  </div>
+  <div class="stack">
+    <div class="card">
+      <h3>{% trans "Where we land" %}</h3>
+      {% if our_place %}
+        <div class="stat"><span class="v">{% trans "Alliance" %} {{ our_place.alliance }}</span>
+        <span class="l">{% if our_place.slot == 0 %}{% trans "as captain" %}{% elif our_place.slot == 1 %}{% trans "first pick" %}{% elif our_place.slot == 2 %}{% trans "second pick" %}{% else %}{% trans "third pick" %}{% endif %}</span></div>
+      {% else %}
+        <p>{% blocktrans with n=team.number %}In this prediction {{ n }} is not picked.{% endblocktrans %}</p>
+        <p class="muted">{% trans "Use the simulator below to explore other outcomes, and check 'Our robot' for ways to improve your numbers." %}</p>
+      {% endif %}
+    </div>
+    <div class="card">
+      <h3>{% trans "How the prediction works" %}</h3>
+      <p class="muted" style="font-size:.88rem">{% blocktrans trimmed %}
+      The top {{ num }} ranked teams start as captains. In serpentine order (1→{{ num }}, then {{ num }}→1) each captain picks the
+      highest-scoring available team. Score = Statbotics EPA, blended 60/40 with your scouted points when you have at least 3 entries for a team.
+      If a captain is picked, alliances below move up and the next-ranked team becomes the last captain. Everyone accepts.
+      {% endblocktrans %}</p>
+    </div>
+  </div>
+</div>
+
+{% if official %}
+<div class="card" style="margin-bottom:16px">
+  <h2>{% trans "Official alliances (TBA)" %}</h2>
+  <div class="board">{% for a in official %}<div class="al {% if team.number in a.picks %}us{% endif %}"><h4>{% trans "Alliance" %} {{ a.number }}</h4>
+    {% for t in a.picks %}<div class="slot {% if forloop.first %}captain{% endif %}">{{ t }}</div>{% endfor %}
+    {% if a.declines %}<small class="muted">{% trans "Declined:" %} {{ a.declines|join:", " }}</small>{% endif %}</div>{% endfor %}</div>
+</div>
+{% endif %}
+
+<div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(240px,1fr)">
+  {% include "events/_alliance_sim.html" %}
+  <div class="card">
+    <h3>{% trans "Saved predictions" %}</h3>
+    {% for p in saved %}
+      <div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)">
+        <span><strong>{{ p.name }}</strong><br><small class="muted">{{ p.author.name }} · {{ p.updated_at|timesince }}</small></span>
+        <span class="row">
+          <button class="btn btn-sm btn-ghost" hx-post="{% url 'alliance_sim' team.number event.key %}" hx-vals='{"op": "load", "load_id": "{{ p.id }}"}' hx-target="#sim" hx-swap="outerHTML">{% trans "Open" %}</button>
+          {% if membership.can_scout %}<form method="post" action="{% url 'prediction_delete' team.number event.key p.id %}" class="inline">{% csrf_token %}<button class="linklike" title="{% trans 'Delete' %}">✕</button></form>{% endif %}
+        </span>
+      </div>
+    {% empty %}<p class="muted">{% trans "Nothing saved yet." %}</p>{% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Waiting for approval" %}{% endblock %}
+{% block content %}
+<div class="card narrow" style="margin:40px auto;text-align:center">
+  <h1>{% blocktrans with n=team.number %}Team {{ n }} is waiting for approval{% endblocktrans %}</h1>
+  {% if team.status == "rejected" %}
+    <p class="muted">{% trans "This team's registration was not approved. Check your profile for the reviewer's note, or send a new request with more details." %}</p>
+    <a class="btn" href="{% url 'team_register' %}">{% trans "Send a new request" %}</a>
+  {% else %}
+    <p class="muted">{% trans "Our staff verify that every team admin is a real mentor or coach. You'll get access as soon as it's approved, usually within a day." %}</p>
+  {% endif %}
+  <p><a href="{% url 'profile' %}">{% trans "View my requests" %}</a></p>
+</div>
+{% endblock %}

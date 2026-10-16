@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Scouting forms" %}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="forms" %}
+<div class="card">
+  <div class="card-head"><h2>{% trans "Scouting forms" %}</h2>{% if membership.is_admin %}<a class="btn btn-sm" href="{% url 'form_create' team.number %}">+ {% trans "New form" %}</a>{% endif %}</div>
+  <p class="muted">{% trans "Design what your scouts record for this season's game. Match forms are filled once per robot per match; pit forms once per robot per event." %}</p>
+  {% for f in forms %}
+    <div class="row" style="padding:10px 0;border-top:1px solid var(--line)">
+      <div style="flex:1"><strong>{{ f.name }}</strong> {% if not f.is_active %}<span class="badge">{% trans "inactive" %}</span>{% endif %}<br>
+        <small class="muted">{{ f.get_kind_display }} · {{ f.season }} · {% blocktrans count n=f.fields.count %}{{ n }} field{% plural %}{{ n }} fields{% endblocktrans %}</small></div>
+      {% if membership.is_admin %}<a class="btn btn-sm btn-ghost" href="{% url 'form_edit' team.number f.id %}">{% trans "Edit" %}</a>{% endif %}
+    </div>
+  {% empty %}
+    <div class="empty">{% trans "No forms yet." %}{% if membership.is_admin %}<br><a class="btn" href="{% url 'form_create' team.number %}">{% trans "Create your first form" %}</a>{% endif %}</div>
+  {% endfor %}
+</div>
+{% endblock %}

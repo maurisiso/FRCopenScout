@@ -1,0 +1,45 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block title %}{% trans "Scout" %} · {{ event.display_name }}{% endblock %}
+{% block content %}
+<div class="scout-shell" id="scout-root" data-sync-url="{% url 'scouting_sync_api' %}" data-csrf="{{ csrf_token }}">
+  <div class="scout-top">
+    <div class="row">
+      <a href="{% url 'event_overview' team.number event.key %}" class="muted">←</a>
+      <strong>{{ sf.name }}</strong><span class="muted">· {{ event.display_name }}</span>
+    </div>
+    <div class="sync-bar" style="margin-top:6px">
+      <span class="badge"><span id="pending-count">0</span> {% trans "pending" %}</span>
+      <span id="sync-status" class="sync-status"></span>
+      <span class="spacer"></span>
+      <button type="button" id="sync-now" class="btn btn-sm btn-ghost">⟳ {% trans "Sync" %}</button>
+    </div>
+    <div id="outbox" class="outbox" hidden><ul id="outbox-list"></ul></div>
+  </div>
+
+  <form id="sf-form" novalidate>
+    <section class="sf-phase">
+      {% if sf.kind == "match" %}
+      <div class="form-grid">
+        <div class="form-row"><label for="sf-station">{% trans "My station" %}</label>
+          <select id="sf-station"><option value="">{% trans "Any (choose robot)" %}</option>
+            <option value="red1">{% trans "Red" %} 1</option><option value="red2">{% trans "Red" %} 2</option><option value="red3">{% trans "Red" %} 3</option>
+            <option value="blue1">{% trans "Blue" %} 1</option><option value="blue2">{% trans "Blue" %} 2</option><option value="blue3">{% trans "Blue" %} 3</option></select></div>
+        <div class="form-row"><label for="sf-match">{% trans "Match" %}</label><select id="sf-match"><option value="">—</option></select></div>
+      </div>
+      <div id="sf-robots" class="robots"></div>
+      {% endif %}
+      <div class="form-row" style="margin-top:10px"><label for="sf-team">{% trans "Team number" %}</label>
+        <input id="sf-team" type="number" inputmode="numeric" list="sf-team-list" placeholder="1234">
+        <datalist id="sf-team-list">{% for t in payload.teams %}<option value="{{ t }}">{% endfor %}</datalist></div>
+    </section>
+    <div id="sf-fields"></div>
+    <div id="sf-errors" class="callout" hidden></div>
+    <div class="sf-submit"><button class="btn btn-lg btn-block" type="submit">💾 {% trans "Save entry" %}</button></div>
+  </form>
+  <div id="sf-flash" class="sf-flash" hidden></div>
+  <noscript><div class="callout">{% trans "JavaScript is required for the scouting form." %}</div></noscript>
+</div>
+{{ payload|json_script:"scout-data" }}
+
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/scout.js' %}"></script>{% endblock %}

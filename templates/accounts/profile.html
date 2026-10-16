@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "My profile" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{{ user.name }}</h1><div class="sub">{{ user.email }}</div></div></div>
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><h2>{% trans "My teams" %}</h2><a class="btn btn-sm btn-ghost" href="{% url 'dashboard' %}?all=1">{% trans "Join or register a team" %}</a></div>
+    {% if memberships %}
+    <div class="table-wrap"><table>
+      <thead><tr><th>{% trans "Team" %}</th><th>{% trans "Role" %}</th><th>{% trans "Status" %}</th><th>{% trans "Joined" %}</th><th></th></tr></thead>
+      <tbody>{% for m in memberships %}
+        <tr>
+          <td><a href="{% url 'team_home' m.team.number %}"><strong>{{ m.team.number }}</strong> {{ m.team.nickname }}</a></td>
+          <td><span class="badge {% if m.is_admin %}admin{% endif %}">{{ m.get_role_display }}</span></td>
+          <td>{% if m.team.is_approved %}<span class="badge ok">{% trans "Active" %}</span>{% else %}<span class="badge warn">{{ m.team.get_status_display }}</span>{% endif %}</td>
+          <td>{{ m.joined_at|date:"SHORT_DATE_FORMAT" }}</td>
+          <td><form method="post" action="{% url 'team_leave' m.team.number %}" class="inline" onsubmit="return confirm('{% trans "Leave this team?" %}')">{% csrf_token %}<button class="btn btn-sm btn-ghost">{% trans "Leave" %}</button></form></td>
+        </tr>{% endfor %}
+      </tbody></table></div>
+    {% else %}<div class="empty">{% trans "You are not on any team yet." %}</div>{% endif %}
+    {% if claims %}
+      <h3 style="margin-top:18px">{% trans "Team admin requests" %}</h3>
+      <ul>{% for c in claims %}<li>{{ c.team.number }} — <span class="badge {% if c.status == 'approved' %}ok{% elif c.status == 'rejected' %}red{% else %}warn{% endif %}">{{ c.get_status_display }}</span> <small class="muted">{{ c.created_at|date:"SHORT_DATE_FORMAT" }}{% if c.reviewer_note %} · {{ c.reviewer_note }}{% endif %}</small></li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+  <div class="card">
+    <h2>{% trans "Profile" %}</h2>
+    <form method="post">{% csrf_token %}
+      {% for field in form %}<div class="form-row">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}
+      <button class="btn">{% trans "Save" %}</button>
+      <a class="btn btn-ghost" href="{% url 'account_change_password' %}">{% trans "Change password" %}</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

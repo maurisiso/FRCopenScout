@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="event-head">
+  <div>
+    <div class="muted" style="font-size:.85rem">{% trans "Team" %}</div>
+    <h1>{{ team.number }} <span class="muted" style="font-weight:500">{{ team.nickname }}</span></h1>
+  </div>
+  <span class="badge {% if membership.is_admin %}admin{% endif %}">{{ membership.get_role_display }}</span>
+</div>
+<nav class="tabs">
+  <a href="{% url 'team_home' team.number %}" class="{% if team_tab == 'home' %}active{% endif %}">{% trans "Events" %}</a>
+  <a href="{% url 'form_list' team.number %}" class="{% if team_tab == 'forms' %}active{% endif %}">{% trans "Scouting forms" %}</a>
+  <a href="{% url 'scouted_teams' team.number %}" class="{% if team_tab == 'scouted' %}active{% endif %}">{% trans "Team database" %}</a>
+  {% if membership.is_admin %}<a href="{% url 'team_members' team.number %}" class="{% if team_tab == 'members' %}active{% endif %}">{% trans "Members" %}</a>{% endif %}
+</nav>

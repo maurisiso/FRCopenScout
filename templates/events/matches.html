@@ -1,0 +1,10 @@
+{% extends "events/_event_base.html" %}{% load i18n %}
+{% block event_content %}
+<div class="row" style="margin-bottom:12px">
+  <a class="btn btn-sm {% if only_ours %}btn-ghost{% endif %}" href="?">{% trans "All matches" %}</a>
+  <a class="btn btn-sm {% if not only_ours %}btn-ghost{% endif %}" href="?ours=1">{% blocktrans with n=team.number %}Only {{ n }}{% endblocktrans %}</a>
+  <span class="spacer"></span><small class="muted">{% trans "✓ = entries your scouts recorded" %}</small>
+</div>
+{% if matches %}<div class="match-list">{% for m in matches %}{% include "events/_match_row.html" %}{% endfor %}</div>
+{% else %}<div class="card empty">{% trans "The match schedule hasn't been published yet." %}</div>{% endif %}
+{% endblock %}

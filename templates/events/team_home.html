@@ -1,0 +1,62 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Team" %} {{ team.number }}{% endblock %}
+{% block content %}
+{% include "teams/_team_nav.html" with team_tab="home" %}
+<div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(260px,1fr)">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <h2>{% blocktrans %}Events in {{ season }}{% endblocktrans %}</h2>
+        <form method="get" class="row"><select name="season" onchange="this.form.submit()" style="width:auto">{% for s in seasons %}<option {% if s == season %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></form>
+      </div>
+      {% if tracked %}
+      <div class="match-list">
+        {% for t in tracked %}
+        <a class="match-row" href="{% url 'event_overview' team.number t.event.key %}" style="grid-template-columns:1fr auto">
+          <div>
+            <strong>{{ t.event.name }}</strong>
+            <div class="muted" style="font-size:.85rem">{{ t.event.start_date|date:"M j" }}–{{ t.event.end_date|date:"M j, Y" }} · {{ t.event.city }}{% if t.event.state_prov %}, {{ t.event.state_prov }}{% endif %} · <span class="mono">{{ t.event.key }}</span>
+              {% if t.event.is_demo %}<span class="badge warn">demo</span>{% endif %}
+              {% if t.source == "manual" %}<span class="badge">{% trans "added manually" %}</span>{% endif %}</div>
+          </div>
+          <div class="muted" style="text-align:right;font-size:.85rem">{% blocktrans count n=t.entry_count %}{{ n }} entry{% plural %}{{ n }} entries{% endblocktrans %} →</div>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty">
+        {% trans "No events yet for this season." %}<br>
+        {% if membership.is_admin %}{% trans "Load your registered events from The Blue Alliance, or add an event by its key." %}{% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="stack">
+    {% if membership.is_admin %}
+    <div class="card">
+      <h3>{% trans "Load events" %}</h3>
+      {% if not tba_configured %}<div class="callout">{% trans "TBA_API_KEY is not set in .env, so events can't be loaded yet." %}</div>{% endif %}
+      <form method="post" action="{% url 'team_sync_events' team.number %}?season={{ season }}">{% csrf_token %}
+        <button class="btn btn-block" {% if not tba_configured %}disabled{% endif %}>{% blocktrans %}Load my {{ season }} events from TBA{% endblocktrans %}</button>
+      </form>
+      <div class="divider">{% trans "or add any event" %}</div>
+      <form method="post" action="{% url 'team_add_event' team.number %}" class="row">{% csrf_token %}
+        <input type="text" name="event_key" placeholder="2026mxmo" style="flex:1" required>
+        <button class="btn btn-ghost">{% trans "Add" %}</button>
+      </form>
+      <small class="muted">{% trans "Event keys are on each event's TBA page URL." %}</small>
+    </div>
+    {% endif %}
+    <div class="card">
+      <h3>{% trans "Scouting forms" %}</h3>
+      {% for f in forms %}<div class="row" style="justify-content:space-between;padding:4px 0"><span>{{ f.name }}</span><span class="badge">{{ f.get_kind_display|truncatewords:2 }}</span></div>
+      {% empty %}<p class="muted">{% trans "No forms yet. Scouts need a form before they can record data." %}</p>{% endfor %}
+      <a class="btn btn-sm btn-ghost" href="{% url 'form_list' team.number %}" style="margin-top:8px">{% trans "Manage forms" %}</a>
+    </div>
+    <div class="card"><div class="stats">
+      <div class="stat"><span class="v">{{ member_count }}</span><span class="l">{% trans "Members" %}</span></div>
+      <div class="stat"><span class="v">{{ tracked|length }}</span><span class="l">{% trans "Events" %}</span></div>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

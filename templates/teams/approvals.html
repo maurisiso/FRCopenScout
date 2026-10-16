@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Team approvals" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% trans "Team admin approvals" %}</h1><div class="sub">{% trans "Verify that each person is really a mentor or coach of the team before approving." %}</div></div>
+  <div class="row">{% for s in stats %}<span class="badge">{{ s.status }}: {{ s.n }}</span>{% endfor %}</div></div>
+{% for c in pending %}
+<div class="card" style="margin-bottom:14px">
+  <div class="card-head"><h2>{% trans "Team" %} {{ c.team.number }} {{ c.team.nickname }}</h2><span class="badge warn">{{ c.team.get_status_display }}</span></div>
+  <div class="grid grid-2">
+    <div>
+      <p><strong>{{ c.full_name }}</strong> · {{ c.get_position_display }}<br><span class="muted">{{ c.user.email }} · {% trans "signed up" %} {{ c.user.date_joined|date:"SHORT_DATE_FORMAT" }}</span></p>
+      <p class="note text">{{ c.evidence }}</p>
+      <p><a href="https://www.thebluealliance.com/team/{{ c.team.number }}" target="_blank" rel="noopener">TBA ↗</a> ·
+         <a href="https://frc-events.firstinspires.org/team/{{ c.team.number }}" target="_blank" rel="noopener">FRC Events ↗</a></p>
+    </div>
+    <div>
+      <p class="muted">{% trans "Existing admins:" %} {% for m in c.existing_admins %}{{ m.user.email }}{% if not forloop.last %}, {% endif %}{% empty %}{% trans "none" %}{% endfor %}</p>
+      <form method="post">{% csrf_token %}<input type="hidden" name="claim_id" value="{{ c.id }}">
+        <div class="form-row"><label>{% trans "Note to the user (optional)" %}</label><input type="text" name="note"></div>
+        <button class="btn" name="decision" value="approve">{% trans "Approve" %}</button>
+        <button class="btn btn-ghost" name="decision" value="reject">{% trans "Reject" %}</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% empty %}
+<div class="card empty">{% trans "No pending requests. 🎉" %}</div>
+{% endfor %}
+{% if recent %}
+<div class="card" style="margin-top:20px"><h2>{% trans "Recently reviewed" %}</h2>
+<div class="table-wrap"><table><tbody>{% for c in recent %}<tr><td>{{ c.team.number }}</td><td>{{ c.user.email }}</td><td>{{ c.get_status_display }}</td><td>{{ c.reviewed_by.email }}</td><td>{{ c.reviewed_at|date:"SHORT_DATETIME_FORMAT" }}</td></tr>{% endfor %}</tbody></table></div></div>
+{% endif %}
+{% endblock %}
