@@ -61,6 +61,9 @@ def parse_event(data):
         "end_date": _date(data.get("end_date")),
         "week": data.get("week"),
         "district_key": dig(data, "district.key", default="") or "",
+        "playoff_type": data.get("playoff_type"),
+        "webcasts": data.get("webcasts") or [],
+        "website": (data.get("website") or "")[:200],
     }
 
 
@@ -92,6 +95,8 @@ def parse_match(data):
         "scheduled_time": _ts(data.get("time")),
         "predicted_time": _ts(data.get("predicted_time")),
         "actual_time": _ts(data.get("actual_time")),
+        "score_breakdown": data.get("score_breakdown"),
+        "videos": data.get("videos") or [],
     }
 
 
@@ -112,12 +117,41 @@ def parse_rankings(data):
     return out
 
 
+# Statbotics v3 shape (team_event / team_year):
+#   {"epa": {"total_points": 41.2, "norm": 1712, "breakdown": {"total_points": 41.2, "auto_points": ...,
+#            "teleop_points": ..., "endgame_points": ..., <game-specific components>},
+#            "stats": {"start": ..., "pre_elim": ..., "mean": ..., "max": ...}}, "record": {...}}
+# Older responses used {"total_points": {"mean": ..}}, so we keep fallbacks.
 def parse_statbotics_team_event(data):
+    breakdown = dig(data, "epa.breakdown", default={}) or {}
     return {
-        "epa_total": dig(data, "epa.breakdown.total_points", "epa.total_points.mean", "epa.mean", "epa_end"),
+        "epa_total": dig(data, "epa.breakdown.total_points", "epa.total_points.mean", "epa.total_points", "epa_end"),
         "epa_auto": dig(data, "epa.breakdown.auto_points", "auto_epa_end"),
         "epa_teleop": dig(data, "epa.breakdown.teleop_points", "teleop_epa_end"),
         "epa_endgame": dig(data, "epa.breakdown.endgame_points", "endgame_epa_end"),
+        "epa_start": dig(data, "epa.stats.start"),
+        "epa_norm": dig(data, "epa.norm"),
+        "epa_breakdown": {k: round(v, 2) for k, v in breakdown.items() if isinstance(v, (int, float))},
+    }
+
+
+def parse_statbotics_team_year(data):
+    breakdown = dig(data, "epa.breakdown", default={}) or {}
+    rec = dig(data, "record", default={}) or {}
+    return {
+        "epa": dig(data, "epa.breakdown.total_points", "epa.total_points.mean", "epa.total_points"),
+        "epa_norm": dig(data, "epa.norm"),
+        "epa_breakdown": {k: round(v, 2) for k, v in breakdown.items() if isinstance(v, (int, float))},
+        "world_rank": dig(data, "epa.ranks.total.rank"),
+        "world_percentile": dig(data, "epa.ranks.total.percentile"),
+        "world_count": dig(data, "epa.ranks.total.team_count"),
+        "country_rank": dig(data, "epa.ranks.country.rank"),
+        "country_count": dig(data, "epa.ranks.country.team_count"),
+        "district_rank": dig(data, "epa.ranks.district.rank"),
+        "district_count": dig(data, "epa.ranks.district.team_count"),
+        "wins": rec.get("wins") or 0,
+        "losses": rec.get("losses") or 0,
+        "ties": rec.get("ties") or 0,
     }
 
 

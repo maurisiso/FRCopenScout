@@ -13,6 +13,7 @@
   <div class="stat"><span class="v">{{ et.epa_auto|num }}</span><span class="l">{% trans "Auto" %}</span></div>
   <div class="stat"><span class="v">{{ et.epa_teleop|num }}</span><span class="l">{% trans "Teleop" %}</span></div>
   <div class="stat"><span class="v">{{ et.epa_endgame|num }}</span><span class="l">{% trans "Endgame" %}</span></div>
+  {% if et.epa_start is not None %}<div class="stat"><span class="v">{{ et.epa_start|num }}</span><span class="l">{% trans "EPA before event" %}</span></div>{% endif %}
   <div class="stat"><span class="v">{{ summary.points|num }}</span><span class="l">{% trans "Scouted pts" %}</span></div>
   <div class="stat"><span class="v">{{ summary.n|default:0 }}</span><span class="l">{% trans "Entries" %}</span></div>
 </div></div>
@@ -38,6 +39,14 @@
     <div class="card">
       <h3>{% trans "Scouted points by match" %}</h3>
       <div class="trend">{% for e in match_entries reversed %}<div class="col" title="{{ e.match_key }}: {{ e.points }}"><small>{{ e.points|floatformat:0 }}</small><span class="b" style="height:{{ e.points|bar_width:max_points }}%"></span><small class="muted">{{ e.match.label|default:"?" }}</small></div>{% endfor %}</div>
+    </div>
+    {% endif %}
+    {% if breakdown %}
+    <div class="card">
+      <div class="card-head"><h3>{% trans "EPA breakdown (Statbotics)" %}</h3><small class="muted">{% trans "Game-specific points per match" %}</small></div>
+      <div class="table-wrap"><table><tbody>
+        {% for k, v in breakdown %}<tr><td>{{ k|pretty_key }}</td><td class="num"><strong>{{ v|num:2 }}</strong></td></tr>{% endfor %}
+      </tbody></table></div>
     </div>
     {% endif %}
     {% for p in pit %}

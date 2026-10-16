@@ -34,7 +34,9 @@ def _team_block(et, summaries, notes_by_team):
         "rank": et.rank,
         "record": et.record,
         "ranking_score": et.ranking_score,
-        "epa": {"total": et.epa_total, "auto": et.epa_auto, "teleop": et.epa_teleop, "endgame": et.epa_endgame},
+        "epa": {"total": et.epa_total, "auto": et.epa_auto, "teleop": et.epa_teleop, "endgame": et.epa_endgame,
+                "before_event": et.epa_start},
+        "epa_breakdown": et.epa_breakdown or {},
         "opr": et.opr,
         "scouting": None if not s else {
             "entries": s["n"],

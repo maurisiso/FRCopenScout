@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from . import parsing
 from .clients import APIError, StatboticsClient, TBAClient
-from .models import Event, EventAlliance, EventTeam, FRCTeam, Match
+from .models import Event, EventAlliance, EventTeam, FRCTeam, Match, TeamSeason
 
 log = logging.getLogger("frcdata")
 
@@ -38,6 +38,19 @@ def sync_team_events(team_number, year, tba=None):
         EventTeam.objects.get_or_create(event=event, team=frc_team)
         events.append(event)
     return events
+
+
+def sync_team_season(team_number, year, statbotics=None):
+    """Whole-season Statbotics stats (EPA, world/country rank) for one team. Returns TeamSeason or None."""
+    statbotics = statbotics or StatboticsClient()
+    data = statbotics.team_year(team_number, year)
+    if not data:
+        return None
+    frc_team = get_or_create_frc_team(team_number)
+    season, _ = TeamSeason.objects.update_or_create(
+        team=frc_team, year=year, defaults={**parsing.parse_statbotics_team_year(data), "raw": data}
+    )
+    return season
 
 
 def is_stale(event):

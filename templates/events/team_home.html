@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "base.html" %}{% load i18n scout_tags %}
 {% block title %}{% trans "Team" %} {{ team.number }}{% endblock %}
 {% block content %}
 {% include "teams/_team_nav.html" with team_tab="home" %}
@@ -32,6 +32,18 @@
     </div>
   </div>
   <div class="stack">
+    <div class="card">
+      <div class="card-head"><h3>{% blocktrans %}Season {{ season }}{% endblocktrans %}</h3><a href="https://www.statbotics.io/team/{{ team.number }}/{{ season }}" target="_blank" rel="noopener" class="muted" style="font-size:.8rem">Statbotics ↗</a></div>
+      {% if season_stats %}
+      <div class="stats">
+        <div class="stat"><span class="v">{{ season_stats.epa|num }}</span><span class="l">EPA</span></div>
+        <div class="stat"><span class="v">{{ season_stats.record }}</span><span class="l">{% trans "Record" %}</span></div>
+        {% if season_stats.world_rank %}<div class="stat"><span class="v">#{{ season_stats.world_rank }}</span><span class="l">{% trans "World" %} / {{ season_stats.world_count }}</span></div>{% endif %}
+        {% if season_stats.country_rank %}<div class="stat"><span class="v">#{{ season_stats.country_rank }}</span><span class="l">{% trans "Country" %} / {{ season_stats.country_count }}</span></div>{% endif %}
+        {% if season_stats.district_rank %}<div class="stat"><span class="v">#{{ season_stats.district_rank }}</span><span class="l">{% trans "District" %} / {{ season_stats.district_count }}</span></div>{% endif %}
+      </div>
+      {% else %}<p class="muted" style="font-size:.88rem">{% trans "No Statbotics data for this season yet." %}</p>{% endif %}
+    </div>
     {% if membership.is_admin %}
     <div class="card">
       <h3>{% trans "Load events" %}</h3>

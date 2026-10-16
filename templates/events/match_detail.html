@@ -19,6 +19,18 @@
 <div class="grid grid-2">
   <div class="stack">
     {% include "ai/_ask_panel.html" with ai_kind="match" ai_match=match.key ai_id="m" ai_placeholder=_("e.g. Who should play defense? How do we beat blue's endgame?") %}
+    {% if breakdown_rows %}
+    <div class="card">
+      <details>
+        <summary><strong>{% trans "Official score breakdown (TBA)" %}</strong></summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>{% trans "Field" %}</th><th class="num" style="color:var(--red)">{% trans "Red" %}</th><th class="num" style="color:var(--blue)">{% trans "Blue" %}</th></tr></thead>
+          <tbody>{% for k, r, b in breakdown_rows %}<tr><td class="wrap">{{ k|pretty_key }}</td><td class="num">{{ r }}</td><td class="num">{{ b }}</td></tr>{% endfor %}</tbody>
+        </table></div>
+      </details>
+    </div>
+    {% endif %}
+    {% if match.videos %}<div class="card"><h3>{% trans "Video" %}</h3>{% for v in match.videos %}{% with u=v|youtube_url %}{% if u %}<a class="btn btn-sm btn-ghost" href="{{ u }}" target="_blank" rel="noopener">▶ YouTube</a> {% endif %}{% endwith %}{% endfor %}</div>{% endif %}
     {% if entries %}
     <div class="card"><h3>{% trans "Scouting entries for this match" %}</h3>
       <ul>{% for e in entries %}<li><a href="{% url 'event_team_detail' team.number event.key e.scouted_team %}">{{ e.scouted_team }}</a> — {{ e.scout.name }} <small class="muted">{{ e.form.name }}</small></li>{% endfor %}</ul></div>

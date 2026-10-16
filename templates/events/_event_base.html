@@ -8,6 +8,8 @@
     <div class="muted" style="font-size:.85rem">{{ event.start_date|date:"M j" }}–{{ event.end_date|date:"M j, Y" }}{% if event.last_synced_at %} · {% blocktrans with t=event.last_synced_at|timesince %}updated {{ t }} ago{% endblocktrans %}{% endif %}</div>
   </div>
   <div class="row">
+    {% for name, url in event.webcast_links %}<a class="btn btn-sm btn-ghost" href="{{ url }}" target="_blank" rel="noopener">▶ {{ name }}</a>{% endfor %}
+    <a class="btn btn-sm btn-ghost" href="https://www.thebluealliance.com/event/{{ event.key }}" target="_blank" rel="noopener">TBA ↗</a>
     {% if not event.is_demo %}
     <form method="post" action="{% url 'event_sync' team.number event.key %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn btn-sm btn-ghost">⟳ {% trans "Refresh data" %}</button></form>
     {% endif %}

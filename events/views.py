@@ -1,16 +1,18 @@
 import json
 import re
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Count, Max
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from frcdata.clients import APIError
-from frcdata.models import Event, EventTeam, FRCTeam, Match
-from frcdata.sync import refresh_if_stale, sync_event, sync_team_events
+from frcdata.models import Event, EventTeam, FRCTeam, Match, TeamSeason
+from frcdata.sync import refresh_if_stale, sync_event, sync_team_events, sync_team_season
 from scouting.forms import MatchNoteForm
 from scouting.models import MatchNote, ScoutEntry, ScoutingForm
 from scouting.stats import entry_points, event_field_averages, team_summaries
@@ -43,12 +45,25 @@ def team_home(request, team, membership):
         t.entry_count = entry_counts.get(t.event_id, 0)
     seasons = sorted({settings.DEFAULT_SEASON, season, *TrackedEvent.objects.filter(team=team)
                       .values_list("event__year", flat=True)}, reverse=True)
+    season_stats = _season_stats(team.number, season)
     return render(request, "events/team_home.html", {
         "team": team, "membership": membership, "tracked": tracked, "season": season, "seasons": seasons,
         "forms": team.scouting_forms.filter(is_active=True),
         "member_count": team.memberships.count(),
         "tba_configured": bool(settings.TBA_API_KEY),
+        "season_stats": season_stats,
     })
+
+
+def _season_stats(number, season):
+    """Statbotics season stats; refreshed at most every 6 hours. Never raises."""
+    obj = TeamSeason.objects.filter(team__number=number, year=season).first()
+    if obj and timezone.now() - obj.synced_at < timedelta(hours=6):
+        return obj
+    try:
+        return sync_team_season(number, season) or obj
+    except APIError:
+        return obj
 
 
 @require_POST
@@ -62,6 +77,10 @@ def sync_team(request, team, membership):
         return redirect(f"/t/{team.number}/?season={season}")
     for e in events:
         TrackedEvent.objects.get_or_create(team=team, event=e, defaults={"source": TrackedEvent.Source.TBA})
+    try:
+        sync_team_season(team.number, season)
+    except APIError:
+        pass
     messages.success(request, _("Found %(n)d events for %(season)s on The Blue Alliance.") % {"n": len(events), "season": season})
     return redirect(f"/t/{team.number}/?season={season}")
 
@@ -191,11 +210,15 @@ def event_team_detail(request, team, membership, event_key, frc_number):
         for f in fields:
             s = summary["fields"].get(f.key, {})
             field_rows.append({"field": f, "s": s, "event_avg": averages.get(f.key)})
+    core = {"total_points", "auto_points", "teleop_points", "endgame_points"}
+    breakdown = []
+    if et and et.epa_breakdown:
+        breakdown = [(k, v) for k, v in et.epa_breakdown.items() if k not in core]
     return render(request, "events/team_detail.html", _ctx(
         team, membership, event, "us" if frc_number == team.number else "teams", et=et, frc_number=frc_number, summary=summary, field_rows=field_rows,
         match_entries=match_entries, pit=pit, matches=matches, notes=notes,
         max_points=max([e.points for e in match_entries if e.points is not None], default=0),
-        is_us=frc_number == team.number,
+        is_us=frc_number == team.number, breakdown=breakdown,
     ))
 
 
@@ -250,11 +273,26 @@ def match_detail(request, team, membership, event_key, match_key):
         form = MatchNoteForm(initial={"match_key": match.key, "about_team": team.number if team.number in match.all_teams else None})
     entries = ScoutEntry.objects.filter(team=team, event=event, match_key=match.key).select_related("scout", "form")
     return render(request, "events/match_detail.html", _ctx(
-        team, membership, event, "matches", match=match, red=red, blue=blue,
+        team, membership, event, "matches", breakdown_rows=_breakdown_rows(match.score_breakdown), match=match, red=red, blue=blue,
         red_epa=total(red, "epa_total"), blue_epa=total(blue, "epa_total"),
         notes=match.notes.select_related("author").filter(team=team), note_form=form, entries=entries,
         ours=match.alliance_of(team.number), match_form=_match_form(team, event),
     ))
+
+
+def _breakdown_rows(breakdown):
+    """TBA score breakdown -> [(field, red, blue)] for every simple value both alliances have."""
+    if not breakdown or not isinstance(breakdown.get("red"), dict):
+        return []
+    red, blue = breakdown["red"], breakdown.get("blue") or {}
+    rows = []
+    for key, rv in red.items():
+        bv = blue.get(key)
+        if isinstance(rv, (int, float, str, bool)) and isinstance(bv, (int, float, str, bool)) and len(str(rv)) < 30:
+            rows.append((key, rv, bv))
+    # Points first, then everything else
+    rows.sort(key=lambda r: (0 if "points" in r[0].lower() else 1, r[0]))
+    return rows
 
 
 # --- Notes ------------------------------------------------------------------

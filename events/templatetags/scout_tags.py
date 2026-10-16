@@ -1,3 +1,5 @@
+import re
+
 from django import template
 from django.utils.html import format_html
 
@@ -44,3 +46,18 @@ def bar_width(value, maximum):
         return max(0, min(100, round(float(value) / float(maximum) * 100)))
     except (TypeError, ValueError, ZeroDivisionError):
         return 0
+
+
+@register.filter
+def pretty_key(key):
+    """'auto_fuel_points' -> 'Auto fuel points'"""
+    text = str(key).replace("_", " ").strip()
+    text = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", text)  # camelCase -> camel Case (TBA breakdowns)
+    return text[:1].upper() + text[1:].lower() if text else text
+
+
+@register.filter
+def youtube_url(video):
+    if isinstance(video, dict) and video.get("type") == "youtube" and video.get("key"):
+        return f"https://www.youtube.com/watch?v={video['key']}"
+    return ""

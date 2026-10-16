@@ -7,6 +7,7 @@ It combines public data from **The Blue Alliance (TBA)** and **Statbotics** with
 
 ## Features
 
+- **Light and dark mode:** follows the device by default; the 🖥️/🌙/☀️ button in the top bar switches it.
 - **Accounts:** email sign-up, plus Google sign-in once you add OAuth keys. English and Spanish, with English as the default.
 - **Teams:** mentors and coaches request to manage a team, and platform staff verify them on `/staff/approvals/`.
   - Roles are **Admin / Scout / Viewer**.
@@ -68,7 +69,16 @@ Go to **Team 9999 → Demo Regional**. Running the command again resets the demo
 2. Restart the server. On your team page, click **Load my 2026 events from TBA**, or add any event by its key (for example `2025mxmo`).
 3. You can also sync from the command line: `python manage.py sync_event 2025txhou`.
 
-Statbotics needs no key.
+Statbotics needs no key; it is read through the official [`statbotics`](https://github.com/avgupta456/statbotics) Python package.
+
+Useful commands:
+
+```powershell
+python manage.py check_apis --team 1234 --event 2025mxmo   # verifies keys, Google config and live API formats
+python manage.py refresh_events --loop 300                 # during a regional: re-sync live events every 5 min
+```
+
+What gets imported: from TBA, events (with webcasts), team lists, the full match schedule with official score breakdowns and videos, rankings, OPR and official alliances (ETag caching keeps repeat requests cheap). From Statbotics, each team's EPA at the event (total, auto, teleop, endgame, pre-event EPA and the game-specific breakdown), match win predictions, and your team's season EPA with world and country rank.
 
 ### Google sign-in (optional)
 

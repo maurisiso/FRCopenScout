@@ -11,7 +11,22 @@ def home(request):
     return render(request, "home.html")
 
 
-SW_VERSION = "v1"
+import hashlib
+
+
+def _static_version(paths):
+    """Hash of the cached static files: any CSS/JS change gives a new service-worker version,
+    so phones drop their old cached copies automatically."""
+    h = hashlib.sha1()
+    for rel in paths:
+        found = finders.find(rel)
+        if found:
+            with open(found, "rb") as fh:
+                h.update(fh.read())
+    return h.hexdigest()[:10]
+
+
+STATIC_FILES = ["css/app.css", "js/htmx.min.js", "js/app.js", "js/scout.js", "img/icon.svg", "js/sw.js"]
 
 
 def service_worker(request):
@@ -26,7 +41,7 @@ def service_worker(request):
         static("js/scout.js"),
         static("img/icon.svg"),
     ]
-    body = body.replace("__PRECACHE__", json.dumps(precache)).replace("__VERSION__", SW_VERSION)
+    body = body.replace("__PRECACHE__", json.dumps(precache)).replace("__VERSION__", _static_version(STATIC_FILES))
     resp = HttpResponse(body, content_type="application/javascript")
     resp["Service-Worker-Allowed"] = "/"
     resp["Cache-Control"] = "no-cache"

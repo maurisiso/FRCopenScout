@@ -91,7 +91,7 @@ def main():
         entry.obsolete = False
     for key, entry in existing.items():
         if key not in found:
-            entry.obsolete = True
+            po.remove(entry)  # text no longer used anywhere
 
     missing = [e.msgid for e in po if not e.obsolete and not e.translated()]
     if "--check" in sys.argv:

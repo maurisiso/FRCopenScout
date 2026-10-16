@@ -18,7 +18,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from events.models import TrackedEvent
-from frcdata.models import Event, EventTeam, FRCTeam, Match
+from frcdata.models import Event, EventTeam, FRCTeam, Match, TeamSeason
 from scouting.models import FormField, MatchNote, ScoutEntry, ScoutingForm
 from scouting.templates_starter import STARTER_MATCH_FIELDS, STARTER_PIT_FIELDS
 from teams.models import Membership, Role, Team
@@ -103,6 +103,16 @@ class Command(BaseCommand):
             if i <= played_n:
                 rs = max(0, round(rnd.gauss(exp_r, 14)))
                 bs = max(0, round(rnd.gauss(exp_b, 14)))
+
+                def fake_breakdown(total, side):
+                    auto = round(sum(strength[t]["auto"] for t in side) * rnd.uniform(.8, 1.2))
+                    end = round(sum(strength[t]["endgame"] for t in side) * rnd.uniform(.7, 1.2))
+                    foul = rnd.choice([0, 0, 0, 2, 5])
+                    return {"autoPoints": auto, "teleopPoints": max(0, total - auto - end - foul), "endGamePoints": end,
+                            "foulPoints": foul, "foulCount": foul // 2, "totalPoints": total,
+                            "energizedBonusAchieved": total > 90, "traversalBonusAchieved": end > 20}
+
+                m.score_breakdown = {"red": fake_breakdown(rs, red), "blue": fake_breakdown(bs, blue)}
                 m.red_score, m.blue_score = rs, bs
                 m.winning_alliance = "red" if rs > bs else "blue" if bs > rs else ""
                 m.actual_time = m.scheduled_time
@@ -129,7 +139,16 @@ class Command(BaseCommand):
                 ranking_score=round(rp[n] / mp, 2) if mp else None,
                 epa_total=noise(s["total"]), epa_auto=noise(s["auto"]), epa_teleop=noise(s["teleop"]),
                 epa_endgame=noise(s["endgame"]), opr=noise(s["total"] * 1.05),
+                epa_start=noise(s["total"] * 0.9), epa_norm=round(1500 + (s["total"] - 30) * 12),
+                epa_breakdown={"auto_fuel": round(s["auto"] / 3, 2), "auto_tower": round(s["auto"] / 4, 2),
+                               "teleop_fuel": round(s["teleop"] / 2.5, 2), "endgame_tower": round(s["endgame"], 2),
+                               "energized_rp": round(min(1, s["total"] / 60), 2), "traversal_rp": round(min(1, s["endgame"] / 12), 2)},
             )
+
+        s = strength[our]
+        TeamSeason.objects.update_or_create(team=FRCTeam.objects.get(number=our), year=2026, defaults={
+            "epa": round(s["total"], 1), "world_rank": 1200, "world_count": 3600, "world_percentile": 0.67,
+            "country_rank": 18, "country_count": 90, "wins": 14, "losses": 10, "ties": 0})
 
         # Scouting forms + entries
         ScoutEntry.objects.filter(team=team, event=event).delete()

@@ -476,7 +476,7 @@ msgstr ""
 msgid "FRC team number"
 msgstr "Número de equipo FRC"
 
-#: templates/events/team_detail.html
+#: templates/events/match_detail.html templates/events/team_detail.html
 msgid "Field"
 msgstr "Campo"
 
@@ -1103,7 +1103,8 @@ msgstr "Resultados recientes"
 msgid "Recently reviewed"
 msgstr "Revisadas recientemente"
 
-#: templates/events/overview.html templates/events/teams.html
+#: templates/events/overview.html templates/events/team_home.html
+#: templates/events/teams.html
 msgid "Record"
 msgstr "Récord"
 
@@ -1889,8 +1890,54 @@ msgstr ""
 msgid "updated %(t)s ago"
 msgstr "actualizado hace %(t)s"
 
-#~ msgid "ago"
-#~ msgstr ""
+#: templates/events/team_home.html
+msgid "Country"
+msgstr "País"
 
-#~ msgid "updated"
-#~ msgstr ""
+#: templates/events/team_home.html
+msgid "District"
+msgstr "Distrito"
+
+#: templates/events/team_detail.html
+msgid "EPA before event"
+msgstr "EPA antes del evento"
+
+#: templates/events/team_detail.html
+msgid "EPA breakdown (Statbotics)"
+msgstr "Desglose de EPA (Statbotics)"
+
+#: templates/events/team_detail.html
+msgid "Game-specific points per match"
+msgstr "Puntos por partido según el juego"
+
+#: templates/events/team_home.html
+msgid "No Statbotics data for this season yet."
+msgstr "Aún no hay datos de Statbotics para esta temporada."
+
+#: templates/events/match_detail.html
+msgid "Official score breakdown (TBA)"
+msgstr "Desglose oficial del marcador (TBA)"
+
+#: templates/events/team_home.html
+msgid "Season %(season)s"
+msgstr "Temporada %(season)s"
+
+#: templates/base.html
+msgid "Theme: automatic"
+msgstr "Tema: automático"
+
+#: templates/base.html
+msgid "Theme: dark"
+msgstr "Tema: oscuro"
+
+#: templates/base.html
+msgid "Theme: light"
+msgstr "Tema: claro"
+
+#: templates/events/match_detail.html
+msgid "Video"
+msgstr "Video"
+
+#: templates/events/team_home.html
+msgid "World"
+msgstr "Mundial"

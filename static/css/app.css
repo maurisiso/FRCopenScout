@@ -17,20 +17,33 @@
   --warn: #b46b00;
   --warn-soft: #fff3dc;
   --danger: #c0262d;
+  --purple: #6a3fd1;
+  --purple-soft: #ede4ff;
+  --topbar-line: transparent;
   --radius: 10px;
   --shadow: 0 1px 2px rgba(14, 23, 38, .06), 0 4px 14px rgba(14, 23, 38, .05);
   --mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color-scheme: light;
 }
+/* Dark theme: follows the device setting ("auto"), unless the user picked light/dark with the toggle. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0b1120; --surface: #121a2b; --surface-2: #1a2438; --ink: #e7ecf5; --muted: #98a3b8;
     --line: #26314a; --brand: #5b8cff; --red: #ff5b6e; --red-soft: #3a1820; --blue: #5b9bff; --blue-soft: #14264a;
     --ok: #3ccf8e; --ok-soft: #10301f; --warn: #f0b04a; --warn-soft: #33270f; --danger: #ff6b6b;
+    --purple: #b79cff; --purple-soft: #2a2148; --topbar-line: #1f2a40;
     --shadow: 0 1px 2px rgba(0,0,0,.4);
     color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+    --bg: #0b1120; --surface: #121a2b; --surface-2: #1a2438; --ink: #e7ecf5; --muted: #98a3b8;
+    --line: #26314a; --brand: #5b8cff; --red: #ff5b6e; --red-soft: #3a1820; --blue: #5b9bff; --blue-soft: #14264a;
+    --ok: #3ccf8e; --ok-soft: #10301f; --warn: #f0b04a; --warn-soft: #33270f; --danger: #ff6b6b;
+    --purple: #b79cff; --purple-soft: #2a2148; --topbar-line: #1f2a40;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+    color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -46,7 +59,9 @@ small, .muted { color: var(--muted); }
 hr { border: 0; border-top: 1px solid var(--line); margin: 1.2rem 0; }
 
 /* ---------- Layout ---------- */
-.topbar { position: sticky; top: 0; z-index: 20; background: #0e1726; color: #fff; }
+.topbar { position: sticky; top: 0; z-index: 20; background: #0e1726; color: #fff; border-bottom: 1px solid var(--topbar-line); }
+.theme-toggle { background: transparent; border: 1px solid rgba(255,255,255,.25); color: #cfd7e6; border-radius: 6px; padding: 3px 8px; font-size: .95rem; cursor: pointer; line-height: 1.3; }
+.theme-toggle:hover { background: rgba(255,255,255,.1); color: #fff; }
 .topbar-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 10px 16px; }
 .brand { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 700; letter-spacing: .01em; }
 .brand:hover { text-decoration: none; }
@@ -135,7 +150,7 @@ td.wrap { white-space: normal; }
 .badge.blue { background: var(--blue-soft); color: var(--blue); }
 .badge.ok { background: var(--ok-soft); color: var(--ok); }
 .badge.warn { background: var(--warn-soft); color: var(--warn); }
-.badge.admin { background: #ede4ff; color: #6a3fd1; }
+.badge.admin { background: var(--purple-soft); color: var(--purple); }
 .team-chip { display: inline-block; font-family: var(--mono); font-weight: 600; padding: 1px 6px; border-radius: 5px; }
 .team-chip.red { background: var(--red-soft); color: var(--red); }
 .team-chip.blue { background: var(--blue-soft); color: var(--blue); }

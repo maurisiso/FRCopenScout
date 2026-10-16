@@ -11,6 +11,30 @@
     }
   }
 
+  // Theme toggle: automatic (follow device) -> dark -> light -> automatic. Saved per device.
+  const THEMES = ["auto", "dark", "light"];
+  const ICONS = { auto: "🖥️", dark: "🌙", light: "☀️" };
+  function currentTheme() {
+    try { return localStorage.getItem("theme") || "auto"; } catch (e) { return "auto"; }
+  }
+  function applyTheme(theme) {
+    if (theme === "auto") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+    document.querySelectorAll("[data-theme-toggle]").forEach((b) => {
+      b.textContent = ICONS[theme];
+      const label = b.dataset["label" + theme.charAt(0).toUpperCase() + theme.slice(1)];
+      b.title = label; b.setAttribute("aria-label", label);
+    });
+  }
+  applyTheme(currentTheme());
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-theme-toggle]");
+    if (!b) return;
+    const next = THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length];
+    try { next === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", next); } catch (err) {}
+    applyTheme(next);
+  });
+
   // Online/offline indicator
   function updateNet() {
     document.body.classList.toggle("is-offline", !navigator.onLine);

@@ -42,6 +42,9 @@ class Event(models.Model):
     end_date = models.DateField(null=True, blank=True)
     week = models.IntegerField(null=True, blank=True)
     district_key = models.CharField(max_length=32, blank=True)
+    playoff_type = models.IntegerField(null=True, blank=True)  # TBA PlayoffType (10 = double elimination)
+    webcasts = models.JSONField(default=list, blank=True)  # [{"type": "twitch", "channel": "..."}]
+    website = models.URLField(blank=True)
     is_demo = models.BooleanField(default=False, help_text="Fake event created by `seed_demo` (never synced).")
     last_synced_at = models.DateTimeField(null=True, blank=True)
     sync_error = models.TextField(blank=True)
@@ -56,6 +59,19 @@ class Event(models.Model):
     @property
     def display_name(self):
         return self.short_name or self.name
+
+    @property
+    def webcast_links(self):
+        out = []
+        for w in self.webcasts or []:
+            t, ch = w.get("type"), w.get("channel")
+            if t == "twitch":
+                out.append(("Twitch", f"https://www.twitch.tv/{ch}"))
+            elif t == "youtube":
+                out.append(("YouTube", f"https://www.youtube.com/watch?v={ch}"))
+            elif ch and str(ch).startswith("http"):
+                out.append((t or "Stream", ch))
+        return out
 
     @property
     def is_championship_division(self):
@@ -84,6 +100,10 @@ class EventTeam(models.Model):
     epa_auto = models.FloatField(null=True, blank=True)
     epa_teleop = models.FloatField(null=True, blank=True)
     epa_endgame = models.FloatField(null=True, blank=True)
+    epa_start = models.FloatField(null=True, blank=True, help_text="EPA before the event started")
+    epa_norm = models.FloatField(null=True, blank=True, help_text="Normalized EPA (1500 = average, comparable across years)")
+    # Game-specific EPA components from Statbotics, e.g. {"auto_fuel": 4.1, "endgame_tower": 6.0, ...}
+    epa_breakdown = models.JSONField(default=dict, blank=True)
     # TBA OPR (offensive power rating), a classic alternative metric
     opr = models.FloatField(null=True, blank=True)
     statbotics_raw = models.JSONField(default=dict, blank=True)
@@ -119,6 +139,9 @@ class Match(models.Model):
     pred_red_win_prob = models.FloatField(null=True, blank=True)
     pred_red_score = models.FloatField(null=True, blank=True)
     pred_blue_score = models.FloatField(null=True, blank=True)
+    # Full TBA score breakdown ({"red": {...}, "blue": {...}}) and video links
+    score_breakdown = models.JSONField(null=True, blank=True)
+    videos = models.JSONField(default=list, blank=True)
 
     class Meta:
         ordering = ["sort_order"]
@@ -170,3 +193,35 @@ class EventAlliance(models.Model):
     class Meta:
         unique_together = [("event", "number")]
         ordering = ["number"]
+
+
+class TeamSeason(models.Model):
+    """A team's whole-season stats from Statbotics (EPA, world/country rank, record)."""
+
+    team = models.ForeignKey(FRCTeam, on_delete=models.CASCADE, related_name="seasons")
+    year = models.PositiveIntegerField()
+    epa = models.FloatField(null=True, blank=True)
+    epa_norm = models.FloatField(null=True, blank=True)
+    epa_breakdown = models.JSONField(default=dict, blank=True)
+    world_rank = models.PositiveIntegerField(null=True, blank=True)
+    world_percentile = models.FloatField(null=True, blank=True)
+    world_count = models.PositiveIntegerField(null=True, blank=True)
+    country_rank = models.PositiveIntegerField(null=True, blank=True)
+    country_count = models.PositiveIntegerField(null=True, blank=True)
+    district_rank = models.PositiveIntegerField(null=True, blank=True)
+    district_count = models.PositiveIntegerField(null=True, blank=True)
+    wins = models.PositiveIntegerField(default=0)
+    losses = models.PositiveIntegerField(default=0)
+    ties = models.PositiveIntegerField(default=0)
+    raw = models.JSONField(default=dict, blank=True)
+    synced_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [("team", "year")]
+
+    def __str__(self):
+        return f"{self.team.number} {self.year}"
+
+    @property
+    def record(self):
+        return f"{self.wins}-{self.losses}-{self.ties}"
